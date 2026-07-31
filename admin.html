@@ -1033,7 +1033,7 @@
         }
 
         /* ============================================================
-           EXPORT
+           EXPORT AVANCÉ
            ============================================================ */
         .export-options {
             display: flex;
@@ -1063,6 +1063,69 @@
             border-color: var(--gold);
             color: var(--gold);
             transform: translateY(-2px);
+        }
+
+        .export-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 850px;
+            margin: 0 auto 20px;
+        }
+
+        .export-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+        }
+
+        .export-card h4 {
+            color: var(--gold);
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+
+        .export-card select {
+            width: 100%;
+            padding: 10px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .export-card select:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .export-card .btn-export-sm {
+            width: 100%;
+            padding: 10px;
+            background: var(--gold);
+            border: none;
+            border-radius: var(--radius-sm);
+            color: var(--text-inverse);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+        }
+
+        .export-card .btn-export-sm:hover {
+            transform: scale(1.01);
+            box-shadow: 0 4px 20px rgba(212, 168, 67, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .export-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* ============================================================
@@ -1467,15 +1530,71 @@
         </div>
 
         <!-- ============================================================ -->
-        <!-- ONGLET : RAPPORTS -->
+        <!-- ONGLET : RAPPORTS (NOUVEAU AVEC EXPORTS FILTRÉS) -->
         <!-- ============================================================ -->
         <div id="tab-rapports" class="tab-content">
-            <h3 style="margin-bottom:16px;text-align:center;">Générer un rapport</h3>
-            <div class="export-options">
-                <button class="btn-export" id="exportPDFReport">Rapport complet PDF</button>
-                <button class="btn-export" id="exportPresenceList">Liste de présence PDF</button>
-                <button class="btn-export" id="exportStatsReport">Rapport statistiques</button>
+            <h3 style="margin-bottom:16px;text-align:center;">📊 Exporter des données filtrées</h3>
+
+            <div class="export-grid">
+
+                <!-- Export par pays -->
+                <div class="export-card">
+                    <h4>🌍 Par pays</h4>
+                    <select id="exportPaysSelect">
+                        <option value="">Tous les pays</option>
+                    </select>
+                    <button class="btn-export-sm" id="exportByPays">📥 Télécharger</button>
+                </div>
+
+                <!-- Export par église -->
+                <div class="export-card">
+                    <h4>🏛️ Par église</h4>
+                    <select id="exportEgliseSelect">
+                        <option value="">Toutes les églises</option>
+                    </select>
+                    <button class="btn-export-sm" id="exportByEglise">📥 Télécharger</button>
+                </div>
+
+                <!-- Export par statut (présents/absents) -->
+                <div class="export-card">
+                    <h4>✅ Présents / Absents</h4>
+                    <select id="exportStatutSelect">
+                        <option value="present">Présents</option>
+                        <option value="absent">Absents</option>
+                    </select>
+                    <select id="exportJourSelect">
+                        <option value="J-1">Jour 1 (22 Sept)</option>
+                        <option value="J-2">Jour 2 (23 Sept)</option>
+                        <option value="J-3">Jour 3 (24 Sept)</option>
+                    </select>
+                    <button class="btn-export-sm" id="exportByStatut">📥 Télécharger</button>
+                </div>
+
+                <!-- Export combiné (pays + statut) -->
+                <div class="export-card">
+                    <h4>🎯 Pays + Statut</h4>
+                    <select id="exportComboPays">
+                        <option value="">Tous les pays</option>
+                    </select>
+                    <select id="exportComboStatut">
+                        <option value="present">Présents</option>
+                        <option value="absent">Absents</option>
+                    </select>
+                    <button class="btn-export-sm" id="exportCombo">📥 Télécharger</button>
+                </div>
+
             </div>
+
+            <!-- Exports PDF existants -->
+            <div style="text-align:center;margin-top:20px;">
+                <h4 style="color:var(--text-muted);margin-bottom:12px;">📄 Rapports complets</h4>
+                <div class="export-options">
+                    <button class="btn-export" id="exportPDFReport">Rapport complet PDF</button>
+                    <button class="btn-export" id="exportPresenceList">Liste de présence PDF</button>
+                    <button class="btn-export" id="exportStatsReport">Rapport statistiques</button>
+                </div>
+            </div>
+
         </div>
 
     </div>
@@ -1489,14 +1608,13 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- SCRIPTS -->
+    <!-- SCRIPTS (COMPLÈTEMENT MIS À JOUR) -->
     <!-- ============================================================ -->
     <script>
         /* ============================================================
            CONFIGURATION
            ============================================================ */
         const CONFIG = {
-            // ✅ URL CORRECTE - Dernier déploiement
             SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwoiA-zn4htzMJsHbkmVmnxuJONQRJRJaGgXBZjCzq5sNPtKn47NNbNjuttrcj9MQEI/exec',
             ADMIN_PASSWORD: 'enflammer2026',
         };
@@ -1588,21 +1706,7 @@
             loadReminders();
             loadRecentCheckins();
             loadDayStatus();
-        }
-
-        /* ============================================================
-           TEST DE CONNEXION
-           ============================================================ */
-        async function testConnection() {
-            try {
-                const response = await fetch(CONFIG.SCRIPT_URL + '?action=test');
-                const text = await response.text();
-                console.log('Test connexion:', text);
-                return text;
-            } catch (e) {
-                console.error('Erreur test:', e);
-                return 'Erreur: ' + e.message;
-            }
+            populateExportFilters();
         }
 
         /* ============================================================
@@ -1616,8 +1720,6 @@
             loading.style.display = 'flex';
             table.style.display = 'none';
             emptyState.style.display = 'none';
-
-            await testConnection();
 
             try {
                 const url = CONFIG.SCRIPT_URL + '?action=getData&t=' + Date.now();
@@ -1636,6 +1738,7 @@
                     console.log('Nombre d\'inscrits chargés:', allData.length);
                     updateStats(allData);
                     populateFilters(allData);
+                    populateExportFilters();
                     updateCharts(allData);
                     updateNotifBadge(0);
                     applyFilters();
@@ -1713,6 +1816,47 @@
                 opt.textContent = p;
                 paysSelect.appendChild(opt);
             });
+        }
+
+        function populateExportFilters() {
+            const pays = new Set(allData.map(d => d['Pays']).filter(p => p && p.trim() !== ''));
+            const eglises = new Set(allData.map(d => d['Ministère/Église']).filter(e => e && e.trim() !== ''));
+
+            // Export par pays
+            const paysSelect1 = document.getElementById('exportPaysSelect');
+            if (paysSelect1) {
+                paysSelect1.innerHTML = '<option value="">Tous les pays</option>';
+                pays.forEach(p => {
+                    const opt = document.createElement('option');
+                    opt.value = p;
+                    opt.textContent = p;
+                    paysSelect1.appendChild(opt);
+                });
+            }
+
+            // Export par église
+            const egliseSelect = document.getElementById('exportEgliseSelect');
+            if (egliseSelect) {
+                egliseSelect.innerHTML = '<option value="">Toutes les églises</option>';
+                eglises.forEach(e => {
+                    const opt = document.createElement('option');
+                    opt.value = e;
+                    opt.textContent = e;
+                    egliseSelect.appendChild(opt);
+                });
+            }
+
+            // Export combiné pays
+            const comboPays = document.getElementById('exportComboPays');
+            if (comboPays) {
+                comboPays.innerHTML = '<option value="">Tous les pays</option>';
+                pays.forEach(p => {
+                    const opt = document.createElement('option');
+                    opt.value = p;
+                    opt.textContent = p;
+                    comboPays.appendChild(opt);
+                });
+            }
         }
 
         function applyFilters() {
@@ -1837,9 +1981,19 @@
         });
 
         /* ============================================================
-           GRAPHIQUES
+           GRAPHIQUES (CORRIGÉS - avec destruction propre)
            ============================================================ */
         function updateCharts(data) {
+            // Détruire les anciens graphiques
+            const chartIds = ['chartPays', 'chartEvolution', 'chartSource', 'chartEglise'];
+            chartIds.forEach(id => {
+                if (charts[id]) {
+                    charts[id].destroy();
+                    delete charts[id];
+                }
+            });
+
+            // 1. Répartition par pays
             const paysCount = {};
             data.forEach(d => {
                 const p = d['Pays'] || 'Non renseigné';
@@ -1847,7 +2001,36 @@
             });
             const paysLabels = Object.keys(paysCount).slice(0, 10);
             const paysValues = paysLabels.map(k => paysCount[k]);
+            const paysColors = ['#D4A843', '#C62828', '#2ecc71', '#3498db', '#9b59b6', '#1abc9c', '#e67e22', '#e74c3c', '#f1c40f', '#95a5a6'];
 
+            if (paysLabels.length > 0) {
+                const ctx = document.getElementById('chartPays');
+                if (ctx) {
+                    charts['chartPays'] = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: paysLabels,
+                            datasets: [{
+                                data: paysValues,
+                                backgroundColor: paysColors.slice(0, paysLabels.length),
+                                borderColor: '#0a0806',
+                                borderWidth: 2,
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: {
+                                legend: {
+                                    labels: { color: '#9a8a7a', font: { size: 10 }, boxWidth: 12 }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            // 2. Évolution des inscriptions (par date)
             const evolution = {};
             data.forEach(d => {
                 const date = d['Date'] ? d['Date'].split(' ')[0] : 'Inconnue';
@@ -1856,6 +2039,40 @@
             const evolLabels = Object.keys(evolution).slice(0, 15);
             const evolValues = evolLabels.map(k => evolution[k]);
 
+            if (evolLabels.length > 0) {
+                const ctx = document.getElementById('chartEvolution');
+                if (ctx) {
+                    charts['chartEvolution'] = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: evolLabels,
+                            datasets: [{
+                                label: 'Inscriptions',
+                                data: evolValues,
+                                borderColor: '#D4A843',
+                                backgroundColor: 'rgba(212,168,67,0.1)',
+                                fill: true,
+                                tension: 0.3,
+                                pointBackgroundColor: '#D4A843',
+                                pointRadius: 4,
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: {
+                                legend: { labels: { color: '#9a8a7a', font: { size: 10 } } }
+                            },
+                            scales: {
+                                x: { ticks: { color: '#9a8a7a', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.03)' } },
+                                y: { ticks: { color: '#9a8a7a', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.03)' } }
+                            }
+                        }
+                    });
+                }
+            }
+
+            // 3. Source de provenance
             const sourceCount = {};
             data.forEach(d => {
                 const s = d['Source'] || 'Non renseigné';
@@ -1863,97 +2080,210 @@
             });
             const srcLabels = Object.keys(sourceCount);
             const srcValues = srcLabels.map(k => sourceCount[k]);
+            const srcColors = ['#D4A843', '#C62828', '#2ecc71', '#3498db', '#9b59b6', '#1abc9c', '#e67e22', '#e74c3c'];
 
+            if (srcLabels.length > 0) {
+                const ctx = document.getElementById('chartSource');
+                if (ctx) {
+                    charts['chartSource'] = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: srcLabels,
+                            datasets: [{
+                                data: srcValues,
+                                backgroundColor: srcColors.slice(0, srcLabels.length),
+                                borderColor: '#0a0806',
+                                borderWidth: 2,
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: {
+                                legend: {
+                                    labels: { color: '#9a8a7a', font: { size: 10 }, boxWidth: 12 }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            // 4. Répartition par église
             const egliseCount = {};
             data.forEach(d => {
                 const e = d['Ministère/Église'] || 'Non renseigné';
                 egliseCount[e] = (egliseCount[e] || 0) + 1;
             });
             const eglLabels = Object.keys(egliseCount).slice(0, 8);
-            const eglValues = eglLabels.map(k => egliseCount[e]);
+            const eglValues = eglLabels.map(k => egliseCount[k]);
 
-            createOrUpdateChart('chartPays', 'doughnut', paysLabels, paysValues, ['#D4A843', '#C62828', '#2ecc71', '#3498db',
-                '#9b59b6', '#1abc9c', '#e67e22', '#e74c3c', '#f1c40f', '#95a5a6'
-            ]);
-            createOrUpdateChart('chartEvolution', 'line', evolLabels, evolValues, '#D4A843');
-            createOrUpdateChart('chartSource', 'pie', srcLabels, srcValues, ['#D4A843', '#C62828', '#2ecc71', '#3498db',
-                '#9b59b6', '#1abc9c'
-            ]);
-            createOrUpdateChart('chartEglise', 'bar', eglLabels, eglValues, '#C62828');
-        }
-
-        function createOrUpdateChart(id, type, labels, data, color) {
-            const ctx = document.getElementById(id);
-            if (!ctx) return;
-
-            if (charts[id]) {
-                charts[id].data.labels = labels;
-                charts[id].data.datasets[0].data = data;
-                charts[id].update();
-                return;
+            if (eglLabels.length > 0) {
+                const ctx = document.getElementById('chartEglise');
+                if (ctx) {
+                    charts['chartEglise'] = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: eglLabels,
+                            datasets: [{
+                                label: 'Participants',
+                                data: eglValues,
+                                backgroundColor: '#C62828',
+                                borderColor: '#8E0000',
+                                borderWidth: 1,
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: {
+                                legend: { labels: { color: '#9a8a7a', font: { size: 10 } } }
+                            },
+                            scales: {
+                                x: { ticks: { color: '#9a8a7a', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.03)' } },
+                                y: { ticks: { color: '#9a8a7a', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.03)' } }
+                            }
+                        }
+                    });
+                }
             }
 
-            charts[id] = new Chart(ctx, {
-                type: type,
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: data,
-                        backgroundColor: Array.isArray(color) ? color : [color, '#C62828', '#2ecc71',
-                            '#3498db', '#9b59b6'
-                        ],
-                        borderColor: '#0a0806',
-                        borderWidth: 1,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    plugins: {
-                        legend: {
-                            labels: { color: '#9a8a7a', font: { size: 10 } }
-                        }
-                    },
-                    scales: type === 'line' || type === 'bar' ? {
-                        x: { ticks: { color: '#9a8a7a', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.03)' } },
-                        y: { ticks: { color: '#9a8a7a', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.03)' } }
-                    } : undefined
-                }
-            });
+            // Message si aucun graphique
+            if (Object.keys(charts).length === 0) {
+                document.querySelectorAll('.chart-card canvas').forEach(c => {
+                    c.style.display = 'none';
+                    const parent = c.parentElement;
+                    const msg = document.createElement('p');
+                    msg.textContent = 'Aucune donnée à afficher';
+                    msg.style.color = '#9a8a7a';
+                    msg.style.textAlign = 'center';
+                    msg.style.padding = '20px';
+                    parent.appendChild(msg);
+                });
+            }
         }
 
         /* ============================================================
-           EXPORT EXCEL
+           EXPORT EXCEL (liste filtrée actuelle)
            ============================================================ */
         document.getElementById('exportExcel').addEventListener('click', function() {
             if (filteredData.length === 0) { alert('Aucune donnée à exporter.'); return; }
+            exportToCSV(filteredData, 'inscriptions_ENFLAMMER');
+        });
+
+        /* ============================================================
+           FONCTIONS D'EXPORT FILTRÉ
+           ============================================================ */
+
+        // Export par pays
+        document.getElementById('exportByPays').addEventListener('click', function() {
+            const pays = document.getElementById('exportPaysSelect').value;
+            let data = allData;
+            if (pays) {
+                data = data.filter(row => row['Pays'] === pays);
+            }
+            if (data.length === 0) { alert('Aucune donnée pour ce pays.'); return; }
+            const filename = pays ? `inscrits_${pays}` : 'inscrits_tous_pays';
+            exportToCSV(data, filename);
+        });
+
+        // Export par église
+        document.getElementById('exportByEglise').addEventListener('click', function() {
+            const eglise = document.getElementById('exportEgliseSelect').value;
+            let data = allData;
+            if (eglise) {
+                data = data.filter(row => row['Ministère/Église'] === eglise);
+            }
+            if (data.length === 0) { alert('Aucune donnée pour cette église.'); return; }
+            const filename = eglise ? `inscrits_${eglise.replace(/\s+/g, '_')}` : 'inscrits_toutes_eglises';
+            exportToCSV(data, filename);
+        });
+
+        // Export par statut (présents/absents pour un jour donné)
+        document.getElementById('exportByStatut').addEventListener('click', function() {
+            const statut = document.getElementById('exportStatutSelect').value;
+            const jour = document.getElementById('exportJourSelect').value;
+
+            const dayKey = 'present_' + jour;
+            const presentIds = dayStatus[dayKey] || [];
+
+            let data = allData;
+            if (statut === 'present') {
+                data = data.filter(row => presentIds.includes(row['ID']));
+            } else {
+                data = data.filter(row => !presentIds.includes(row['ID']));
+            }
+
+            if (data.length === 0) { alert(`Aucun ${statut === 'present' ? 'présent' : 'absent'} pour ce jour.`); return; }
+            const filename = `${statut}_${jour}`;
+            exportToCSV(data, filename);
+        });
+
+        // Export combiné (pays + statut)
+        document.getElementById('exportCombo').addEventListener('click', function() {
+            const pays = document.getElementById('exportComboPays').value;
+            const statut = document.getElementById('exportComboStatut').value;
+
+            let data = allData;
+
+            if (pays) {
+                data = data.filter(row => row['Pays'] === pays);
+            }
+
+            // Récupérer tous les IDs présents (tous jours confondus)
+            const presentIds = [];
+            ['J-1', 'J-2', 'J-3'].forEach(j => {
+                const key = 'present_' + j;
+                if (dayStatus[key]) {
+                    dayStatus[key].forEach(id => {
+                        if (!presentIds.includes(id)) presentIds.push(id);
+                    });
+                }
+            });
+
+            if (statut === 'present') {
+                data = data.filter(row => presentIds.includes(row['ID']));
+            } else {
+                data = data.filter(row => !presentIds.includes(row['ID']));
+            }
+
+            if (data.length === 0) { alert('Aucune donnée pour ces critères.'); return; }
+            const filename = `inscrits_${pays || 'tous'}_${statut}`;
+            exportToCSV(data, filename);
+        });
+
+        /* ============================================================
+           EXPORT CSV (fonction générique)
+           ============================================================ */
+        function exportToCSV(data, filename) {
             const headers = ['ID', 'Nom', 'Prénoms', 'Genre', 'WhatsApp', 'Email', 'Fonction', 'Ministère/Église', 'Pays',
                 'Ville', 'Nationalité', 'Source', 'Attentes', 'Présent', 'Date pointage'
             ];
             const csvRows = [headers.join(',')];
-            filteredData.forEach(row => {
+
+            data.forEach(row => {
                 const values = headers.map(h => {
                     let val = row[h] || '';
-                    if (typeof val === 'string' && (val.includes(',') || val.includes('"') || val.includes(
-                            '\n'))) {
+                    if (typeof val === 'string' && (val.includes(',') || val.includes('"') || val.includes('\n'))) {
                         val = `"${val.replace(/"/g, '""')}"`;
                     }
                     return val;
                 });
                 csvRows.push(values.join(','));
             });
+
             const csvContent = csvRows.join('\n');
             const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `inscriptions_ENFLAMMER_${new Date().toISOString().slice(0,10)}.csv`;
+            link.download = `${filename}_${new Date().toISOString().slice(0,10)}.csv`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-        });
+        }
 
         /* ============================================================
-           ENVOI DE MESSAGES EN MASSE ET INDIVIDUEL
+           ENVOI DE MESSAGES EN MASSE
            ============================================================ */
         document.querySelector('.table-actions').insertAdjacentHTML('beforeend', `
             <button class="btn-action" id="sendMassMessageBtn">📧 Message à tous</button>
@@ -2094,8 +2424,7 @@
 
             resultDiv.className = 'checkin-result success';
             document.getElementById('resultName').textContent = participant['Prénoms'] + ' ' + participant['Nom'];
-            document.getElementById('resultDetail').textContent = participant['Ministère/Église'] + ' • ' + participant[
-            'Pays'];
+            document.getElementById('resultDetail').textContent = participant['Ministère/Église'] + ' • ' + participant['Pays'];
 
             addRecentCheckin(id, participant['Nom'], participant['Prénoms']);
             updateDayStats();
@@ -2169,8 +2498,7 @@
         function renderRecentCheckins() {
             const ul = document.getElementById('recentCheckins');
             if (recentCheckins.length === 0) {
-                ul.innerHTML =
-                    '<li style="color:var(--text-muted);font-size:0.85rem;">Aucun pointage pour le moment</li>';
+                ul.innerHTML = '<li style="color:var(--text-muted);font-size:0.85rem;">Aucun pointage pour le moment</li>';
                 return;
             }
             ul.innerHTML = recentCheckins.slice(0, 10).map(item =>
@@ -2192,11 +2520,11 @@
                         const newCount = result.data.length;
                         if (newCount > lastCount) {
                             const diff = newCount - lastCount;
-                            showNotification(diff + ' nouvelle(s) inscription(s) !', 'Total : ' + newCount +
-                                ' inscrits');
+                            showNotification(diff + ' nouvelle(s) inscription(s) !', 'Total : ' + newCount + ' inscrits');
                             allData = result.data;
                             updateStats(allData);
                             populateFilters(allData);
+                            populateExportFilters();
                             updateCharts(allData);
                             applyFilters();
                             updateNotifBadge(diff);
@@ -2236,8 +2564,7 @@
         function renderReminders(reminders) {
             const container = document.getElementById('reminderItems');
             if (!reminders || reminders.length === 0) {
-                container.innerHTML =
-                    `<div class="empty-state">Aucun rappel programmé</div>`;
+                container.innerHTML = `<div class="empty-state">Aucun rappel programmé</div>`;
                 return;
             }
             container.innerHTML = reminders.map(r => `
@@ -2315,15 +2642,14 @@
         }
 
         /* ============================================================
-           EXPORT PDF
+           EXPORT PDF (existants)
            ============================================================ */
 
         document.getElementById('exportPDFReport').addEventListener('click', function() {
             if (allData.length === 0) { alert('Aucune donnée à exporter.'); return; }
 
             const content = document.createElement('div');
-            content.style.cssText =
-                'padding:30px;font-family:Inter,Arial,sans-serif;background:#fff;color:#1a1410;max-width:900px;margin:0 auto;';
+            content.style.cssText = 'padding:30px;font-family:Inter,Arial,sans-serif;background:#fff;color:#1a1410;max-width:900px;margin:0 auto;';
 
             const total = allData.length;
             const pays = new Set(allData.map(d => d['Pays']).filter(p => p && p.trim() !== ''));
@@ -2383,8 +2709,7 @@
             if (allData.length === 0) { alert('Aucun inscrit.'); return; }
 
             const content = document.createElement('div');
-            content.style.cssText =
-                'padding:30px;font-family:Inter,Arial,sans-serif;background:#fff;color:#1a1410;max-width:800px;margin:0 auto;';
+            content.style.cssText = 'padding:30px;font-family:Inter,Arial,sans-serif;background:#fff;color:#1a1410;max-width:800px;margin:0 auto;';
 
             content.innerHTML = `
                 <div style="text-align:center;border-bottom:3px solid #D4A843;padding-bottom:20px;margin-bottom:25px;">
@@ -2431,8 +2756,7 @@
             const eglises = new Set(allData.map(d => d['Ministère/Église']).filter(e => e && e.trim() !== ''));
 
             const content = document.createElement('div');
-            content.style.cssText =
-                'padding:30px;font-family:Inter,Arial,sans-serif;background:#fff;color:#1a1410;max-width:700px;margin:0 auto;';
+            content.style.cssText = 'padding:30px;font-family:Inter,Arial,sans-serif;background:#fff;color:#1a1410;max-width:700px;margin:0 auto;';
 
             const paysStats = {};
             allData.forEach(d => { const p = d['Pays'] || 'Non renseigné';
