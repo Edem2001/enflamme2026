@@ -1,0 +1,2487 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Administration - ENFLAMMER 2026</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+
+    <!-- html2pdf -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js">
+    </script>
+
+    <style>
+        /* ============================================================
+           THEMES & VARIABLES
+           ============================================================ */
+        :root {
+            --gold: #D4A843;
+            --gold-light: #E8C86A;
+            --gold-dark: #B8922F;
+            --primary: #C62828;
+            --primary-dark: #8E0000;
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            --bg: #0a0806;
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --bg-glass: rgba(10, 8, 6, 0.85);
+            --bg-input: rgba(255, 255, 255, 0.05);
+            --text: #f0ebe5;
+            --text-muted: #9a8a7a;
+            --text-inverse: #0a0806;
+            --border: rgba(255, 255, 255, 0.06);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --info: #3498db;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ============================================================
+           LOGIN
+           ============================================================ */
+        #loginScreen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: var(--bg);
+            padding: 20px;
+        }
+
+        .login-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 40px 36px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow);
+        }
+
+        .login-box .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 16px;
+            object-fit: contain;
+        }
+
+        .login-box h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .login-box p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+
+        .login-box .form-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .login-box label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-input);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-size: 0.95rem;
+            transition: all var(--transition);
+        }
+
+        .login-box input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 4px rgba(212, 168, 67, 0.06);
+        }
+
+        .login-box .btn {
+            width: 100%;
+            padding: 14px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--text-inverse);
+        }
+
+        .login-box .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(212, 168, 67, 0.25);
+        }
+
+        .login-box .error-msg {
+            color: var(--danger);
+            font-size: 0.8rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .login-box .error-msg.visible {
+            display: block;
+        }
+
+        /* ============================================================
+           DASHBOARD
+           ============================================================ */
+        #dashboard {
+            display: none;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        #dashboard.visible {
+            display: block;
+        }
+
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 20px 0 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 24px;
+        }
+
+        .dashboard-header .left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .dashboard-header .left img {
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .dashboard-header h1 {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .dashboard-header h1 span {
+            color: var(--gold);
+        }
+
+        .dashboard-header .right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .dashboard-header .badge {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dashboard-header .badge .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        .dashboard-header .logout-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 8px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all var(--transition);
+        }
+
+        .dashboard-header .logout-btn:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        /* ============================================================
+           ONGLETS
+           ============================================================ */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-bottom: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 4px;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-sm);
+            color: var(--text-muted);
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .tab-btn.active {
+            background: var(--gold);
+            color: var(--text-inverse);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============================================================
+           STATISTIQUES
+           ============================================================ */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            transition: all var(--transition);
+        }
+
+        .stat-card:hover {
+            border-color: rgba(212, 168, 67, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .stat-card .stat-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .stat-card .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.2;
+        }
+
+        .stat-card .stat-sub {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .stat-card.gold .stat-number {
+            color: var(--gold);
+        }
+        .stat-card.green .stat-number {
+            color: var(--success);
+        }
+        .stat-card.red .stat-number {
+            color: var(--danger);
+        }
+        .stat-card.blue .stat-number {
+            color: var(--info);
+        }
+
+        /* ============================================================
+           GRAPHIQUES
+           ============================================================ */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+        }
+
+        .chart-card h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-muted);
+        }
+
+        .chart-card canvas {
+            max-height: 250px;
+            max-width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ============================================================
+           FILTRES & RECHERCHE
+           ============================================================ */
+        .filters-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin-bottom: 24px;
+        }
+
+        .filters-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .filters-row .search-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 16px;
+            background: var(--bg-input);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-size: 0.9rem;
+            transition: all var(--transition);
+        }
+
+        .filters-row .search-input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 4px rgba(212, 168, 67, 0.06);
+        }
+
+        .filters-row select {
+            padding: 10px 16px;
+            background: var(--bg-input);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-size: 0.9rem;
+            cursor: pointer;
+            min-width: 140px;
+        }
+
+        .filters-row select:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .filters-row select option {
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .btn-filter {
+            padding: 10px 20px;
+            background: var(--gold);
+            border: none;
+            border-radius: var(--radius-sm);
+            color: var(--text-inverse);
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-filter:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(212, 168, 67, 0.2);
+        }
+
+        .btn-filter.secondary {
+            background: var(--bg-input);
+            color: var(--text-muted);
+        }
+
+        .btn-filter.secondary:hover {
+            background: var(--border);
+            color: var(--text);
+        }
+
+        /* ============================================================
+           TABLEAU
+           ============================================================ */
+        .table-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .table-container .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .table-container .table-header h3 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .table-container .table-header h3 span {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .table-container .table-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .table-container .table-actions .btn-action {
+            padding: 8px 16px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .table-container .table-actions .btn-action:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .table-container .table-actions .btn-action.danger:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            padding: 0 4px 4px 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+
+        table thead {
+            background: var(--bg-input);
+        }
+
+        table thead th {
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        table tbody td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .status-badge.present {
+            background: rgba(46, 204, 113, 0.15);
+            color: var(--success);
+        }
+
+        .status-badge.absent {
+            background: rgba(231, 76, 60, 0.15);
+            color: var(--danger);
+        }
+
+        .status-badge.pending {
+            background: rgba(243, 156, 18, 0.15);
+            color: var(--warning);
+        }
+
+        .btn-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #25D366;
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 14px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition);
+            text-decoration: none;
+        }
+
+        .btn-whatsapp:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+        }
+
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px 0;
+            flex-wrap: wrap;
+        }
+
+        .pagination button {
+            padding: 8px 16px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            cursor: pointer;
+            transition: all var(--transition);
+            font-size: 0.85rem;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .pagination button.active {
+            background: var(--gold);
+            color: var(--text-inverse);
+            border-color: var(--gold);
+        }
+
+        .pagination button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .pagination .info {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin: 0 12px;
+        }
+
+        /* ============================================================
+           CHECK-IN
+           ============================================================ */
+        .checkin-container {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .checkin-container h2 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        .checkin-container p {
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .checkin-day-selector {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .checkin-day-selector .day-btn {
+            padding: 10px 24px;
+            background: var(--bg-input);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .checkin-day-selector .day-btn:hover {
+            border-color: var(--gold);
+            color: var(--text);
+        }
+
+        .checkin-day-selector .day-btn.active {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--text-inverse);
+        }
+
+        .checkin-day-selector .day-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .checkin-input-group {
+            display: flex;
+            gap: 12px;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
+        .checkin-input-group input {
+            flex: 1;
+            padding: 16px 20px;
+            background: var(--bg-input);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-size: 1.1rem;
+            text-align: center;
+            letter-spacing: 1px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .checkin-input-group input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 4px rgba(212, 168, 67, 0.06);
+        }
+
+        .checkin-input-group .btn-checkin {
+            padding: 16px 32px;
+            background: linear-gradient(135deg, var(--success), #27ae60);
+            border: none;
+            border-radius: var(--radius-sm);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .checkin-input-group .btn-checkin:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 30px rgba(46, 204, 113, 0.3);
+        }
+
+        .checkin-input-group .btn-checkin:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .checkin-result {
+            margin-top: 24px;
+            padding: 20px;
+            border-radius: var(--radius);
+            display: none;
+        }
+
+        .checkin-result.success {
+            display: block;
+            background: rgba(46, 204, 113, 0.08);
+            border: 1px solid var(--success);
+        }
+
+        .checkin-result.error {
+            display: block;
+            background: rgba(231, 76, 60, 0.08);
+            border: 1px solid var(--danger);
+        }
+
+        .checkin-result .result-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .checkin-result .result-detail {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .checkin-recent {
+            margin-top: 30px;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+        }
+
+        .checkin-recent h4 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .checkin-recent ul {
+            list-style: none;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .checkin-recent ul li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .checkin-recent ul li:last-child {
+            border-bottom: none;
+        }
+
+        .checkin-close-day {
+            margin-top: 24px;
+        }
+
+        .checkin-close-day .btn-close-day {
+            padding: 14px 40px;
+            background: linear-gradient(135deg, var(--danger), #c0392b);
+            border: none;
+            border-radius: var(--radius-sm);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .checkin-close-day .btn-close-day:hover:not(:disabled) {
+            transform: scale(1.03);
+            box-shadow: 0 8px 30px rgba(231, 76, 60, 0.3);
+        }
+
+        .checkin-close-day .btn-close-day:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .checkin-day-status {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .checkin-day-status strong {
+            color: var(--text);
+        }
+
+        /* ============================================================
+           RAPPELS
+           ============================================================ */
+        .reminder-form {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .reminder-form .form-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .reminder-form label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .reminder-form input,
+        .reminder-form textarea,
+        .reminder-form select {
+            width: 100%;
+            padding: 10px 14px;
+            background: var(--bg-input);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            transition: all var(--transition);
+        }
+
+        .reminder-form input:focus,
+        .reminder-form textarea:focus,
+        .reminder-form select:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .reminder-form textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .reminder-form .btn-reminder {
+            padding: 12px 32px;
+            background: var(--gold);
+            border: none;
+            border-radius: var(--radius-sm);
+            color: var(--text-inverse);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .reminder-form .btn-reminder:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(212, 168, 67, 0.2);
+        }
+
+        .reminder-list {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .reminder-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .reminder-item .info {
+            flex: 1;
+        }
+
+        .reminder-item .info .title {
+            font-weight: 600;
+        }
+
+        .reminder-item .info .date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .reminder-item .info .status {
+            font-size: 0.75rem;
+            padding: 2px 10px;
+            border-radius: 50px;
+            background: rgba(46, 204, 113, 0.15);
+            color: var(--success);
+        }
+
+        .reminder-item .info .status.pending {
+            background: rgba(243, 156, 18, 0.15);
+            color: var(--warning);
+        }
+
+        .reminder-item .actions button {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 6px 14px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all var(--transition);
+            font-size: 0.8rem;
+        }
+
+        .reminder-item .actions button:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        /* ============================================================
+           EXPORT
+           ============================================================ */
+        .export-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+            margin: 20px 0 30px;
+        }
+
+        .export-options .btn-export {
+            padding: 14px 32px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .export-options .btn-export:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        /* ============================================================
+           NOTIFICATIONS
+           ============================================================ */
+        .notification-toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px 24px;
+            box-shadow: var(--shadow);
+            display: none;
+            align-items: center;
+            gap: 12px;
+            z-index: 999;
+            animation: slideUp 0.4s ease;
+            max-width: 400px;
+        }
+
+        .notification-toast.visible {
+            display: flex;
+        }
+
+        .notification-toast .notif-icon {
+            font-size: 1.8rem;
+        }
+
+        .notification-toast .notif-text {
+            font-size: 0.9rem;
+        }
+
+        .notification-toast .notif-text strong {
+            color: var(--gold);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============================================================
+           LOADING / EMPTY
+           ============================================================ */
+        .loading-spinner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            color: var(--text-muted);
+            gap: 12px;
+        }
+
+        .loading-spinner .spinner {
+            width: 28px;
+            height: 28px;
+            border: 3px solid var(--border);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .dashboard-header .right {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .filters-row {
+                flex-direction: column;
+            }
+
+            .filters-row .search-input,
+            .filters-row select {
+                width: 100%;
+                min-width: unset;
+            }
+
+            .table-container .table-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .login-box {
+                padding: 28px 20px;
+            }
+
+            .checkin-input-group {
+                flex-direction: column;
+            }
+
+            .tab-btn {
+                padding: 10px 16px;
+                font-size: 0.75rem;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .reminder-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .checkin-day-selector {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-container .table-actions .btn-action {
+                font-size: 0.7rem;
+                padding: 6px 12px;
+            }
+
+            body {
+                padding: 12px;
+            }
+
+            .tabs {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+            }
+
+            .tab-btn {
+                white-space: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================ -->
+    <!-- ÉCRAN DE LOGIN -->
+    <!-- ============================================================ -->
+    <div id="loginScreen">
+        <div class="login-box">
+            <img src="logo-awc.png" alt="AGYINASARE WORLD EVANGELISM" class="logo" />
+            <h1>Administration</h1>
+            <p>ENFLAMMER 2026 • Cotonou</p>
+
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <input type="password" id="loginPass" placeholder="Mot de passe" />
+            </div>
+
+            <button class="btn" id="loginBtn">Accéder au tableau de bord</button>
+            <div class="error-msg" id="loginError">Mot de passe incorrect</div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TABLEAU DE BORD -->
+    <!-- ============================================================ -->
+    <div id="dashboard">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div class="left">
+                <img src="logo-awc.png" alt="AGYINASARE WORLD EVANGELISM" />
+                <h1>Tableau de bord <span>ENFLAMMER</span></h1>
+            </div>
+            <div class="right">
+                <span class="badge"><span class="dot"></span> En direct</span>
+                <span class="badge" id="notifBadge">0 nouveau</span>
+                <button class="logout-btn" id="logoutBtn">Déconnexion</button>
+            </div>
+        </div>
+
+        <!-- Onglets -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="tab-dashboard">Vue d'ensemble</button>
+            <button class="tab-btn" data-tab="tab-inscrits">Inscrits</button>
+            <button class="tab-btn" data-tab="tab-checkin">Pointage</button>
+            <button class="tab-btn" data-tab="tab-rappels">Rappels</button>
+            <button class="tab-btn" data-tab="tab-rapports">Rapports</button>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ONGLET : TABLEAU DE BORD -->
+        <!-- ============================================================ -->
+        <div id="tab-dashboard" class="tab-content active">
+
+            <div class="stats-grid" id="statsContainer">
+                <div class="stat-card gold">
+                    <div class="stat-label">Total inscrits</div>
+                    <div class="stat-number" id="statTotal">0</div>
+                </div>
+                <div class="stat-card green">
+                    <div class="stat-label">Pointés du jour</div>
+                    <div class="stat-number" id="statPresent">0</div>
+                    <div class="stat-sub" id="statPresentDay">Aucun jour sélectionné</div>
+                </div>
+                <div class="stat-card red">
+                    <div class="stat-label">Absents du jour</div>
+                    <div class="stat-number" id="statAbsent">0</div>
+                    <div class="stat-sub" id="statAbsentDay">Aucun jour sélectionné</div>
+                </div>
+                <div class="stat-card blue">
+                    <div class="stat-label">Pays représentés</div>
+                    <div class="stat-number" id="statPays">0</div>
+                </div>
+            </div>
+
+            <!-- Graphiques -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h4>Répartition par pays</h4>
+                    <canvas id="chartPays"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h4>Évolution des inscriptions</h4>
+                    <canvas id="chartEvolution"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h4>Source de provenance</h4>
+                    <canvas id="chartSource"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h4>Répartition par église</h4>
+                    <canvas id="chartEglise"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ONGLET : INSCRITS -->
+        <!-- ============================================================ -->
+        <div id="tab-inscrits" class="tab-content">
+
+            <div class="filters-section">
+                <div class="filters-row">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Rechercher par ID, Nom, Email, Église..." />
+                    <select id="filterPays">
+                        <option value="">Tous les pays</option>
+                    </select>
+                    <button class="btn-filter" id="applyFilters">Appliquer</button>
+                    <button class="btn-filter secondary" id="resetFilters">Réinitialiser</button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>Liste des inscrits <span id="totalDisplay">(0)</span></h3>
+                    <div class="table-actions">
+                        <button class="btn-action" id="exportExcel">Exporter Excel</button>
+                        <button class="btn-action" id="refreshData">Rafraîchir</button>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <div id="loadingIndicator" class="loading-spinner">
+                        <div class="spinner"></div>
+                        Chargement des données...
+                    </div>
+                    <table id="dataTable" style="display:none;">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nom</th>
+                                <th>Prénoms</th>
+                                <th>Email</th>
+                                <th>WhatsApp</th>
+                                <th>Église</th>
+                                <th>Pays</th>
+                                <th>Statut</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                        </tbody>
+                    </table>
+                    <div id="emptyState" class="empty-state" style="display:none;">
+                        Aucun inscrit trouvé
+                    </div>
+                </div>
+
+                <div class="pagination" id="paginationContainer">
+                    <button id="prevPage" disabled>Précédent</button>
+                    <span class="info" id="pageInfo">Page 1 sur 1</span>
+                    <button id="nextPage" disabled>Suivant</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ONGLET : POINTAGE -->
+        <!-- ============================================================ -->
+        <div id="tab-checkin" class="tab-content">
+            <div class="checkin-container">
+                <h2>Pointage des participants</h2>
+                <p>Sélectionnez le jour puis saisissez l'ID du participant pour valider sa présence</p>
+
+                <div class="checkin-day-selector">
+                    <button class="day-btn" data-day="J-1">Jour 1 - 22 Septembre</button>
+                    <button class="day-btn" data-day="J-2">Jour 2 - 23 Septembre</button>
+                    <button class="day-btn" data-day="J-3">Jour 3 - 24 Septembre</button>
+                </div>
+
+                <div class="checkin-day-status" id="dayStatus">
+                    Jour sélectionné : <strong id="selectedDayText">Aucun</strong> | 
+                    Pointés : <strong id="dayPresentCount">0</strong> | 
+                    Absents : <strong id="dayAbsentCount">0</strong>
+                    <span id="dayClosedBadge" style="display:none; background:var(--gold); color:var(--text-inverse); padding:2px 10px; border-radius:50px; font-size:0.7rem; margin-left:8px;">Clôturé</span>
+                </div>
+
+                <div class="checkin-input-group">
+                    <input type="text" id="checkinInput" placeholder="Ex: ENF-COT-2026-0001" />
+                    <button class="btn-checkin" id="checkinBtn">Pointer</button>
+                </div>
+
+                <div class="checkin-result" id="checkinResult">
+                    <div class="result-name" id="resultName"></div>
+                    <div class="result-detail" id="resultDetail"></div>
+                </div>
+
+                <div class="checkin-close-day">
+                    <button class="btn-close-day" id="closeDayBtn">Clôturer la journée</button>
+                    <p style="color:var(--text-muted);font-size:0.75rem;margin-top:6px;">
+                        Une fois clôturé, les absents seront calculés automatiquement.
+                    </p>
+                </div>
+
+                <div class="checkin-recent">
+                    <h4>Derniers pointages</h4>
+                    <ul id="recentCheckins">
+                        <li style="color:var(--text-muted);font-size:0.85rem;">Aucun pointage pour le moment</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ONGLET : RAPPELS -->
+        <!-- ============================================================ -->
+        <div id="tab-rappels" class="tab-content">
+            <div class="reminder-form">
+                <h3 style="margin-bottom:16px;">Programmer un rappel</h3>
+                <div class="form-group">
+                    <label>Titre du rappel</label>
+                    <input type="text" id="reminderTitle" placeholder="Ex: Rappel J-7" />
+                </div>
+                <div class="form-group">
+                    <label>Date d'envoi</label>
+                    <input type="datetime-local" id="reminderDate" />
+                </div>
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea id="reminderMessage" placeholder="Bonjour [NOM], ceci est un rappel..."></textarea>
+                </div>
+                <button class="btn-reminder" id="addReminder">Ajouter le rappel</button>
+            </div>
+
+            <div class="reminder-list" id="reminderList">
+                <h3 style="margin-bottom:16px;">Rappels programmés</h3>
+                <div id="reminderItems">
+                    <div class="empty-state">
+                        Aucun rappel programmé
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ONGLET : RAPPORTS -->
+        <!-- ============================================================ -->
+        <div id="tab-rapports" class="tab-content">
+            <h3 style="margin-bottom:16px;text-align:center;">Générer un rapport</h3>
+            <div class="export-options">
+                <button class="btn-export" id="exportPDFReport">Rapport complet PDF</button>
+                <button class="btn-export" id="exportPresenceList">Liste de présence PDF</button>
+                <button class="btn-export" id="exportStatsReport">Rapport statistiques</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- NOTIFICATION TOAST -->
+    <!-- ============================================================ -->
+    <div class="notification-toast" id="notificationToast">
+        <span class="notif-icon">Nouvelle</span>
+        <span class="notif-text"><strong id="notifTitle">Nouvelle inscription</strong><br /><span id="notifMessage">Une personne vient de s'inscrire</span></span>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SCRIPTS -->
+    <!-- ============================================================ -->
+    <script>
+        /* ============================================================
+           CONFIGURATION
+           ============================================================ */
+        const CONFIG = {
+            // ✅ URL CORRECTE - Dernier déploiement
+            SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwuYnf9VP6empBWHg3Zm3kJQE8gVjCvTPioz4qbo9hh0Pi3pmuD8azxtHh694e33EtW/exec',
+            ADMIN_PASSWORD: 'enflammer2026',
+        };
+
+        // ============================================================
+        // PROTECTION : Désactiver le clic droit
+        // ============================================================
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        /* ============================================================
+           VARIABLES GLOBALES
+           ============================================================ */
+        let allData = [];
+        let filteredData = [];
+        let currentPage = 1;
+        const rowsPerPage = 20;
+        let charts = {};
+        let currentDay = null;
+        let dayStatus = {};
+
+        /* ============================================================
+           LOGIN
+           ============================================================ */
+        (function login() {
+            const loginScreen = document.getElementById('loginScreen');
+            const dashboard = document.getElementById('dashboard');
+            const passInput = document.getElementById('loginPass');
+            const loginBtn = document.getElementById('loginBtn');
+            const loginError = document.getElementById('loginError');
+
+            if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+                loginScreen.style.display = 'none';
+                dashboard.classList.add('visible');
+                initDashboard();
+                return;
+            }
+
+            function doLogin() {
+                const pass = passInput.value.trim();
+                if (pass === CONFIG.ADMIN_PASSWORD) {
+                    sessionStorage.setItem('adminLoggedIn', 'true');
+                    loginScreen.style.display = 'none';
+                    dashboard.classList.add('visible');
+                    loginError.classList.remove('visible');
+                    initDashboard();
+                } else {
+                    loginError.classList.add('visible');
+                    passInput.value = '';
+                    passInput.focus();
+                }
+            }
+
+            loginBtn.addEventListener('click', doLogin);
+            passInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') doLogin();
+            });
+        })();
+
+        /* ============================================================
+           DECONNEXION
+           ============================================================ */
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            sessionStorage.removeItem('adminLoggedIn');
+            location.reload();
+        });
+
+        /* ============================================================
+           ONGLETS
+           ============================================================ */
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById(this.dataset.tab).classList.add('active');
+            });
+        });
+
+        /* ============================================================
+           INIT DASHBOARD
+           ============================================================ */
+        async function initDashboard() {
+            await loadData();
+            applyFilters();
+            startPolling();
+            loadReminders();
+            loadRecentCheckins();
+            loadDayStatus();
+        }
+
+        /* ============================================================
+           TEST DE CONNEXION
+           ============================================================ */
+        async function testConnection() {
+            try {
+                const response = await fetch(CONFIG.SCRIPT_URL + '?action=test');
+                const text = await response.text();
+                console.log('Test connexion:', text);
+                return text;
+            } catch (e) {
+                console.error('Erreur test:', e);
+                return 'Erreur: ' + e.message;
+            }
+        }
+
+        /* ============================================================
+           CHARGEMENT DES DONNEES
+           ============================================================ */
+        async function loadData() {
+            const loading = document.getElementById('loadingIndicator');
+            const table = document.getElementById('dataTable');
+            const emptyState = document.getElementById('emptyState');
+
+            loading.style.display = 'flex';
+            table.style.display = 'none';
+            emptyState.style.display = 'none';
+
+            await testConnection();
+
+            try {
+                const url = CONFIG.SCRIPT_URL + '?action=getData&t=' + Date.now();
+                console.log('Chargement des données depuis:', url);
+
+                const response = await fetch(url, {
+                    method: 'GET',
+                    mode: 'cors',
+                });
+
+                const result = await response.json();
+                console.log('Réponse du script:', result);
+
+                if (result.success && result.data !== undefined) {
+                    allData = result.data;
+                    console.log('Nombre d\'inscrits chargés:', allData.length);
+                    updateStats(allData);
+                    populateFilters(allData);
+                    updateCharts(allData);
+                    updateNotifBadge(0);
+                    applyFilters();
+                } else {
+                    console.error('Erreur script:', result.message);
+                    alert('Erreur de chargement: ' + (result.message || 'Veuillez vérifier l\'URL du script'));
+                }
+            } catch (err) {
+                console.error('Erreur fetch:', err);
+                alert('Impossible de charger les données. Vérifiez :\n1. L\'URL du script\n2. La connexion internet\n3. Le déploiement du script');
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        /* ============================================================
+           STATISTIQUES
+           ============================================================ */
+        function updateStats(data) {
+            const total = data.length;
+            const pays = new Set(data.map(d => d['Pays']).filter(p => p && p.trim() !== ''));
+
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statPays').textContent = pays.size;
+
+            updateDayStats();
+        }
+
+        function updateDayStats() {
+            if (!currentDay) {
+                document.getElementById('statPresent').textContent = '0';
+                document.getElementById('statAbsent').textContent = '0';
+                document.getElementById('statPresentDay').textContent = 'Aucun jour sélectionné';
+                document.getElementById('statAbsentDay').textContent = 'Aucun jour sélectionné';
+                return;
+            }
+
+            const dayKey = 'present_' + currentDay;
+            const presentIds = dayStatus[dayKey] || [];
+            const total = allData.length;
+            const present = presentIds.length;
+            const absent = total - present;
+
+            document.getElementById('statPresent').textContent = present;
+            document.getElementById('statAbsent').textContent = absent;
+            document.getElementById('statPresentDay').textContent = 'Jour : ' + currentDay;
+            document.getElementById('statAbsentDay').textContent = 'Jour : ' + currentDay;
+
+            document.getElementById('selectedDayText').textContent = currentDay || 'Aucun';
+            document.getElementById('dayPresentCount').textContent = present;
+            document.getElementById('dayAbsentCount').textContent = absent;
+
+            const isClosed = dayStatus['closed_' + currentDay] === true;
+            const badge = document.getElementById('dayClosedBadge');
+            if (isClosed) {
+                badge.style.display = 'inline';
+            } else {
+                badge.style.display = 'none';
+            }
+
+            document.getElementById('checkinBtn').disabled = isClosed || !currentDay;
+            document.getElementById('checkinInput').disabled = isClosed || !currentDay;
+        }
+
+        /* ============================================================
+           FILTRES
+           ============================================================ */
+        function populateFilters(data) {
+            const paysSelect = document.getElementById('filterPays');
+            const pays = new Set(data.map(d => d['Pays']).filter(p => p && p.trim() !== ''));
+            paysSelect.innerHTML = '<option value="">Tous les pays</option>';
+            pays.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p;
+                opt.textContent = p;
+                paysSelect.appendChild(opt);
+            });
+        }
+
+        function applyFilters() {
+            const search = document.getElementById('searchInput').value.toLowerCase().trim();
+            const pays = document.getElementById('filterPays').value;
+
+            filteredData = allData.filter(row => {
+                if (search) {
+                    const searchable = [
+                        row['ID'] || '',
+                        row['Nom'] || '',
+                        row['Prénoms'] || '',
+                        row['Email'] || '',
+                        row['WhatsApp'] || '',
+                        row['Ministère/Église'] || '',
+                        row['Pays'] || '',
+                    ].join(' ').toLowerCase();
+                    if (!searchable.includes(search)) return false;
+                }
+                if (pays && row['Pays'] !== pays) return false;
+                return true;
+            });
+
+            currentPage = 1;
+            renderTable();
+            document.getElementById('totalDisplay').textContent = `(${filteredData.length})`;
+        }
+
+        document.getElementById('applyFilters').addEventListener('click', applyFilters);
+        document.getElementById('resetFilters').addEventListener('click', function() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('filterPays').value = '';
+            applyFilters();
+        });
+
+        let searchTimeout;
+        document.getElementById('searchInput').addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(applyFilters, 300);
+        });
+
+        /* ============================================================
+           AFFICHAGE TABLEAU
+           ============================================================ */
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            const table = document.getElementById('dataTable');
+            const emptyState = document.getElementById('emptyState');
+
+            const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = Math.min(start + rowsPerPage, filteredData.length);
+            const pageData = filteredData.slice(start, end);
+
+            if (filteredData.length === 0) {
+                table.style.display = 'none';
+                emptyState.style.display = 'block';
+                document.getElementById('paginationContainer').style.display = 'none';
+                return;
+            }
+
+            table.style.display = 'table';
+            emptyState.style.display = 'none';
+            document.getElementById('paginationContainer').style.display = 'flex';
+
+            tbody.innerHTML = '';
+            pageData.forEach(row => {
+                const tr = document.createElement('tr');
+
+                const isPresent = row['Présent'] && row['Présent'].trim() !== '';
+                const statusText = isPresent ? 'Présent' : 'Absent';
+                const statusClass = isPresent ? 'present' : 'absent';
+
+                let whatsapp = row['WhatsApp'] || '';
+                const whatsappClean = whatsapp.replace(/[^0-9+]/g, '');
+                const whatsappLink = `https://wa.me/${whatsappClean.replace(/^\+/, '')}`;
+
+                tr.innerHTML = `
+                    <td><strong>${row['ID'] || '-'}</strong></td>
+                    <td>${row['Nom'] || '-'}</td>
+                    <td>${row['Prénoms'] || '-'}</td>
+                    <td><a href="mailto:${row['Email'] || ''}" style="color:var(--gold);">${row['Email'] || '-'}</a></td>
+                    <td><a href="${whatsappLink}" target="_blank" class="btn-whatsapp">${whatsapp || '-'}</a></td>
+                    <td>${row['Ministère/Église'] || '-'}</td>
+                    <td>${row['Pays'] || '-'}</td>
+                    <td><span class="status-badge ${statusClass}">${isPresent ? '✅ Présent' : '⏳ Absent'}</span></td>
+                    <td>
+                        <button class="btn-action btn-send-email" data-email="${row['Email'] || ''}" style="font-size:0.7rem;padding:4px 10px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);cursor:pointer;">✉️ Message</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            const totalPagesDisplay = Math.ceil(filteredData.length / rowsPerPage);
+            document.getElementById('pageInfo').textContent = `Page ${currentPage} sur ${totalPagesDisplay || 1}`;
+            document.getElementById('prevPage').disabled = currentPage <= 1;
+            document.getElementById('nextPage').disabled = currentPage >= totalPagesDisplay;
+
+            document.querySelectorAll('.btn-send-email').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const email = this.dataset.email;
+                    if (email && email !== '-') {
+                        sendMessageModal([email], email);
+                    } else {
+                        alert('Aucune adresse email valide.');
+                    }
+                });
+            });
+        }
+
+        /* ============================================================
+           PAGINATION
+           ============================================================ */
+        document.getElementById('prevPage').addEventListener('click', function() {
+            if (currentPage > 1) { currentPage--;
+                renderTable(); }
+        });
+        document.getElementById('nextPage').addEventListener('click', function() {
+            const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+            if (currentPage < totalPages) { currentPage++;
+                renderTable(); }
+        });
+
+        /* ============================================================
+           GRAPHIQUES
+           ============================================================ */
+        function updateCharts(data) {
+            const paysCount = {};
+            data.forEach(d => {
+                const p = d['Pays'] || 'Non renseigné';
+                paysCount[p] = (paysCount[p] || 0) + 1;
+            });
+            const paysLabels = Object.keys(paysCount).slice(0, 10);
+            const paysValues = paysLabels.map(k => paysCount[k]);
+
+            const evolution = {};
+            data.forEach(d => {
+                const date = d['Date'] ? d['Date'].split(' ')[0] : 'Inconnue';
+                evolution[date] = (evolution[date] || 0) + 1;
+            });
+            const evolLabels = Object.keys(evolution).slice(0, 15);
+            const evolValues = evolLabels.map(k => evolution[k]);
+
+            const sourceCount = {};
+            data.forEach(d => {
+                const s = d['Source'] || 'Non renseigné';
+                sourceCount[s] = (sourceCount[s] || 0) + 1;
+            });
+            const srcLabels = Object.keys(sourceCount);
+            const srcValues = srcLabels.map(k => sourceCount[k]);
+
+            const egliseCount = {};
+            data.forEach(d => {
+                const e = d['Ministère/Église'] || 'Non renseigné';
+                egliseCount[e] = (egliseCount[e] || 0) + 1;
+            });
+            const eglLabels = Object.keys(egliseCount).slice(0, 8);
+            const eglValues = eglLabels.map(k => egliseCount[e]);
+
+            createOrUpdateChart('chartPays', 'doughnut', paysLabels, paysValues, ['#D4A843', '#C62828', '#2ecc71', '#3498db',
+                '#9b59b6', '#1abc9c', '#e67e22', '#e74c3c', '#f1c40f', '#95a5a6'
+            ]);
+            createOrUpdateChart('chartEvolution', 'line', evolLabels, evolValues, '#D4A843');
+            createOrUpdateChart('chartSource', 'pie', srcLabels, srcValues, ['#D4A843', '#C62828', '#2ecc71', '#3498db',
+                '#9b59b6', '#1abc9c'
+            ]);
+            createOrUpdateChart('chartEglise', 'bar', eglLabels, eglValues, '#C62828');
+        }
+
+        function createOrUpdateChart(id, type, labels, data, color) {
+            const ctx = document.getElementById(id);
+            if (!ctx) return;
+
+            if (charts[id]) {
+                charts[id].data.labels = labels;
+                charts[id].data.datasets[0].data = data;
+                charts[id].update();
+                return;
+            }
+
+            charts[id] = new Chart(ctx, {
+                type: type,
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: Array.isArray(color) ? color : [color, '#C62828', '#2ecc71',
+                            '#3498db', '#9b59b6'
+                        ],
+                        borderColor: '#0a0806',
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#9a8a7a', font: { size: 10 } }
+                        }
+                    },
+                    scales: type === 'line' || type === 'bar' ? {
+                        x: { ticks: { color: '#9a8a7a', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.03)' } },
+                        y: { ticks: { color: '#9a8a7a', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.03)' } }
+                    } : undefined
+                }
+            });
+        }
+
+        /* ============================================================
+           EXPORT EXCEL
+           ============================================================ */
+        document.getElementById('exportExcel').addEventListener('click', function() {
+            if (filteredData.length === 0) { alert('Aucune donnée à exporter.'); return; }
+            const headers = ['ID', 'Nom', 'Prénoms', 'Genre', 'WhatsApp', 'Email', 'Fonction', 'Ministère/Église', 'Pays',
+                'Ville', 'Nationalité', 'Source', 'Attentes', 'Présent', 'Date pointage'
+            ];
+            const csvRows = [headers.join(',')];
+            filteredData.forEach(row => {
+                const values = headers.map(h => {
+                    let val = row[h] || '';
+                    if (typeof val === 'string' && (val.includes(',') || val.includes('"') || val.includes(
+                            '\n'))) {
+                        val = `"${val.replace(/"/g, '""')}"`;
+                    }
+                    return val;
+                });
+                csvRows.push(values.join(','));
+            });
+            const csvContent = csvRows.join('\n');
+            const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `inscriptions_ENFLAMMER_${new Date().toISOString().slice(0,10)}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        /* ============================================================
+           ENVOI DE MESSAGES EN MASSE ET INDIVIDUEL
+           ============================================================ */
+        document.querySelector('.table-actions').insertAdjacentHTML('beforeend', `
+            <button class="btn-action" id="sendMassMessageBtn">📧 Message à tous</button>
+        `);
+
+        document.getElementById('sendMassMessageBtn').addEventListener('click', function() {
+            if (filteredData.length === 0) {
+                alert('Aucun inscrit à qui envoyer un message.');
+                return;
+            }
+            const emails = filteredData.map(row => row['Email']).filter(e => e && e.trim() !== '');
+            if (emails.length === 0) {
+                alert('Aucune adresse email valide trouvée.');
+                return;
+            }
+            sendMessageModal(emails, 'tous les inscrits');
+        });
+
+        function sendMessageModal(emails, target) {
+            const subject = prompt(`Sujet du message (à ${target}):`, 'ENFLAMMER 2026 - Informations importantes');
+            if (subject === null) return;
+
+            const message = prompt(`Message (utilisez [NOM] pour personnaliser):`,
+                'Bonjour [NOM],\n\nNous vous rappelons la conférence ENFLAMMER 2026 du 22 au 24 septembre à Cotonou.\n\nL\'équipe AGYINASARE WORLD EVANGELISM');
+            if (message === null) return;
+
+            if (!confirm(`Envoyer ce message à ${emails.length} personne(s) ?`)) return;
+
+            (async function() {
+                try {
+                    const response = await fetch(CONFIG.SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'cors',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams({
+                            action: 'sendMassEmail',
+                            subject: subject,
+                            message: message,
+                            emails: emails.join(','),
+                        }),
+                    });
+                    const result = await response.json();
+                    if (result.success) {
+                        alert(`✅ ${result.data.sent || emails.length} message(s) envoyé(s) !`);
+                    } else {
+                        alert('Erreur: ' + (result.message || 'Inconnue'));
+                    }
+                } catch (err) {
+                    alert('Erreur de connexion.');
+                }
+            })();
+        }
+
+        /* ============================================================
+           RAFRAÎCHIR
+           ============================================================ */
+        document.getElementById('refreshData').addEventListener('click', function() {
+            loadData();
+        });
+
+        /* ============================================================
+           POINTAGE
+           ============================================================ */
+        function loadDayStatus() {
+            try {
+                const saved = localStorage.getItem('enflammer_dayStatus');
+                if (saved) {
+                    dayStatus = JSON.parse(saved);
+                }
+            } catch (e) { dayStatus = {}; }
+            updateDayStats();
+        }
+
+        function saveDayStatus() {
+            localStorage.setItem('enflammer_dayStatus', JSON.stringify(dayStatus));
+        }
+
+        document.querySelectorAll('.day-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentDay = this.dataset.day;
+                updateDayStats();
+            });
+        });
+
+        document.getElementById('checkinBtn').addEventListener('click', async function() {
+            const input = document.getElementById('checkinInput');
+            const id = input.value.trim().toUpperCase();
+            if (!id) { alert('Veuillez saisir un ID.'); return; }
+            if (!currentDay) { alert('Veuillez sélectionner un jour.'); return; }
+            if (dayStatus['closed_' + currentDay] === true) {
+                alert('Ce jour est déjà clôturé.');
+                return;
+            }
+
+            const resultDiv = document.getElementById('checkinResult');
+            resultDiv.className = 'checkin-result';
+
+            const participant = allData.find(d => d['ID'] === id);
+            if (!participant) {
+                resultDiv.className = 'checkin-result error';
+                document.getElementById('resultName').textContent = 'ID non trouvé';
+                document.getElementById('resultDetail').textContent = 'Vérifiez l\'ID saisi';
+                input.value = '';
+                input.focus();
+                return;
+            }
+
+            const dayKey = 'present_' + currentDay;
+            if (!dayStatus[dayKey]) dayStatus[dayKey] = [];
+            if (dayStatus[dayKey].includes(id)) {
+                resultDiv.className = 'checkin-result error';
+                document.getElementById('resultName').textContent = participant['Prénoms'] + ' ' + participant['Nom'];
+                document.getElementById('resultDetail').textContent = 'Déjà pointé pour ce jour';
+                input.value = '';
+                input.focus();
+                return;
+            }
+
+            dayStatus[dayKey].push(id);
+            saveDayStatus();
+
+            try {
+                await fetch(CONFIG.SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({
+                        action: 'updatePresence',
+                        id: id,
+                        present: '1',
+                    }),
+                });
+            } catch (e) {
+                console.warn('Erreur synchro présence:', e);
+            }
+
+            resultDiv.className = 'checkin-result success';
+            document.getElementById('resultName').textContent = participant['Prénoms'] + ' ' + participant['Nom'];
+            document.getElementById('resultDetail').textContent = participant['Ministère/Église'] + ' • ' + participant[
+            'Pays'];
+
+            addRecentCheckin(id, participant['Nom'], participant['Prénoms']);
+            updateDayStats();
+
+            input.value = '';
+            input.focus();
+        });
+
+        document.getElementById('checkinInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') document.getElementById('checkinBtn').click();
+        });
+
+        document.getElementById('closeDayBtn').addEventListener('click', function() {
+            if (!currentDay) { alert('Veuillez sélectionner un jour.'); return; }
+            if (dayStatus['closed_' + currentDay] === true) {
+                alert('Ce jour est déjà clôturé.');
+                return;
+            }
+
+            const total = allData.length;
+            const dayKey = 'present_' + currentDay;
+            const presentIds = dayStatus[dayKey] || [];
+            const present = presentIds.length;
+            const absent = total - present;
+
+            if (!confirm(`Clôturer le jour ${currentDay} ?\n\nPrésents : ${present}\nAbsents : ${absent}\n\nConfirmer ?`))
+                return;
+
+            dayStatus['closed_' + currentDay] = true;
+            saveDayStatus();
+
+            try {
+                fetch(CONFIG.SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({
+                        action: 'closeDay',
+                        day: currentDay,
+                        presents: presentIds.join(','),
+                    }),
+                });
+            } catch (e) {
+                console.warn('Erreur synchro clôture:', e);
+            }
+
+            updateDayStats();
+
+            alert('Journée clôturée !\nPrésents : ' + present + '\nAbsents : ' + absent);
+        });
+
+        /* ============================================================
+           RECENT CHECK-INS
+           ============================================================ */
+        let recentCheckins = [];
+
+        function addRecentCheckin(id, nom, prenom) {
+            recentCheckins.unshift({ id, nom, prenom, time: new Date(), day: currentDay });
+            if (recentCheckins.length > 20) recentCheckins.pop();
+            renderRecentCheckins();
+        }
+
+        function loadRecentCheckins() {
+            try {
+                const saved = localStorage.getItem('recentCheckins');
+                if (saved) recentCheckins = JSON.parse(saved);
+            } catch (e) { recentCheckins = []; }
+            renderRecentCheckins();
+        }
+
+        function renderRecentCheckins() {
+            const ul = document.getElementById('recentCheckins');
+            if (recentCheckins.length === 0) {
+                ul.innerHTML =
+                    '<li style="color:var(--text-muted);font-size:0.85rem;">Aucun pointage pour le moment</li>';
+                return;
+            }
+            ul.innerHTML = recentCheckins.slice(0, 10).map(item =>
+                `<li><span>${item.prenom} ${item.nom} (${item.id}) - ${item.day || 'Jour inconnu'}</span><span style="color:var(--text-muted);font-size:0.75rem;">${new Date(item.time).toLocaleTimeString()}</span></li>`
+            ).join('');
+            localStorage.setItem('recentCheckins', JSON.stringify(recentCheckins));
+        }
+
+        /* ============================================================
+           NOTIFICATIONS
+           ============================================================ */
+        function startPolling() {
+            let lastCount = allData.length;
+            setInterval(async function() {
+                try {
+                    const response = await fetch(CONFIG.SCRIPT_URL + '?action=getData&t=' + Date.now());
+                    const result = await response.json();
+                    if (result.success && result.data) {
+                        const newCount = result.data.length;
+                        if (newCount > lastCount) {
+                            const diff = newCount - lastCount;
+                            showNotification(diff + ' nouvelle(s) inscription(s) !', 'Total : ' + newCount +
+                                ' inscrits');
+                            allData = result.data;
+                            updateStats(allData);
+                            populateFilters(allData);
+                            updateCharts(allData);
+                            applyFilters();
+                            updateNotifBadge(diff);
+                            lastCount = newCount;
+                        }
+                    }
+                } catch (e) { /* silencieux */ }
+            }, 15000);
+        }
+
+        function showNotification(title, message) {
+            const toast = document.getElementById('notificationToast');
+            document.getElementById('notifTitle').textContent = title;
+            document.getElementById('notifMessage').textContent = message;
+            toast.classList.add('visible');
+            setTimeout(() => toast.classList.remove('visible'), 6000);
+        }
+
+        function updateNotifBadge(count) {
+            const badge = document.getElementById('notifBadge');
+            badge.textContent = count > 0 ? count + ' nouveau' : '0 nouveau';
+        }
+
+        /* ============================================================
+           GESTION DES RAPPELS
+           ============================================================ */
+        async function loadReminders() {
+            try {
+                const response = await fetch(CONFIG.SCRIPT_URL + '?action=getReminders&t=' + Date.now());
+                const result = await response.json();
+                if (result.success) {
+                    renderReminders(result.data || []);
+                }
+            } catch (e) { console.error('Erreur chargement rappels:', e); }
+        }
+
+        function renderReminders(reminders) {
+            const container = document.getElementById('reminderItems');
+            if (!reminders || reminders.length === 0) {
+                container.innerHTML =
+                    `<div class="empty-state">Aucun rappel programmé</div>`;
+                return;
+            }
+            container.innerHTML = reminders.map(r => `
+                <div class="reminder-item">
+                    <div class="info">
+                        <div class="title">${r.title || 'Rappel'}</div>
+                        <div class="date">${r.date || 'Date non définie'}</div>
+                        <span class="status ${r.status === 'envoyé' ? '' : 'pending'}">${r.status === 'envoyé' ? 'Envoyé' : 'En attente'}</span>
+                    </div>
+                    <div class="actions">
+                        <button onclick="deleteReminder('${r.id}')">Supprimer</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('addReminder').addEventListener('click', async function() {
+            const title = document.getElementById('reminderTitle').value.trim();
+            const date = document.getElementById('reminderDate').value;
+            const message = document.getElementById('reminderMessage').value.trim();
+
+            if (!title || !date || !message) {
+                alert('Veuillez remplir tous les champs.');
+                return;
+            }
+
+            try {
+                const response = await fetch(CONFIG.SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({
+                        action: 'addReminder',
+                        title: title,
+                        date: date,
+                        message: message,
+                    }),
+                });
+                const result = await response.json();
+                if (result.success) {
+                    alert('Rappel ajouté avec succès !');
+                    document.getElementById('reminderTitle').value = '';
+                    document.getElementById('reminderDate').value = '';
+                    document.getElementById('reminderMessage').value = '';
+                    loadReminders();
+                } else {
+                    alert('Erreur: ' + (result.message || 'Inconnue'));
+                }
+            } catch (err) {
+                alert('Erreur de connexion.');
+            }
+        });
+
+        async function deleteReminder(id) {
+            if (!confirm('Supprimer ce rappel ?')) return;
+            try {
+                const response = await fetch(CONFIG.SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({
+                        action: 'deleteReminder',
+                        id: id,
+                    }),
+                });
+                const result = await response.json();
+                if (result.success) {
+                    loadReminders();
+                } else {
+                    alert('Erreur: ' + (result.message || 'Inconnue'));
+                }
+            } catch (err) {
+                alert('Erreur de connexion.');
+            }
+        }
+
+        /* ============================================================
+           EXPORT PDF
+           ============================================================ */
+
+        document.getElementById('exportPDFReport').addEventListener('click', function() {
+            if (allData.length === 0) { alert('Aucune donnée à exporter.'); return; }
+
+            const content = document.createElement('div');
+            content.style.cssText =
+                'padding:30px;font-family:Inter,Arial,sans-serif;background:#fff;color:#1a1410;max-width:900px;margin:0 auto;';
+
+            const total = allData.length;
+            const pays = new Set(allData.map(d => d['Pays']).filter(p => p && p.trim() !== ''));
+
+            content.innerHTML = `
+                <div style="text-align:center;border-bottom:3px solid #D4A843;padding-bottom:20px;margin-bottom:25px;">
+                    <h1 style="color:#C62828;font-size:28px;letter-spacing:3px;">ENFLAMMER 2026</h1>
+                    <p style="color:#D4A843;font-weight:600;">Rapport des inscriptions - Cotonou</p>
+                    <p style="color:#666;font-size:13px;">Généré le ${new Date().toLocaleDateString('fr-FR')}</p>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px;">
+                    <div style="background:#f5f0e8;border-radius:10px;padding:16px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:#C62828;">${total}</div>
+                        <div style="font-size:12px;color:#666;">Total inscrits</div>
+                    </div>
+                    <div style="background:#f5f0e8;border-radius:10px;padding:16px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:#3498db;">${pays.size}</div>
+                        <div style="font-size:12px;color:#666;">Pays représentés</div>
+                    </div>
+                </div>
+                <h3 style="color:#333;border-bottom:2px solid #eee;padding-bottom:8px;margin-bottom:12px;">Liste des inscrits</h3>
+                <table style="width:100%;border-collapse:collapse;font-size:12px;">
+                    <thead><tr style="background:#f5f0e8;">
+                        <th style="padding:6px 8px;text-align:left;">ID</th>
+                        <th style="padding:6px 8px;text-align:left;">Nom</th>
+                        <th style="padding:6px 8px;text-align:left;">Prénoms</th>
+                        <th style="padding:6px 8px;text-align:left;">Email</th>
+                        <th style="padding:6px 8px;text-align:left;">Pays</th>
+                    </tr></thead>
+                    <tbody>
+                        ${allData.slice(0,50).map(row => `
+                            <tr style="border-bottom:1px solid #eee;">
+                                <td style="padding:5px 8px;">${row['ID'] || '-'}</td>
+                                <td style="padding:5px 8px;">${row['Nom'] || '-'}</td>
+                                <td style="padding:5px 8px;">${row['Prénoms'] || '-'}</td>
+                                <td style="padding:5px 8px;">${row['Email'] || '-'}</td>
+                                <td style="padding:5px 8px;">${row['Pays'] || '-'}</td>
+                            </tr>
+                        `).join('')}
+                        ${allData.length > 50 ? `<tr><td colspan="5" style="padding:10px;text-align:center;color:#999;">... et ${allData.length - 50} autres inscrits</td></tr>` : ''}
+                    </tbody>
+                </table>
+                <div style="text-align:center;font-size:11px;color:#999;border-top:1px solid #eee;padding-top:16px;margin-top:20px;">
+                    <p style="margin:0;">AGYINASARE WORLD EVANGELISM</p>
+                </div>
+            `;
+
+            html2pdf().set({
+                margin: 10,
+                filename: `Rapport_ENFLAMMER_${new Date().toISOString().slice(0,10)}.pdf`,
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            }).from(content).save();
+        });
+
+        document.getElementById('exportPresenceList').addEventListener('click', function() {
+            if (allData.length === 0) { alert('Aucun inscrit.'); return; }
+
+            const content = document.createElement('div');
+            content.style.cssText =
+                'padding:30px;font-family:Inter,Arial,sans-serif;background:#fff;color:#1a1410;max-width:800px;margin:0 auto;';
+
+            content.innerHTML = `
+                <div style="text-align:center;border-bottom:3px solid #D4A843;padding-bottom:20px;margin-bottom:25px;">
+                    <h1 style="color:#C62828;font-size:24px;letter-spacing:3px;">ENFLAMMER 2026</h1>
+                    <p style="color:#D4A843;font-weight:600;">Liste de présence - Cotonou</p>
+                    <p style="color:#666;font-size:13px;">Généré le ${new Date().toLocaleDateString('fr-FR')}</p>
+                </div>
+                <table style="width:100%;border-collapse:collapse;font-size:11px;">
+                    <thead><tr style="background:#f5f0e8;">
+                        <th style="padding:6px 10px;text-align:left;">ID</th>
+                        <th style="padding:6px 10px;text-align:left;">Nom complet</th>
+                        <th style="padding:6px 10px;text-align:left;">Église</th>
+                        <th style="padding:6px 10px;text-align:center;">Présent</th>
+                    </tr></thead>
+                    <tbody>
+                        ${allData.map(row => `
+                            <tr style="border-bottom:1px solid #eee;">
+                                <td style="padding:5px 10px;">${row['ID'] || '-'}</td>
+                                <td style="padding:5px 10px;">${row['Prénoms'] || ''} ${row['Nom'] || ''}</td>
+                                <td style="padding:5px 10px;">${row['Ministère/Église'] || '-'}</td>
+                                <td style="text-align:center;">☐</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+                <div style="text-align:center;font-size:11px;color:#999;border-top:1px solid #eee;padding-top:16px;margin-top:20px;">
+                    <p style="margin:0;">AGYINASARE WORLD EVANGELISM</p>
+                </div>
+            `;
+
+            html2pdf().set({
+                margin: 10,
+                filename: `Liste_Presence_ENFLAMMER_${new Date().toISOString().slice(0,10)}.pdf`,
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
+            }).from(content).save();
+        });
+
+        document.getElementById('exportStatsReport').addEventListener('click', function() {
+            if (allData.length === 0) { alert('Aucune donnée.'); return; }
+
+            const total = allData.length;
+            const pays = new Set(allData.map(d => d['Pays']).filter(p => p && p.trim() !== ''));
+            const eglises = new Set(allData.map(d => d['Ministère/Église']).filter(e => e && e.trim() !== ''));
+
+            const content = document.createElement('div');
+            content.style.cssText =
+                'padding:30px;font-family:Inter,Arial,sans-serif;background:#fff;color:#1a1410;max-width:700px;margin:0 auto;';
+
+            const paysStats = {};
+            allData.forEach(d => { const p = d['Pays'] || 'Non renseigné';
+                paysStats[p] = (paysStats[p] || 0) + 1; });
+            const paysSorted = Object.entries(paysStats).sort((a, b) => b[1] - a[1]);
+
+            content.innerHTML = `
+                <div style="text-align:center;border-bottom:3px solid #D4A843;padding-bottom:20px;margin-bottom:25px;">
+                    <h1 style="color:#C62828;font-size:24px;letter-spacing:3px;">ENFLAMMER 2026</h1>
+                    <p style="color:#D4A843;font-weight:600;">Rapport statistique - Cotonou</p>
+                    <p style="color:#666;font-size:13px;">Généré le ${new Date().toLocaleDateString('fr-FR')}</p>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px;">
+                    <div style="background:#f5f0e8;border-radius:10px;padding:16px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:#C62828;">${total}</div>
+                        <div style="font-size:12px;color:#666;">Total inscrits</div>
+                    </div>
+                    <div style="background:#f5f0e8;border-radius:10px;padding:16px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:#3498db;">${pays.size}</div>
+                        <div style="font-size:12px;color:#666;">Pays</div>
+                    </div>
+                    <div style="background:#f5f0e8;border-radius:10px;padding:16px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:#D4A843;">${eglises.size}</div>
+                        <div style="font-size:12px;color:#666;">Églises</div>
+                    </div>
+                </div>
+                <h3 style="color:#333;border-bottom:2px solid #eee;padding-bottom:8px;margin-bottom:12px;">Répartition par pays</h3>
+                <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:20px;">
+                    ${paysSorted.map(([p, count]) => `
+                        <tr><td style="padding:4px 0;">${p}</td><td style="text-align:right;">${count}</td></tr>
+                    `).join('')}
+                </table>
+                <div style="text-align:center;font-size:11px;color:#999;border-top:1px solid #eee;padding-top:16px;margin-top:20px;">
+                    <p style="margin:0;">AGYINASARE WORLD EVANGELISM</p>
+                </div>
+            `;
+
+            html2pdf().set({
+                margin: 10,
+                filename: `Statistiques_ENFLAMMER_${new Date().toISOString().slice(0,10)}.pdf`,
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            }).from(content).save();
+        });
+
+        console.log('✅ Tableau de bord ENFLAMMER 2026 chargé !');
+        console.log('🔑 Mot de passe :', CONFIG.ADMIN_PASSWORD);
+        console.log('🔗 URL du script :', CONFIG.SCRIPT_URL);
+    </script>
+
+</body>
+</html>
