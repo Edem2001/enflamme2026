@@ -133,6 +133,9 @@
             justify-content: center;
         }
 
+        /* ============================================================
+           NAVBAR
+           ============================================================ */
         .navbar {
             position: fixed;
             top: 0;
@@ -260,6 +263,9 @@
             transform: rotate(-45deg) translate(5px, -5px);
         }
 
+        /* ============================================================
+           HERO
+           ============================================================ */
         #hero {
             min-height: 100vh;
             display: flex;
@@ -345,10 +351,10 @@
 
         .hero-title {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(2.8rem, 6.5vw, 4.8rem);
+            font-size: clamp(3rem, 6.5vw, 5rem);
             font-weight: 900;
             line-height: 1.08;
-            margin-bottom: 12px;
+            margin-bottom: 4px;
         }
 
         .hero-title .highlight {
@@ -358,11 +364,12 @@
             background-clip: text;
         }
 
-        .hero-title .sub {
+        .hero-title .city-sub {
             display: block;
-            font-size: clamp(0.8rem, 1.4vw, 1.2rem);
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(0.9rem, 1.8vw, 1.6rem);
             font-weight: 300;
-            letter-spacing: 5px;
+            letter-spacing: 6px;
             color: var(--text-muted);
             margin-top: 2px;
             -webkit-text-fill-color: var(--text-muted);
@@ -462,6 +469,9 @@
             pointer-events: none;
         }
 
+        /* ============================================================
+           SECTION : INFOS
+           ============================================================ */
         .section {
             padding: 90px 0;
             opacity: 0;
@@ -590,6 +600,9 @@
             line-height: 1.6;
         }
 
+        /* ============================================================
+           FORMULAIRE
+           ============================================================ */
         .form-wrapper {
             background: var(--bg-glass);
             backdrop-filter: blur(24px);
@@ -673,6 +686,24 @@
             display: block;
         }
 
+        .form-group .field-note {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-style: italic;
+            opacity: 0.6;
+            margin-top: 2px;
+        }
+
+        .form-group.conditional {
+            display: none;
+        }
+
+        .form-group.conditional.visible {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
         .checkbox-group {
             display: flex;
             align-items: flex-start;
@@ -708,6 +739,9 @@
             opacity: 0.5;
         }
 
+        /* ============================================================
+           MODALE
+           ============================================================ */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -903,10 +937,13 @@
             color: var(--text);
         }
 
+        /* ============================================================
+           WHATSAPP FLOAT
+           ============================================================ */
         .whatsapp-float {
             position: fixed;
             bottom: 24px;
-            right: 24px;
+            right: 28px;
             z-index: 900;
             display: flex;
             align-items: center;
@@ -961,6 +998,70 @@
             border-bottom: 6px solid transparent;
         }
 
+        /* ============================================================
+           EMAIL FLOAT
+           ============================================================ */
+        .email-float {
+            position: fixed;
+            bottom: 90px;
+            right: 28px;
+            z-index: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--gold);
+            color: #fff;
+            box-shadow: 0 4px 30px rgba(212, 168, 67, 0.3);
+            transition: all var(--transition);
+            text-decoration: none;
+            border: none;
+        }
+
+        .email-float:hover {
+            transform: scale(1.08) translateY(-3px);
+            box-shadow: 0 8px 45px rgba(212, 168, 67, 0.4);
+        }
+
+        .email-float .tooltip {
+            position: absolute;
+            right: 68px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text);
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateX(10px);
+            transition: all var(--transition);
+            pointer-events: none;
+        }
+
+        .email-float:hover .tooltip {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .email-float .tooltip::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-left: 6px solid var(--bg-glass);
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+        }
+
+        /* ============================================================
+           LOADING
+           ============================================================ */
         .loading-overlay {
             display: none;
             position: fixed;
@@ -994,6 +1095,9 @@
             letter-spacing: 1px;
         }
 
+        /* ============================================================
+           FOOTER
+           ============================================================ */
         footer {
             padding: 40px 0 28px;
             border-top: 1px solid var(--border);
@@ -1027,6 +1131,9 @@
             font-size: 0.72rem;
         }
 
+        /* ============================================================
+           ANIMATIONS
+           ============================================================ */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -1053,6 +1160,9 @@
             }
         }
 
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
         @media (max-width: 1024px) {
             .hero-grid {
                 grid-template-columns: 1fr;
@@ -1107,7 +1217,12 @@
             }
 
             .hero-title {
-                font-size: 2.2rem;
+                font-size: 2.6rem;
+            }
+
+            .hero-title .city-sub {
+                font-size: 1rem;
+                letter-spacing: 4px;
             }
 
             .hero-stats {
@@ -1144,6 +1259,17 @@
                 display: none;
             }
 
+            .email-float {
+                width: 48px;
+                height: 48px;
+                bottom: 78px;
+                right: 18px;
+            }
+
+            .email-float .tooltip {
+                display: none;
+            }
+
             .section {
                 padding: 60px 0;
             }
@@ -1156,7 +1282,12 @@
 
         @media (max-width: 480px) {
             .hero-title {
-                font-size: 1.8rem;
+                font-size: 2rem;
+            }
+
+            .hero-title .city-sub {
+                font-size: 0.8rem;
+                letter-spacing: 3px;
             }
 
             .hero-stats {
@@ -1190,6 +1321,9 @@
 </head>
 <body>
 
+    <!-- ============================================================ -->
+    <!-- NAVBAR -->
+    <!-- ============================================================ -->
     <nav class="navbar" id="navbar">
         <div class="container">
             <div class="logo-wrapper">
@@ -1206,6 +1340,7 @@
                     <li><a href="#hero" class="active" data-section="hero">Accueil</a></li>
                     <li><a href="#infos" data-section="infos">Infos</a></li>
                     <li><a href="#form-section" data-section="form-section">Inscription</a></li>
+                    <li><a href="about.html" data-section="about">A propos</a></li>
                     <li><a href="#form-section" class="btn btn-primary btn-sm">S'inscrire</a></li>
                 </ul>
 
@@ -1218,6 +1353,9 @@
         </div>
     </nav>
 
+    <!-- ============================================================ -->
+    <!-- HERO -->
+    <!-- ============================================================ -->
     <section id="hero">
         <div class="hero-bg" id="parallaxBg">
             <img src="decree-bg.jpg" alt="" class="bg-image" />
@@ -1235,7 +1373,7 @@
 
                     <h1 class="hero-title">
                         <span class="highlight">ENFLAMMER</span>
-                        <span class="sub">Brûler dans un monde qui s'éteint</span>
+                        <span class="city-sub">Cotonou 2026</span>
                     </h1>
 
                     <p class="hero-subtitle" id="typedText">
@@ -1245,7 +1383,7 @@
 
                     <div class="hero-actions">
                         <a href="#form-section" class="btn btn-primary">S'inscrire</a>
-                        <a href="#infos" class="btn btn-outline">En savoir plus</a>
+                        <a href="about.html" class="btn btn-outline">A propos</a>
                     </div>
 
                     <div class="hero-stats">
@@ -1275,6 +1413,9 @@
         </div>
     </section>
 
+    <!-- ============================================================ -->
+    <!-- SECTION : INFOS PRATIQUES -->
+    <!-- ============================================================ -->
     <section id="infos" class="section section-alt">
         <div class="container">
             <div class="section-header">
@@ -1313,6 +1454,9 @@
         </div>
     </section>
 
+    <!-- ============================================================ -->
+    <!-- SECTION : AJOUT AU CALENDRIER -->
+    <!-- ============================================================ -->
     <section class="section">
         <div class="container text-center">
             <div class="section-header">
@@ -1332,6 +1476,9 @@
         </div>
     </section>
 
+    <!-- ============================================================ -->
+    <!-- SECTION : FORMULAIRE -->
+    <!-- ============================================================ -->
     <section id="form-section" class="section section-alt">
         <div class="container">
             <div class="section-header">
@@ -1345,88 +1492,143 @@
                 <form id="inscriptionForm" novalidate>
                     <div class="form-grid">
 
-                        <div class="form-group">
-                            <label>Nom <span class="required">*</span></label>
-                            <input type="text" id="nom" class="form-control" placeholder="Votre nom" required />
-                            <span class="error-msg" id="err-nom">Veuillez entrer votre nom</span>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Prénoms <span class="required">*</span></label>
-                            <input type="text" id="prenoms" class="form-control" placeholder="Vos prénoms" required />
-                            <span class="error-msg" id="err-prenoms">Veuillez entrer vos prénoms</span>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Genre <span class="required">*</span></label>
-                            <select id="genre" class="form-control" required>
-                                <option value="">Sélectionnez</option>
-                                <option value="Masculin">Masculin</option>
-                                <option value="Féminin">Féminin</option>
-                            </select>
-                            <span class="error-msg" id="err-genre">Veuillez sélectionner votre genre</span>
-                        </div>
-
-                        <div class="form-group">
-                            <label>WhatsApp <span class="required">*</span></label>
-                            <input type="tel" id="whatsapp" class="form-control" placeholder="+229 01 XX XX XX XX" required />
-                            <span class="error-msg" id="err-whatsapp">Veuillez entrer un numéro valide</span>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Email <span class="required">*</span></label>
-                            <input type="email" id="email" class="form-control" placeholder="votre@email.com" required />
-                            <span class="error-msg" id="err-email">Veuillez entrer un email valide</span>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Titre / Fonction <span class="required">*</span></label>
-                            <input type="text" id="fonction" class="form-control" placeholder="Pasteur, Leader..." required />
-                            <span class="error-msg" id="err-fonction">Veuillez entrer votre fonction</span>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Ministère / Église <span class="required">*</span></label>
-                            <input type="text" id="eglise" class="form-control" placeholder="Nom de votre église" required />
-                            <span class="error-msg" id="err-eglise">Veuillez entrer votre église</span>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Pays <span class="required">*</span></label>
-                            <input type="text" id="pays" class="form-control" placeholder="Votre pays" required />
-                            <span class="error-msg" id="err-pays">Veuillez entrer votre pays</span>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Ville d'origine <span class="required">*</span></label>
-                            <input type="text" id="ville" class="form-control" placeholder="Votre ville" required />
-                            <span class="error-msg" id="err-ville">Veuillez entrer votre ville</span>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Nationalité <span class="required">*</span></label>
-                            <input type="text" id="nationalite" class="form-control" placeholder="Votre nationalité" required />
-                            <span class="error-msg" id="err-nationalite">Veuillez entrer votre nationalité</span>
-                        </div>
-
+                        <!-- Statut (PREMIER) -->
                         <div class="form-group full">
-                            <label>Comment avez-vous entendu parler de cette conférence ?</label>
-                            <select id="source" class="form-control">
-                                <option value="">Sélectionnez une option</option>
-                                <option value="Ami/Famille">Un ami / La famille</option>
-                                <option value="Télévision">Télévision</option>
-                                <option value="Radio">Radio</option>
-                                <option value="Réseaux sociaux">Réseaux sociaux</option>
-                                <option value="Église">Annonce à l'église</option>
-                                <option value="Autre">Autre</option>
+                            <label>Statut <span class="required">*</span></label>
+                            <select id="statut" class="form-control" required>
+                                <option value="">Sélectionnez votre statut</option>
+                                <option value="local">Local (résidant au Bénin)</option>
+                                <option value="international">International (venant de l'étranger)</option>
                             </select>
+                            <span class="error-msg" id="err-statut">Veuillez sélectionner votre statut</span>
                         </div>
 
-                        <div class="form-group full">
-                            <label>Quelles sont vos attentes pour cette conférence ?</label>
-                            <textarea id="attentes" class="form-control" rows="3" placeholder="Partagez ce que vous espérez recevoir..."></textarea>
-                        </div>
+                        <!-- Champs de base (masqués par défaut) -->
+                        <div id="champs-base" style="display:none;">
 
+                            <div class="form-group">
+                                <label>Nom <span class="required">*</span></label>
+                                <input type="text" id="nom" class="form-control" placeholder="Votre nom" required />
+                                <span class="error-msg" id="err-nom">Veuillez entrer votre nom</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Prénoms <span class="required">*</span></label>
+                                <input type="text" id="prenoms" class="form-control" placeholder="Vos prénoms" required />
+                                <span class="error-msg" id="err-prenoms">Veuillez entrer vos prénoms</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Genre <span class="required">*</span></label>
+                                <select id="genre" class="form-control" required>
+                                    <option value="">Sélectionnez</option>
+                                    <option value="Masculin">Masculin</option>
+                                    <option value="Féminin">Féminin</option>
+                                </select>
+                                <span class="error-msg" id="err-genre">Veuillez sélectionner votre genre</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>WhatsApp <span class="required">*</span></label>
+                                <input type="tel" id="whatsapp" class="form-control" placeholder="+229 01 XX XX XX XX" required />
+                                <span class="error-msg" id="err-whatsapp">Veuillez entrer un numéro valide</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Email <span class="required">*</span></label>
+                                <input type="email" id="email" class="form-control" placeholder="votre@email.com" required />
+                                <span class="error-msg" id="err-email">Veuillez entrer un email valide</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Titre / Fonction <span class="required">*</span></label>
+                                <input type="text" id="fonction" class="form-control" placeholder="Pasteur, Leader..." required />
+                                <span class="error-msg" id="err-fonction">Veuillez entrer votre fonction</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Ministère / Église <span class="required">*</span></label>
+                                <input type="text" id="eglise" class="form-control" placeholder="Nom de votre église" required />
+                                <span class="error-msg" id="err-eglise">Veuillez entrer votre église</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Pays <span class="required">*</span></label>
+                                <input type="text" id="pays" class="form-control" placeholder="Votre pays" required />
+                                <span class="error-msg" id="err-pays">Veuillez entrer votre pays</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Ville d'origine <span class="required">*</span></label>
+                                <input type="text" id="ville" class="form-control" placeholder="Votre ville" required />
+                                <span class="error-msg" id="err-ville">Veuillez entrer votre ville</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Nationalité <span class="required">*</span></label>
+                                <input type="text" id="nationalite" class="form-control" placeholder="Votre nationalité" required />
+                                <span class="error-msg" id="err-nationalite">Veuillez entrer votre nationalité</span>
+                            </div>
+
+                            <div class="form-group full">
+                                <label>Comment avez-vous entendu parler de cette conférence ?</label>
+                                <select id="source" class="form-control">
+                                    <option value="">Sélectionnez une option</option>
+                                    <option value="Ami/Famille">Un ami / La famille</option>
+                                    <option value="Télévision">Télévision</option>
+                                    <option value="Radio">Radio</option>
+                                    <option value="Réseaux sociaux">Réseaux sociaux</option>
+                                    <option value="Église">Annonce à l'église</option>
+                                    <option value="Autre">Autre</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group full">
+                                <label>Quelles sont vos attentes pour cette conférence ?</label>
+                                <textarea id="attentes" class="form-control" rows="3" placeholder="Partagez ce que vous espérez recevoir..."></textarea>
+                            </div>
+
+                        </div> <!-- Fin #champs-base -->
+
+                        <!-- Champs internationaux (masqués par défaut) -->
+                        <div id="champs-international" style="display:none;">
+
+                            <div class="form-group full">
+                                <label>Avez-vous besoin d'une réservation d'hôtel ?</label>
+                                <select id="hotel" class="form-control">
+                                    <option value="">Sélectionnez une option</option>
+                                    <option value="non">Non</option>
+                                    <option value="oui">Oui</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group full conditional" id="budget-group">
+                                <label>Budget par jour (en FCFA) <span class="required">*</span></label>
+                                <input type="text" id="budget" class="form-control" placeholder="Ex: 50 000 FCFA" />
+                                <span class="field-note">Ce champ est requis si vous avez sélectionné "Oui" pour l'hôtel.</span>
+                                <span class="error-msg" id="err-budget">Veuillez indiquer votre budget par jour</span>
+                            </div>
+
+                            <div class="form-group full">
+                                <label>Date d'arrivée <span class="required">*</span></label>
+                                <input type="date" id="arrivee" class="form-control" />
+                                <span class="error-msg" id="err-arrivee">Veuillez indiquer votre date d'arrivée</span>
+                            </div>
+
+                            <div class="form-group full">
+                                <label>Date de départ <span class="required">*</span></label>
+                                <input type="date" id="depart" class="form-control" />
+                                <span class="error-msg" id="err-depart">Veuillez indiquer votre date de départ</span>
+                            </div>
+
+                            <div class="form-group full">
+                                <label>Compagnie aérienne</label>
+                                <input type="text" id="compagnie" class="form-control" placeholder="Nom de votre compagnie (optionnel)" />
+                            </div>
+
+                        </div> <!-- Fin #champs-international -->
+
+                        <!-- Checkbox -->
                         <div class="form-group full">
                             <div class="checkbox-group">
                                 <input type="checkbox" id="acceptConditions" required />
@@ -1451,6 +1653,9 @@
         </div>
     </section>
 
+    <!-- ============================================================ -->
+    <!-- MODALE DE CONFIRMATION -->
+    <!-- ============================================================ -->
     <div class="modal-overlay" id="confirmationModal">
         <div class="modal">
             <button class="close-btn" id="modalCloseBtn">×</button>
@@ -1499,11 +1704,17 @@
         </div>
     </div>
 
+    <!-- ============================================================ -->
+    <!-- LOADING OVERLAY -->
+    <!-- ============================================================ -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="spinner"></div>
         <p>Envoi en cours...</p>
     </div>
 
+    <!-- ============================================================ -->
+    <!-- WHATSAPP FLOAT -->
+    <!-- ============================================================ -->
     <a href="https://wa.me/2290151402849?text=Bonjour%20%21%20Je%20souhaite%20avoir%20des%20informations%20sur%20la%20conf%C3%A9rence%20ENFLAMMER%202026."
     target="_blank"
     rel="noopener noreferrer"
@@ -1515,21 +1726,38 @@
         </svg>
     </a>
 
+    <!-- ============================================================ -->
+    <!-- EMAIL FLOAT -->
+    <!-- ============================================================ -->
+    <a href="mailto:bsoukpo@yahoo.fr?subject=ENFLAMMER%202026%20-%20Demande%20d%27information&body=Bonjour%2C%0A%0AJe%20souhaite%20avoir%20des%20informations%20sur%20la%20conf%C3%A9rence%20ENFLAMMER%202026.%0A%0AMerci%20!%0A"
+       class="email-float"
+       aria-label="Nous contacter par email">
+        <span class="tooltip">Nous contacter par email</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+        </svg>
+    </a>
+
+    <!-- ============================================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================================ -->
     <footer>
         <div class="container">
             <img src="logo-awc.png" alt="AGYINASARE WORLD EVANGELISM" class="footer-logo" />
             <p>&copy; 2026 <strong>AGYINASARE WORLD EVANGELISM</strong> — Tous droits réservés.</p>
-            <p class="footer-contact"></p>
+            <p class="footer-contact">(+229) 0151402849 | 0195507757 &nbsp;|&nbsp; bsoukpo@yahoo.fr</p>
         </div>
     </footer>
 
+    <!-- ============================================================ -->
+    <!-- SCRIPT PRINCIPAL -->
+    <!-- ============================================================ -->
     <script>
         /* ============================================================
            CONFIGURATION
            ============================================================ */
         const CONFIG = {
-            // ⚠️ REMPLACEZ PAR VOTRE URL APRÈS REDÉPLOIEMENT
-            SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwoiA-zn4htzMJsHbkmVmnxuJONQRJRJaGgXBZjCzq5sNPtKn47NNbNjuttrcj9MQEI/exec',
+            SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbze6kk8KYjqYM0WEha4vX30KI74GU_QAz4vcAy8VHsrgFupUosjol1R6s_LAyYhLVe5/exec',
             EVENT_CODE: 'COT',
             YEAR: '2026',
             EVENT_START: '2026-09-22T08:30:00',
@@ -1702,7 +1930,77 @@
             document.getElementById('addOutlookCalendar').target = '_blank';
         })();
 
+        // ============================================================
+        // LOGIQUE CONDITIONNELLE
+        // ============================================================
+        (function conditionalFields() {
+            const statut = document.getElementById('statut');
+            const hotel = document.getElementById('hotel');
+            const champsBase = document.getElementById('champs-base');
+            const champsInternational = document.getElementById('champs-international');
+            const budgetGroup = document.getElementById('budget-group');
+
+            function updateFields() {
+                const value = statut.value;
+
+                if (!value) {
+                    champsBase.style.display = 'none';
+                    champsInternational.style.display = 'none';
+                    return;
+                }
+
+                champsBase.style.display = 'grid';
+                champsBase.style.gridTemplateColumns = '1fr 1fr';
+                champsBase.style.gap = '18px 26px';
+
+                champsBase.querySelectorAll('.form-group.full').forEach(function(el) {
+                    el.style.gridColumn = '1 / -1';
+                });
+
+                if (value === 'local') {
+                    champsInternational.style.display = 'none';
+                    return;
+                }
+
+                if (value === 'international') {
+                    champsInternational.style.display = 'grid';
+                    champsInternational.style.gridTemplateColumns = '1fr 1fr';
+                    champsInternational.style.gap = '18px 26px';
+
+                    champsInternational.querySelectorAll('.form-group.full').forEach(function(el) {
+                        el.style.gridColumn = '1 / -1';
+                    });
+
+                    if (hotel.value === 'oui') {
+                        budgetGroup.style.display = 'flex';
+                        budgetGroup.style.flexDirection = 'column';
+                        budgetGroup.style.gap = '4px';
+                    } else {
+                        budgetGroup.style.display = 'none';
+                    }
+                    return;
+                }
+            }
+
+            statut.addEventListener('change', updateFields);
+            hotel.addEventListener('change', function() {
+                if (statut.value === 'international') {
+                    if (hotel.value === 'oui') {
+                        budgetGroup.style.display = 'flex';
+                        budgetGroup.style.flexDirection = 'column';
+                        budgetGroup.style.gap = '4px';
+                    } else {
+                        budgetGroup.style.display = 'none';
+                    }
+                }
+            });
+
+            updateFields();
+        })();
+
+        // ============================================================
         // FORMULAIRE
+        // ============================================================
         (function form() {
             const form = document.getElementById('inscriptionForm');
             const btn = document.getElementById('btnSubmit');
@@ -1721,6 +2019,12 @@
                 nationalite: document.getElementById('nationalite'),
                 source: document.getElementById('source'),
                 attentes: document.getElementById('attentes'),
+                statut: document.getElementById('statut'),
+                hotel: document.getElementById('hotel'),
+                budget: document.getElementById('budget'),
+                arrivee: document.getElementById('arrivee'),
+                depart: document.getElementById('depart'),
+                compagnie: document.getElementById('compagnie'),
                 accept: document.getElementById('acceptConditions'),
             };
 
@@ -1739,6 +2043,9 @@
 
             function validate() {
                 let valid = true;
+                const statutValue = fields.statut.value;
+                const hotelValue = fields.hotel.value;
+
                 const checks = {
                     nom: fields.nom.value.trim() === '',
                     prenoms: fields.prenoms.value.trim() === '',
@@ -1750,19 +2057,36 @@
                     pays: fields.pays.value.trim() === '',
                     ville: fields.ville.value.trim() === '',
                     nationalite: fields.nationalite.value.trim() === '',
+                    statut: statutValue === '',
                     accept: !fields.accept.checked,
                 };
+
+                if (statutValue === 'international') {
+                    if (hotelValue === 'oui' && fields.budget.value.trim() === '') {
+                        checks.budget = true;
+                    } else {
+                        checks.budget = false;
+                    }
+                    if (fields.arrivee.value === '') checks.arrivee = true;
+                    else checks.arrivee = false;
+                    if (fields.depart.value === '') checks.depart = true;
+                    else checks.depart = false;
+                } else {
+                    checks.budget = false;
+                    checks.arrivee = false;
+                    checks.depart = false;
+                }
 
                 Object.keys(checks).forEach(function(key) {
                     const field = fields[key];
                     const errId = 'err-' + key;
                     const errEl = document.getElementById(errId);
                     if (checks[key]) {
-                        field.classList.add('error');
+                        if (field) field.classList.add('error');
                         if (errEl) errEl.classList.add('visible');
                         valid = false;
                     } else {
-                        field.classList.remove('error');
+                        if (field) field.classList.remove('error');
                         if (errEl) errEl.classList.remove('visible');
                     }
                 });
@@ -1786,6 +2110,9 @@
                 btn.innerHTML = 'Envoi en cours...';
                 loading.classList.add('active');
 
+                const statutValue = fields.statut.value;
+                const hotelValue = fields.hotel.value || 'non';
+
                 const data = {
                     nom: fields.nom.value.trim(),
                     prenoms: fields.prenoms.value.trim(),
@@ -1799,6 +2126,12 @@
                     nationalite: fields.nationalite.value.trim(),
                     source: fields.source.value || 'Non spécifié',
                     attentes: fields.attentes.value.trim() || 'Non spécifié',
+                    statut: statutValue,
+                    hotel: hotelValue,
+                    budget: fields.budget.value.trim() || '',
+                    arrivee: fields.arrivee.value || '',
+                    depart: fields.depart.value || '',
+                    compagnie: fields.compagnie.value.trim() || '',
                 };
 
                 try {
@@ -1816,6 +2149,9 @@
                     if (result.success) {
                         showConfirmation(data);
                         form.reset();
+                        document.getElementById('champs-base').style.display = 'none';
+                        document.getElementById('champs-international').style.display = 'none';
+                        document.getElementById('budget-group').style.display = 'none';
                     } else {
                         alert('Erreur lors de l\'inscription : ' + (result.message || 'Veuillez réessayer.'));
                     }
@@ -1854,7 +2190,7 @@
 
         })();
 
-        console.log('✅ ENFLAMMER 2026 - Site prêt !');
+        console.log('✅ ENFLAMMER 2026 - Cotonou - Site prêt !');
         console.log('🔗 URL du script :', CONFIG.SCRIPT_URL);
     </script>
 

@@ -551,6 +551,7 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            border: none;
         }
 
         .table-container .table-actions .btn-action:hover {
@@ -571,7 +572,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.88rem;
+            font-size: 0.82rem;
         }
 
         table thead {
@@ -579,21 +580,26 @@
         }
 
         table thead th {
-            padding: 12px 16px;
+            padding: 10px 12px;
             text-align: left;
             font-weight: 600;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             color: var(--text-muted);
             border-bottom: 1px solid var(--border);
             white-space: nowrap;
+            position: sticky;
+            top: 0;
+            background: var(--bg);
+            z-index: 1;
         }
 
         table tbody td {
-            padding: 12px 16px;
+            padding: 10px 12px;
             border-bottom: 1px solid var(--border);
             vertical-align: middle;
+            font-size: 0.82rem;
         }
 
         table tbody tr:hover {
@@ -604,7 +610,7 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 4px 12px;
+            padding: 3px 10px;
             border-radius: 50px;
             font-size: 0.7rem;
             font-weight: 500;
@@ -633,8 +639,8 @@
             color: #fff;
             border: none;
             border-radius: 50px;
-            padding: 6px 14px;
-            font-size: 0.75rem;
+            padding: 4px 12px;
+            font-size: 0.7rem;
             font-weight: 600;
             cursor: pointer;
             transition: all var(--transition);
@@ -1033,7 +1039,7 @@
         }
 
         /* ============================================================
-           EXPORT AVANCÉ
+           EXPORT AVANCE
            ============================================================ */
         .export-options {
             display: flex;
@@ -1129,7 +1135,7 @@
         }
 
         /* ============================================================
-           NOTIFICATIONS
+           NOTIFICATION TOAST (sans emoji)
            ============================================================ */
         .notification-toast {
             position: fixed;
@@ -1155,6 +1161,7 @@
 
         .notification-toast .notif-icon {
             font-size: 1.8rem;
+            line-height: 1;
         }
 
         .notification-toast .notif-text {
@@ -1212,6 +1219,19 @@
         /* ============================================================
            RESPONSIVE
            ============================================================ */
+        @media (max-width: 992px) {
+            table {
+                font-size: 0.75rem;
+            }
+            table thead th,
+            table tbody td {
+                padding: 6px 8px;
+            }
+            .table-wrapper {
+                overflow-x: auto;
+            }
+        }
+
         @media (max-width: 768px) {
             .dashboard-header {
                 flex-direction: column;
@@ -1268,6 +1288,14 @@
                 flex-direction: column;
                 align-items: center;
             }
+
+            table {
+                font-size: 0.7rem;
+            }
+            table thead th,
+            table tbody td {
+                padding: 4px 6px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1298,20 +1326,20 @@
 <body>
 
     <!-- ============================================================ -->
-    <!-- ÉCRAN DE LOGIN -->
+    <!-- ECRAN DE LOGIN -->
     <!-- ============================================================ -->
     <div id="loginScreen">
         <div class="login-box">
             <img src="logo-awc.png" alt="AGYINASARE WORLD EVANGELISM" class="logo" />
             <h1>Administration</h1>
-            <p>ENFLAMMER 2026 • Cotonou</p>
+            <p>ENFLAMMER 2026 - Cotonou</p>
 
             <div class="form-group">
                 <label>Mot de passe</label>
                 <input type="password" id="loginPass" placeholder="Mot de passe" />
             </div>
 
-            <button class="btn" id="loginBtn">Accéder au tableau de bord</button>
+            <button class="btn" id="loginBtn">Acceder au tableau de bord</button>
             <div class="error-msg" id="loginError">Mot de passe incorrect</div>
         </div>
     </div>
@@ -1329,7 +1357,7 @@
             <div class="right">
                 <span class="badge"><span class="dot"></span> En direct</span>
                 <span class="badge" id="notifBadge">0 nouveau</span>
-                <button class="logout-btn" id="logoutBtn">Déconnexion</button>
+                <button class="logout-btn" id="logoutBtn">Deconnexion</button>
             </div>
         </div>
 
@@ -1353,17 +1381,17 @@
                     <div class="stat-number" id="statTotal">0</div>
                 </div>
                 <div class="stat-card green">
-                    <div class="stat-label">Pointés du jour</div>
+                    <div class="stat-label">Points du jour</div>
                     <div class="stat-number" id="statPresent">0</div>
-                    <div class="stat-sub" id="statPresentDay">Aucun jour sélectionné</div>
+                    <div class="stat-sub" id="statPresentDay">Aucun jour selectionne</div>
                 </div>
                 <div class="stat-card red">
                     <div class="stat-label">Absents du jour</div>
                     <div class="stat-number" id="statAbsent">0</div>
-                    <div class="stat-sub" id="statAbsentDay">Aucun jour sélectionné</div>
+                    <div class="stat-sub" id="statAbsentDay">Aucun jour selectionne</div>
                 </div>
                 <div class="stat-card blue">
-                    <div class="stat-label">Pays représentés</div>
+                    <div class="stat-label">Pays representes</div>
                     <div class="stat-number" id="statPays">0</div>
                 </div>
             </div>
@@ -1371,11 +1399,11 @@
             <!-- Graphiques -->
             <div class="charts-grid">
                 <div class="chart-card">
-                    <h4>Répartition par pays</h4>
+                    <h4>Repartition par pays</h4>
                     <canvas id="chartPays"></canvas>
                 </div>
                 <div class="chart-card">
-                    <h4>Évolution des inscriptions</h4>
+                    <h4>Evolution des inscriptions</h4>
                     <canvas id="chartEvolution"></canvas>
                 </div>
                 <div class="chart-card">
@@ -1383,7 +1411,7 @@
                     <canvas id="chartSource"></canvas>
                 </div>
                 <div class="chart-card">
-                    <h4>Répartition par église</h4>
+                    <h4>Repartition par eglise</h4>
                     <canvas id="chartEglise"></canvas>
                 </div>
             </div>
@@ -1397,12 +1425,17 @@
 
             <div class="filters-section">
                 <div class="filters-row">
-                    <input type="text" class="search-input" id="searchInput" placeholder="Rechercher par ID, Nom, Email, Église..." />
+                    <input type="text" class="search-input" id="searchInput" placeholder="Rechercher par ID, Nom, Email, Eglise..." />
                     <select id="filterPays">
                         <option value="">Tous les pays</option>
                     </select>
+                    <select id="filterStatut">
+                        <option value="">Tous les statuts</option>
+                        <option value="local">Local</option>
+                        <option value="international">International</option>
+                    </select>
                     <button class="btn-filter" id="applyFilters">Appliquer</button>
-                    <button class="btn-filter secondary" id="resetFilters">Réinitialiser</button>
+                    <button class="btn-filter secondary" id="resetFilters">Reinitialiser</button>
                 </div>
             </div>
 
@@ -1411,26 +1444,33 @@
                     <h3>Liste des inscrits <span id="totalDisplay">(0)</span></h3>
                     <div class="table-actions">
                         <button class="btn-action" id="exportExcel">Exporter Excel</button>
-                        <button class="btn-action" id="refreshData">Rafraîchir</button>
+                        <button class="btn-action" id="refreshData">Rafraichir</button>
+                        <button class="btn-action" id="sendMassMessageBtn">Message a tous</button>
                     </div>
                 </div>
 
                 <div class="table-wrapper">
                     <div id="loadingIndicator" class="loading-spinner">
                         <div class="spinner"></div>
-                        Chargement des données...
+                        Chargement des donnees...
                     </div>
                     <table id="dataTable" style="display:none;">
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Nom</th>
-                                <th>Prénoms</th>
+                                <th>Prenoms</th>
                                 <th>Email</th>
                                 <th>WhatsApp</th>
-                                <th>Église</th>
+                                <th>Eglise</th>
                                 <th>Pays</th>
                                 <th>Statut</th>
+                                <th>Hotel</th>
+                                <th>Budget</th>
+                                <th>Arrivee</th>
+                                <th>Depart</th>
+                                <th>Compagnie</th>
+                                <th>Present</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -1438,12 +1478,12 @@
                         </tbody>
                     </table>
                     <div id="emptyState" class="empty-state" style="display:none;">
-                        Aucun inscrit trouvé
+                        Aucun inscrit trouve
                     </div>
                 </div>
 
                 <div class="pagination" id="paginationContainer">
-                    <button id="prevPage" disabled>Précédent</button>
+                    <button id="prevPage" disabled>Precedent</button>
                     <span class="info" id="pageInfo">Page 1 sur 1</span>
                     <button id="nextPage" disabled>Suivant</button>
                 </div>
@@ -1457,7 +1497,7 @@
         <div id="tab-checkin" class="tab-content">
             <div class="checkin-container">
                 <h2>Pointage des participants</h2>
-                <p>Sélectionnez le jour puis saisissez l'ID du participant pour valider sa présence</p>
+                <p>Selectionnez le jour puis saisissez l'ID du participant pour valider sa presence</p>
 
                 <div class="checkin-day-selector">
                     <button class="day-btn" data-day="J-1">Jour 1 - 22 Septembre</button>
@@ -1466,10 +1506,10 @@
                 </div>
 
                 <div class="checkin-day-status" id="dayStatus">
-                    Jour sélectionné : <strong id="selectedDayText">Aucun</strong> | 
-                    Pointés : <strong id="dayPresentCount">0</strong> | 
+                    Jour selectionne : <strong id="selectedDayText">Aucun</strong> | 
+                    Pointes : <strong id="dayPresentCount">0</strong> | 
                     Absents : <strong id="dayAbsentCount">0</strong>
-                    <span id="dayClosedBadge" style="display:none; background:var(--gold); color:var(--text-inverse); padding:2px 10px; border-radius:50px; font-size:0.7rem; margin-left:8px;">Clôturé</span>
+                    <span id="dayClosedBadge" style="display:none; background:var(--gold); color:var(--text-inverse); padding:2px 10px; border-radius:50px; font-size:0.7rem; margin-left:8px;">Cloture</span>
                 </div>
 
                 <div class="checkin-input-group">
@@ -1483,9 +1523,9 @@
                 </div>
 
                 <div class="checkin-close-day">
-                    <button class="btn-close-day" id="closeDayBtn">Clôturer la journée</button>
+                    <button class="btn-close-day" id="closeDayBtn">Cloturer la journee</button>
                     <p style="color:var(--text-muted);font-size:0.75rem;margin-top:6px;">
-                        Une fois clôturé, les absents seront calculés automatiquement.
+                        Une fois cloture, les absents seront calcules automatiquement.
                     </p>
                 </div>
 
@@ -1520,46 +1560,46 @@
             </div>
 
             <div class="reminder-list" id="reminderList">
-                <h3 style="margin-bottom:16px;">Rappels programmés</h3>
+                <h3 style="margin-bottom:16px;">Rappels programmes</h3>
                 <div id="reminderItems">
                     <div class="empty-state">
-                        Aucun rappel programmé
+                        Aucun rappel programme
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- ============================================================ -->
-        <!-- ONGLET : RAPPORTS (NOUVEAU AVEC EXPORTS FILTRÉS) -->
+        <!-- ONGLET : RAPPORTS -->
         <!-- ============================================================ -->
         <div id="tab-rapports" class="tab-content">
-            <h3 style="margin-bottom:16px;text-align:center;">📊 Exporter des données filtrées</h3>
+            <h3 style="margin-bottom:16px;text-align:center;">Exporter des donnees filtrees</h3>
 
             <div class="export-grid">
 
                 <!-- Export par pays -->
                 <div class="export-card">
-                    <h4>🌍 Par pays</h4>
+                    <h4>Par pays</h4>
                     <select id="exportPaysSelect">
                         <option value="">Tous les pays</option>
                     </select>
-                    <button class="btn-export-sm" id="exportByPays">📥 Télécharger</button>
+                    <button class="btn-export-sm" id="exportByPays">Telecharger</button>
                 </div>
 
-                <!-- Export par église -->
+                <!-- Export par eglise -->
                 <div class="export-card">
-                    <h4>🏛️ Par église</h4>
+                    <h4>Par eglise</h4>
                     <select id="exportEgliseSelect">
-                        <option value="">Toutes les églises</option>
+                        <option value="">Toutes les eglises</option>
                     </select>
-                    <button class="btn-export-sm" id="exportByEglise">📥 Télécharger</button>
+                    <button class="btn-export-sm" id="exportByEglise">Telecharger</button>
                 </div>
 
-                <!-- Export par statut (présents/absents) -->
+                <!-- Export par statut (presents/absents) -->
                 <div class="export-card">
-                    <h4>✅ Présents / Absents</h4>
+                    <h4>Presents / Absents</h4>
                     <select id="exportStatutSelect">
-                        <option value="present">Présents</option>
+                        <option value="present">Presents</option>
                         <option value="absent">Absents</option>
                     </select>
                     <select id="exportJourSelect">
@@ -1567,30 +1607,39 @@
                         <option value="J-2">Jour 2 (23 Sept)</option>
                         <option value="J-3">Jour 3 (24 Sept)</option>
                     </select>
-                    <button class="btn-export-sm" id="exportByStatut">📥 Télécharger</button>
+                    <button class="btn-export-sm" id="exportByStatut">Telecharger</button>
                 </div>
 
-                <!-- Export combiné (pays + statut) -->
+                <!-- Export combine (pays + statut) -->
                 <div class="export-card">
-                    <h4>🎯 Pays + Statut</h4>
+                    <h4>Pays + Statut</h4>
                     <select id="exportComboPays">
                         <option value="">Tous les pays</option>
                     </select>
                     <select id="exportComboStatut">
-                        <option value="present">Présents</option>
+                        <option value="present">Presents</option>
                         <option value="absent">Absents</option>
                     </select>
-                    <button class="btn-export-sm" id="exportCombo">📥 Télécharger</button>
+                    <button class="btn-export-sm" id="exportCombo">Telecharger</button>
+                </div>
+
+                <!-- Export internationaux -->
+                <div class="export-card">
+                    <h4>Internationaux</h4>
+                    <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:10px;">
+                        Exporte tous les participants ayant le statut "International"
+                    </p>
+                    <button class="btn-export-sm" id="exportInternational">Telecharger</button>
                 </div>
 
             </div>
 
-            <!-- Exports PDF existants -->
+            <!-- Exports PDF -->
             <div style="text-align:center;margin-top:20px;">
-                <h4 style="color:var(--text-muted);margin-bottom:12px;">📄 Rapports complets</h4>
+                <h4 style="color:var(--text-muted);margin-bottom:12px;">Rapports complets</h4>
                 <div class="export-options">
                     <button class="btn-export" id="exportPDFReport">Rapport complet PDF</button>
-                    <button class="btn-export" id="exportPresenceList">Liste de présence PDF</button>
+                    <button class="btn-export" id="exportPresenceList">Liste de presence PDF</button>
                     <button class="btn-export" id="exportStatsReport">Rapport statistiques</button>
                 </div>
             </div>
@@ -1600,7 +1649,7 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- NOTIFICATION TOAST -->
+    <!-- NOTIFICATION TOAST (sans emoji) -->
     <!-- ============================================================ -->
     <div class="notification-toast" id="notificationToast">
         <span class="notif-icon">Nouvelle</span>
@@ -1608,19 +1657,19 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- SCRIPTS (COMPLÈTEMENT MIS À JOUR) -->
+    <!-- SCRIPTS -->
     <!-- ============================================================ -->
     <script>
         /* ============================================================
            CONFIGURATION
            ============================================================ */
         const CONFIG = {
-            SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwoiA-zn4htzMJsHbkmVmnxuJONQRJRJaGgXBZjCzq5sNPtKn47NNbNjuttrcj9MQEI/exec',
+            SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbze6kk8KYjqYM0WEha4vX30KI74GU_QAz4vcAy8VHsrgFupUosjol1R6s_LAyYhLVe5/exec',
             ADMIN_PASSWORD: 'enflammer2026',
         };
 
         // ============================================================
-        // PROTECTION : Désactiver le clic droit
+        // PROTECTION : Desactiver le clic droit
         // ============================================================
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
@@ -1723,7 +1772,7 @@
 
             try {
                 const url = CONFIG.SCRIPT_URL + '?action=getData&t=' + Date.now();
-                console.log('Chargement des données depuis:', url);
+                console.log('Chargement des donnees depuis:', url);
 
                 const response = await fetch(url, {
                     method: 'GET',
@@ -1731,11 +1780,11 @@
                 });
 
                 const result = await response.json();
-                console.log('Réponse du script:', result);
+                console.log('Reponse du script:', result);
 
                 if (result.success && result.data !== undefined) {
                     allData = result.data;
-                    console.log('Nombre d\'inscrits chargés:', allData.length);
+                    console.log('Nombre d\'inscrits charges:', allData.length);
                     updateStats(allData);
                     populateFilters(allData);
                     populateExportFilters();
@@ -1744,11 +1793,11 @@
                     applyFilters();
                 } else {
                     console.error('Erreur script:', result.message);
-                    alert('Erreur de chargement: ' + (result.message || 'Veuillez vérifier l\'URL du script'));
+                    alert('Erreur de chargement: ' + (result.message || 'Veuillez verifier l\'URL du script'));
                 }
             } catch (err) {
                 console.error('Erreur fetch:', err);
-                alert('Impossible de charger les données. Vérifiez :\n1. L\'URL du script\n2. La connexion internet\n3. Le déploiement du script');
+                alert('Impossible de charger les donnees. Verifiez :\n1. L\'URL du script\n2. La connexion internet\n3. Le deploiement du script');
             } finally {
                 loading.style.display = 'none';
             }
@@ -1771,8 +1820,8 @@
             if (!currentDay) {
                 document.getElementById('statPresent').textContent = '0';
                 document.getElementById('statAbsent').textContent = '0';
-                document.getElementById('statPresentDay').textContent = 'Aucun jour sélectionné';
-                document.getElementById('statAbsentDay').textContent = 'Aucun jour sélectionné';
+                document.getElementById('statPresentDay').textContent = 'Aucun jour selectionne';
+                document.getElementById('statAbsentDay').textContent = 'Aucun jour selectionne';
                 return;
             }
 
@@ -1822,7 +1871,6 @@
             const pays = new Set(allData.map(d => d['Pays']).filter(p => p && p.trim() !== ''));
             const eglises = new Set(allData.map(d => d['Ministère/Église']).filter(e => e && e.trim() !== ''));
 
-            // Export par pays
             const paysSelect1 = document.getElementById('exportPaysSelect');
             if (paysSelect1) {
                 paysSelect1.innerHTML = '<option value="">Tous les pays</option>';
@@ -1834,10 +1882,9 @@
                 });
             }
 
-            // Export par église
             const egliseSelect = document.getElementById('exportEgliseSelect');
             if (egliseSelect) {
-                egliseSelect.innerHTML = '<option value="">Toutes les églises</option>';
+                egliseSelect.innerHTML = '<option value="">Toutes les eglises</option>';
                 eglises.forEach(e => {
                     const opt = document.createElement('option');
                     opt.value = e;
@@ -1846,7 +1893,6 @@
                 });
             }
 
-            // Export combiné pays
             const comboPays = document.getElementById('exportComboPays');
             if (comboPays) {
                 comboPays.innerHTML = '<option value="">Tous les pays</option>';
@@ -1862,6 +1908,7 @@
         function applyFilters() {
             const search = document.getElementById('searchInput').value.toLowerCase().trim();
             const pays = document.getElementById('filterPays').value;
+            const statut = document.getElementById('filterStatut').value;
 
             filteredData = allData.filter(row => {
                 if (search) {
@@ -1877,6 +1924,7 @@
                     if (!searchable.includes(search)) return false;
                 }
                 if (pays && row['Pays'] !== pays) return false;
+                if (statut && row['Statut'] !== statut) return false;
                 return true;
             });
 
@@ -1889,6 +1937,7 @@
         document.getElementById('resetFilters').addEventListener('click', function() {
             document.getElementById('searchInput').value = '';
             document.getElementById('filterPays').value = '';
+            document.getElementById('filterStatut').value = '';
             applyFilters();
         });
 
@@ -1927,12 +1976,21 @@
                 const tr = document.createElement('tr');
 
                 const isPresent = row['Présent'] && row['Présent'].trim() !== '';
-                const statusText = isPresent ? 'Présent' : 'Absent';
                 const statusClass = isPresent ? 'present' : 'absent';
+
+                const statutValue = row['Statut'] || 'Non renseigne';
+                const hotelValue = row['Hôtel'] || 'Non renseigne';
+                const budgetValue = row['Budget'] || '—';
+                const arriveeValue = row['Arrivée'] || '—';
+                const departValue = row['Départ'] || '—';
+                const compagnieValue = row['Compagnie'] || '—';
 
                 let whatsapp = row['WhatsApp'] || '';
                 const whatsappClean = whatsapp.replace(/[^0-9+]/g, '');
                 const whatsappLink = `https://wa.me/${whatsappClean.replace(/^\+/, '')}`;
+
+                const statutColor = statutValue === 'international' ? 'var(--gold)' : 'var(--success)';
+                const statutBg = statutValue === 'international' ? 'rgba(212,168,67,0.15)' : 'rgba(46,204,113,0.15)';
 
                 tr.innerHTML = `
                     <td><strong>${row['ID'] || '-'}</strong></td>
@@ -1942,9 +2000,15 @@
                     <td><a href="${whatsappLink}" target="_blank" class="btn-whatsapp">${whatsapp || '-'}</a></td>
                     <td>${row['Ministère/Église'] || '-'}</td>
                     <td>${row['Pays'] || '-'}</td>
-                    <td><span class="status-badge ${statusClass}">${isPresent ? '✅ Présent' : '⏳ Absent'}</span></td>
+                    <td><span style="padding:2px 10px;border-radius:50px;font-size:0.7rem;font-weight:600;background:${statutBg};color:${statutColor};">${statutValue}</span></td>
+                    <td>${hotelValue}</td>
+                    <td>${budgetValue}</td>
+                    <td>${arriveeValue}</td>
+                    <td>${departValue}</td>
+                    <td>${compagnieValue}</td>
+                    <td><span class="status-badge ${statusClass}">${isPresent ? 'Present' : 'Absent'}</span></td>
                     <td>
-                        <button class="btn-action btn-send-email" data-email="${row['Email'] || ''}" style="font-size:0.7rem;padding:4px 10px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);cursor:pointer;">✉️ Message</button>
+                        <button class="btn-action btn-send-email" data-email="${row['Email'] || ''}" style="font-size:0.7rem;padding:4px 10px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);cursor:pointer;">Message</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -1981,10 +2045,9 @@
         });
 
         /* ============================================================
-           GRAPHIQUES (CORRIGÉS - avec destruction propre)
+           GRAPHIQUES
            ============================================================ */
         function updateCharts(data) {
-            // Détruire les anciens graphiques
             const chartIds = ['chartPays', 'chartEvolution', 'chartSource', 'chartEglise'];
             chartIds.forEach(id => {
                 if (charts[id]) {
@@ -1993,10 +2056,10 @@
                 }
             });
 
-            // 1. Répartition par pays
+            // 1. Repartition par pays
             const paysCount = {};
             data.forEach(d => {
-                const p = d['Pays'] || 'Non renseigné';
+                const p = d['Pays'] || 'Non renseigne';
                 paysCount[p] = (paysCount[p] || 0) + 1;
             });
             const paysLabels = Object.keys(paysCount).slice(0, 10);
@@ -2030,7 +2093,7 @@
                 }
             }
 
-            // 2. Évolution des inscriptions (par date)
+            // 2. Evolution des inscriptions
             const evolution = {};
             data.forEach(d => {
                 const date = d['Date'] ? d['Date'].split(' ')[0] : 'Inconnue';
@@ -2075,7 +2138,7 @@
             // 3. Source de provenance
             const sourceCount = {};
             data.forEach(d => {
-                const s = d['Source'] || 'Non renseigné';
+                const s = d['Source'] || 'Non renseigne';
                 sourceCount[s] = (sourceCount[s] || 0) + 1;
             });
             const srcLabels = Object.keys(sourceCount);
@@ -2109,10 +2172,10 @@
                 }
             }
 
-            // 4. Répartition par église
+            // 4. Repartition par eglise
             const egliseCount = {};
             data.forEach(d => {
-                const e = d['Ministère/Église'] || 'Non renseigné';
+                const e = d['Ministère/Église'] || 'Non renseigne';
                 egliseCount[e] = (egliseCount[e] || 0) + 1;
             });
             const eglLabels = Object.keys(egliseCount).slice(0, 8);
@@ -2148,13 +2211,12 @@
                 }
             }
 
-            // Message si aucun graphique
             if (Object.keys(charts).length === 0) {
                 document.querySelectorAll('.chart-card canvas').forEach(c => {
                     c.style.display = 'none';
                     const parent = c.parentElement;
                     const msg = document.createElement('p');
-                    msg.textContent = 'Aucune donnée à afficher';
+                    msg.textContent = 'Aucune donnee a afficher';
                     msg.style.color = '#9a8a7a';
                     msg.style.textAlign = 'center';
                     msg.style.padding = '20px';
@@ -2164,15 +2226,15 @@
         }
 
         /* ============================================================
-           EXPORT EXCEL (liste filtrée actuelle)
+           EXPORT EXCEL
            ============================================================ */
         document.getElementById('exportExcel').addEventListener('click', function() {
-            if (filteredData.length === 0) { alert('Aucune donnée à exporter.'); return; }
+            if (filteredData.length === 0) { alert('Aucune donnee a exporter.'); return; }
             exportToCSV(filteredData, 'inscriptions_ENFLAMMER');
         });
 
         /* ============================================================
-           FONCTIONS D'EXPORT FILTRÉ
+           FONCTIONS D'EXPORT FILTRE
            ============================================================ */
 
         // Export par pays
@@ -2182,24 +2244,24 @@
             if (pays) {
                 data = data.filter(row => row['Pays'] === pays);
             }
-            if (data.length === 0) { alert('Aucune donnée pour ce pays.'); return; }
+            if (data.length === 0) { alert('Aucune donnee pour ce pays.'); return; }
             const filename = pays ? `inscrits_${pays}` : 'inscrits_tous_pays';
             exportToCSV(data, filename);
         });
 
-        // Export par église
+        // Export par eglise
         document.getElementById('exportByEglise').addEventListener('click', function() {
             const eglise = document.getElementById('exportEgliseSelect').value;
             let data = allData;
             if (eglise) {
                 data = data.filter(row => row['Ministère/Église'] === eglise);
             }
-            if (data.length === 0) { alert('Aucune donnée pour cette église.'); return; }
+            if (data.length === 0) { alert('Aucune donnee pour cette eglise.'); return; }
             const filename = eglise ? `inscrits_${eglise.replace(/\s+/g, '_')}` : 'inscrits_toutes_eglises';
             exportToCSV(data, filename);
         });
 
-        // Export par statut (présents/absents pour un jour donné)
+        // Export par statut (presents/absents)
         document.getElementById('exportByStatut').addEventListener('click', function() {
             const statut = document.getElementById('exportStatutSelect').value;
             const jour = document.getElementById('exportJourSelect').value;
@@ -2214,12 +2276,12 @@
                 data = data.filter(row => !presentIds.includes(row['ID']));
             }
 
-            if (data.length === 0) { alert(`Aucun ${statut === 'present' ? 'présent' : 'absent'} pour ce jour.`); return; }
+            if (data.length === 0) { alert(`Aucun ${statut === 'present' ? 'present' : 'absent'} pour ce jour.`); return; }
             const filename = `${statut}_${jour}`;
             exportToCSV(data, filename);
         });
 
-        // Export combiné (pays + statut)
+        // Export combine (pays + statut)
         document.getElementById('exportCombo').addEventListener('click', function() {
             const pays = document.getElementById('exportComboPays').value;
             const statut = document.getElementById('exportComboStatut').value;
@@ -2230,7 +2292,6 @@
                 data = data.filter(row => row['Pays'] === pays);
             }
 
-            // Récupérer tous les IDs présents (tous jours confondus)
             const presentIds = [];
             ['J-1', 'J-2', 'J-3'].forEach(j => {
                 const key = 'present_' + j;
@@ -2247,24 +2308,61 @@
                 data = data.filter(row => !presentIds.includes(row['ID']));
             }
 
-            if (data.length === 0) { alert('Aucune donnée pour ces critères.'); return; }
+            if (data.length === 0) { alert('Aucune donnee pour ces criteres.'); return; }
             const filename = `inscrits_${pays || 'tous'}_${statut}`;
             exportToCSV(data, filename);
         });
 
-        /* ============================================================
-           EXPORT CSV (fonction générique)
-           ============================================================ */
-        function exportToCSV(data, filename) {
+        // Export internationaux
+        document.getElementById('exportInternational').addEventListener('click', function() {
+            const data = allData.filter(row => row['Statut'] === 'international');
+            if (data.length === 0) {
+                alert('Aucun participant international trouve.');
+                return;
+            }
             const headers = ['ID', 'Nom', 'Prénoms', 'Genre', 'WhatsApp', 'Email', 'Fonction', 'Ministère/Église', 'Pays',
-                'Ville', 'Nationalité', 'Source', 'Attentes', 'Présent', 'Date pointage'
+                'Ville', 'Nationalité', 'Source', 'Attentes', 'Statut', 'Hôtel', 'Budget', 'Arrivée', 'Départ', 'Compagnie',
+                'Présent'
             ];
             const csvRows = [headers.join(',')];
 
             data.forEach(row => {
                 const values = headers.map(h => {
                     let val = row[h] || '';
-                    if (typeof val === 'string' && (val.includes(',') || val.includes('"') || val.includes('\n'))) {
+                    if (typeof val === 'string' && (val.includes(',') || val.includes('"') || val.includes(
+                            '\n'))) {
+                        val = `"${val.replace(/"/g, '""')}"`;
+                    }
+                    return val;
+                });
+                csvRows.push(values.join(','));
+            });
+
+            const csvContent = csvRows.join('\n');
+            const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `internationaux_ENFLAMMER_${new Date().toISOString().slice(0,10)}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        /* ============================================================
+           EXPORT CSV (fonction generique)
+           ============================================================ */
+        function exportToCSV(data, filename) {
+            const headers = ['ID', 'Nom', 'Prénoms', 'Genre', 'WhatsApp', 'Email', 'Fonction', 'Ministère/Église', 'Pays',
+                'Ville', 'Nationalité', 'Source', 'Attentes', 'Statut', 'Hôtel', 'Budget', 'Arrivée', 'Départ', 'Compagnie',
+                'Présent', 'Date pointage'
+            ];
+            const csvRows = [headers.join(',')];
+
+            data.forEach(row => {
+                const values = headers.map(h => {
+                    let val = row[h] || '';
+                    if (typeof val === 'string' && (val.includes(',') || val.includes('"') || val.includes(
+                            '\n'))) {
                         val = `"${val.replace(/"/g, '""')}"`;
                     }
                     return val;
@@ -2283,34 +2381,17 @@
         }
 
         /* ============================================================
-           ENVOI DE MESSAGES EN MASSE
+           ENVOI DE MESSAGES
            ============================================================ */
-        document.querySelector('.table-actions').insertAdjacentHTML('beforeend', `
-            <button class="btn-action" id="sendMassMessageBtn">📧 Message à tous</button>
-        `);
-
-        document.getElementById('sendMassMessageBtn').addEventListener('click', function() {
-            if (filteredData.length === 0) {
-                alert('Aucun inscrit à qui envoyer un message.');
-                return;
-            }
-            const emails = filteredData.map(row => row['Email']).filter(e => e && e.trim() !== '');
-            if (emails.length === 0) {
-                alert('Aucune adresse email valide trouvée.');
-                return;
-            }
-            sendMessageModal(emails, 'tous les inscrits');
-        });
-
         function sendMessageModal(emails, target) {
-            const subject = prompt(`Sujet du message (à ${target}):`, 'ENFLAMMER 2026 - Informations importantes');
+            const subject = prompt(`Sujet du message (a ${target}):`, 'ENFLAMMER 2026 - Informations importantes');
             if (subject === null) return;
 
             const message = prompt(`Message (utilisez [NOM] pour personnaliser):`,
-                'Bonjour [NOM],\n\nNous vous rappelons la conférence ENFLAMMER 2026 du 22 au 24 septembre à Cotonou.\n\nL\'équipe AGYINASARE WORLD EVANGELISM');
+                'Bonjour [NOM],\n\nNous vous rappelons la conference ENFLAMMER 2026 du 22 au 24 septembre a Cotonou.\n\nL\'equipe AGYINASARE WORLD EVANGELISM');
             if (message === null) return;
 
-            if (!confirm(`Envoyer ce message à ${emails.length} personne(s) ?`)) return;
+            if (!confirm(`Envoyer ce message a ${emails.length} personne(s) ?`)) return;
 
             (async function() {
                 try {
@@ -2327,7 +2408,7 @@
                     });
                     const result = await response.json();
                     if (result.success) {
-                        alert(`✅ ${result.data.sent || emails.length} message(s) envoyé(s) !`);
+                        alert(`✅ ${result.data.sent || emails.length} message(s) envoye(s) !`);
                     } else {
                         alert('Erreur: ' + (result.message || 'Inconnue'));
                     }
@@ -2337,15 +2418,28 @@
             })();
         }
 
+        document.getElementById('sendMassMessageBtn').addEventListener('click', function() {
+            if (filteredData.length === 0) {
+                alert('Aucun inscrit a qui envoyer un message.');
+                return;
+            }
+            const emails = filteredData.map(row => row['Email']).filter(e => e && e.trim() !== '');
+            if (emails.length === 0) {
+                alert('Aucune adresse email valide trouvee.');
+                return;
+            }
+            sendMessageModal(emails, 'tous les inscrits');
+        });
+
         /* ============================================================
-           RAFRAÎCHIR
+           RAFRAICHIR
            ============================================================ */
         document.getElementById('refreshData').addEventListener('click', function() {
             loadData();
         });
 
         /* ============================================================
-           POINTAGE
+           POINTAGE AVEC PERSISTANCE SERVEUR
            ============================================================ */
         function loadDayStatus() {
             try {
@@ -2374,9 +2468,9 @@
             const input = document.getElementById('checkinInput');
             const id = input.value.trim().toUpperCase();
             if (!id) { alert('Veuillez saisir un ID.'); return; }
-            if (!currentDay) { alert('Veuillez sélectionner un jour.'); return; }
+            if (!currentDay) { alert('Veuillez selectionner un jour.'); return; }
             if (dayStatus['closed_' + currentDay] === true) {
-                alert('Ce jour est déjà clôturé.');
+                alert('Ce jour est deja cloture.');
                 return;
             }
 
@@ -2386,8 +2480,8 @@
             const participant = allData.find(d => d['ID'] === id);
             if (!participant) {
                 resultDiv.className = 'checkin-result error';
-                document.getElementById('resultName').textContent = 'ID non trouvé';
-                document.getElementById('resultDetail').textContent = 'Vérifiez l\'ID saisi';
+                document.getElementById('resultName').textContent = 'ID non trouve';
+                document.getElementById('resultDetail').textContent = 'Verifiez l\'ID saisi';
                 input.value = '';
                 input.focus();
                 return;
@@ -2398,7 +2492,7 @@
             if (dayStatus[dayKey].includes(id)) {
                 resultDiv.className = 'checkin-result error';
                 document.getElementById('resultName').textContent = participant['Prénoms'] + ' ' + participant['Nom'];
-                document.getElementById('resultDetail').textContent = 'Déjà pointé pour ce jour';
+                document.getElementById('resultDetail').textContent = 'Deja pointe pour ce jour';
                 input.value = '';
                 input.focus();
                 return;
@@ -2407,6 +2501,7 @@
             dayStatus[dayKey].push(id);
             saveDayStatus();
 
+            // Sauvegarde sur le serveur
             try {
                 await fetch(CONFIG.SCRIPT_URL, {
                     method: 'POST',
@@ -2419,15 +2514,17 @@
                     }),
                 });
             } catch (e) {
-                console.warn('Erreur synchro présence:', e);
+                console.warn('Erreur synchro presence:', e);
             }
 
             resultDiv.className = 'checkin-result success';
             document.getElementById('resultName').textContent = participant['Prénoms'] + ' ' + participant['Nom'];
-            document.getElementById('resultDetail').textContent = participant['Ministère/Église'] + ' • ' + participant['Pays'];
+            document.getElementById('resultDetail').textContent = participant['Ministère/Église'] + ' - ' + participant['Pays'];
 
             addRecentCheckin(id, participant['Nom'], participant['Prénoms']);
             updateDayStats();
+            // Recharger les données pour mettre à jour le tableau
+            await loadData();
 
             input.value = '';
             input.focus();
@@ -2438,9 +2535,9 @@
         });
 
         document.getElementById('closeDayBtn').addEventListener('click', function() {
-            if (!currentDay) { alert('Veuillez sélectionner un jour.'); return; }
+            if (!currentDay) { alert('Veuillez selectionner un jour.'); return; }
             if (dayStatus['closed_' + currentDay] === true) {
-                alert('Ce jour est déjà clôturé.');
+                alert('Ce jour est deja cloture.');
                 return;
             }
 
@@ -2450,7 +2547,7 @@
             const present = presentIds.length;
             const absent = total - present;
 
-            if (!confirm(`Clôturer le jour ${currentDay} ?\n\nPrésents : ${present}\nAbsents : ${absent}\n\nConfirmer ?`))
+            if (!confirm(`Cloturer le jour ${currentDay} ?\n\nPresents : ${present}\nAbsents : ${absent}\n\nConfirmer ?`))
                 return;
 
             dayStatus['closed_' + currentDay] = true;
@@ -2468,12 +2565,11 @@
                     }),
                 });
             } catch (e) {
-                console.warn('Erreur synchro clôture:', e);
+                console.warn('Erreur synchro cloture:', e);
             }
 
             updateDayStats();
-
-            alert('Journée clôturée !\nPrésents : ' + present + '\nAbsents : ' + absent);
+            alert('Journee cloturee !\nPresents : ' + present + '\nAbsents : ' + absent);
         });
 
         /* ============================================================
@@ -2508,7 +2604,7 @@
         }
 
         /* ============================================================
-           NOTIFICATIONS
+           NOTIFICATIONS EN TEMPS REEL
            ============================================================ */
         function startPolling() {
             let lastCount = allData.length;
@@ -2564,15 +2660,15 @@
         function renderReminders(reminders) {
             const container = document.getElementById('reminderItems');
             if (!reminders || reminders.length === 0) {
-                container.innerHTML = `<div class="empty-state">Aucun rappel programmé</div>`;
+                container.innerHTML = `<div class="empty-state">Aucun rappel programme</div>`;
                 return;
             }
             container.innerHTML = reminders.map(r => `
                 <div class="reminder-item">
                     <div class="info">
                         <div class="title">${r.title || 'Rappel'}</div>
-                        <div class="date">${r.date || 'Date non définie'}</div>
-                        <span class="status ${r.status === 'envoyé' ? '' : 'pending'}">${r.status === 'envoyé' ? 'Envoyé' : 'En attente'}</span>
+                        <div class="date">${r.date || 'Date non definie'}</div>
+                        <span class="status ${r.status === 'envoye' ? '' : 'pending'}">${r.status === 'envoye' ? 'Envoye' : 'En attente'}</span>
                     </div>
                     <div class="actions">
                         <button onclick="deleteReminder('${r.id}')">Supprimer</button>
@@ -2605,7 +2701,7 @@
                 });
                 const result = await response.json();
                 if (result.success) {
-                    alert('Rappel ajouté avec succès !');
+                    alert('Rappel ajoute avec succes !');
                     document.getElementById('reminderTitle').value = '';
                     document.getElementById('reminderDate').value = '';
                     document.getElementById('reminderMessage').value = '';
@@ -2642,11 +2738,11 @@
         }
 
         /* ============================================================
-           EXPORT PDF (existants)
+           EXPORT PDF
            ============================================================ */
 
         document.getElementById('exportPDFReport').addEventListener('click', function() {
-            if (allData.length === 0) { alert('Aucune donnée à exporter.'); return; }
+            if (allData.length === 0) { alert('Aucune donnee a exporter.'); return; }
 
             const content = document.createElement('div');
             content.style.cssText = 'padding:30px;font-family:Inter,Arial,sans-serif;background:#fff;color:#1a1410;max-width:900px;margin:0 auto;';
@@ -2658,7 +2754,7 @@
                 <div style="text-align:center;border-bottom:3px solid #D4A843;padding-bottom:20px;margin-bottom:25px;">
                     <h1 style="color:#C62828;font-size:28px;letter-spacing:3px;">ENFLAMMER 2026</h1>
                     <p style="color:#D4A843;font-weight:600;">Rapport des inscriptions - Cotonou</p>
-                    <p style="color:#666;font-size:13px;">Généré le ${new Date().toLocaleDateString('fr-FR')}</p>
+                    <p style="color:#666;font-size:13px;">Genere le ${new Date().toLocaleDateString('fr-FR')}</p>
                 </div>
                 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px;">
                     <div style="background:#f5f0e8;border-radius:10px;padding:16px;text-align:center;">
@@ -2667,7 +2763,7 @@
                     </div>
                     <div style="background:#f5f0e8;border-radius:10px;padding:16px;text-align:center;">
                         <div style="font-size:28px;font-weight:700;color:#3498db;">${pays.size}</div>
-                        <div style="font-size:12px;color:#666;">Pays représentés</div>
+                        <div style="font-size:12px;color:#666;">Pays representes</div>
                     </div>
                 </div>
                 <h3 style="color:#333;border-bottom:2px solid #eee;padding-bottom:8px;margin-bottom:12px;">Liste des inscrits</h3>
@@ -2675,7 +2771,7 @@
                     <thead><tr style="background:#f5f0e8;">
                         <th style="padding:6px 8px;text-align:left;">ID</th>
                         <th style="padding:6px 8px;text-align:left;">Nom</th>
-                        <th style="padding:6px 8px;text-align:left;">Prénoms</th>
+                        <th style="padding:6px 8px;text-align:left;">Prenoms</th>
                         <th style="padding:6px 8px;text-align:left;">Email</th>
                         <th style="padding:6px 8px;text-align:left;">Pays</th>
                     </tr></thead>
@@ -2684,7 +2780,7 @@
                             <tr style="border-bottom:1px solid #eee;">
                                 <td style="padding:5px 8px;">${row['ID'] || '-'}</td>
                                 <td style="padding:5px 8px;">${row['Nom'] || '-'}</td>
-                                <td style="padding:5px 8px;">${row['Prénoms'] || '-'}</td>
+                                <td style="padding:5px 8px;">${row['Prenoms'] || '-'}</td>
                                 <td style="padding:5px 8px;">${row['Email'] || '-'}</td>
                                 <td style="padding:5px 8px;">${row['Pays'] || '-'}</td>
                             </tr>
@@ -2714,21 +2810,21 @@
             content.innerHTML = `
                 <div style="text-align:center;border-bottom:3px solid #D4A843;padding-bottom:20px;margin-bottom:25px;">
                     <h1 style="color:#C62828;font-size:24px;letter-spacing:3px;">ENFLAMMER 2026</h1>
-                    <p style="color:#D4A843;font-weight:600;">Liste de présence - Cotonou</p>
-                    <p style="color:#666;font-size:13px;">Généré le ${new Date().toLocaleDateString('fr-FR')}</p>
+                    <p style="color:#D4A843;font-weight:600;">Liste de presence - Cotonou</p>
+                    <p style="color:#666;font-size:13px;">Genere le ${new Date().toLocaleDateString('fr-FR')}</p>
                 </div>
                 <table style="width:100%;border-collapse:collapse;font-size:11px;">
                     <thead><tr style="background:#f5f0e8;">
                         <th style="padding:6px 10px;text-align:left;">ID</th>
                         <th style="padding:6px 10px;text-align:left;">Nom complet</th>
-                        <th style="padding:6px 10px;text-align:left;">Église</th>
-                        <th style="padding:6px 10px;text-align:center;">Présent</th>
+                        <th style="padding:6px 10px;text-align:left;">Eglise</th>
+                        <th style="padding:6px 10px;text-align:center;">Present</th>
                     </tr></thead>
                     <tbody>
                         ${allData.map(row => `
                             <tr style="border-bottom:1px solid #eee;">
                                 <td style="padding:5px 10px;">${row['ID'] || '-'}</td>
-                                <td style="padding:5px 10px;">${row['Prénoms'] || ''} ${row['Nom'] || ''}</td>
+                                <td style="padding:5px 10px;">${row['Prenoms'] || ''} ${row['Nom'] || ''}</td>
                                 <td style="padding:5px 10px;">${row['Ministère/Église'] || '-'}</td>
                                 <td style="text-align:center;">☐</td>
                             </tr>
@@ -2749,7 +2845,7 @@
         });
 
         document.getElementById('exportStatsReport').addEventListener('click', function() {
-            if (allData.length === 0) { alert('Aucune donnée.'); return; }
+            if (allData.length === 0) { alert('Aucune donnee.'); return; }
 
             const total = allData.length;
             const pays = new Set(allData.map(d => d['Pays']).filter(p => p && p.trim() !== ''));
@@ -2759,7 +2855,7 @@
             content.style.cssText = 'padding:30px;font-family:Inter,Arial,sans-serif;background:#fff;color:#1a1410;max-width:700px;margin:0 auto;';
 
             const paysStats = {};
-            allData.forEach(d => { const p = d['Pays'] || 'Non renseigné';
+            allData.forEach(d => { const p = d['Pays'] || 'Non renseigne';
                 paysStats[p] = (paysStats[p] || 0) + 1; });
             const paysSorted = Object.entries(paysStats).sort((a, b) => b[1] - a[1]);
 
@@ -2767,7 +2863,7 @@
                 <div style="text-align:center;border-bottom:3px solid #D4A843;padding-bottom:20px;margin-bottom:25px;">
                     <h1 style="color:#C62828;font-size:24px;letter-spacing:3px;">ENFLAMMER 2026</h1>
                     <p style="color:#D4A843;font-weight:600;">Rapport statistique - Cotonou</p>
-                    <p style="color:#666;font-size:13px;">Généré le ${new Date().toLocaleDateString('fr-FR')}</p>
+                    <p style="color:#666;font-size:13px;">Genere le ${new Date().toLocaleDateString('fr-FR')}</p>
                 </div>
                 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px;">
                     <div style="background:#f5f0e8;border-radius:10px;padding:16px;text-align:center;">
@@ -2780,10 +2876,10 @@
                     </div>
                     <div style="background:#f5f0e8;border-radius:10px;padding:16px;text-align:center;">
                         <div style="font-size:28px;font-weight:700;color:#D4A843;">${eglises.size}</div>
-                        <div style="font-size:12px;color:#666;">Églises</div>
+                        <div style="font-size:12px;color:#666;">Eglises</div>
                     </div>
                 </div>
-                <h3 style="color:#333;border-bottom:2px solid #eee;padding-bottom:8px;margin-bottom:12px;">Répartition par pays</h3>
+                <h3 style="color:#333;border-bottom:2px solid #eee;padding-bottom:8px;margin-bottom:12px;">Repartition par pays</h3>
                 <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:20px;">
                     ${paysSorted.map(([p, count]) => `
                         <tr><td style="padding:4px 0;">${p}</td><td style="text-align:right;">${count}</td></tr>
@@ -2802,9 +2898,9 @@
             }).from(content).save();
         });
 
-        console.log('✅ Tableau de bord ENFLAMMER 2026 chargé !');
-        console.log('🔑 Mot de passe :', CONFIG.ADMIN_PASSWORD);
-        console.log('🔗 URL du script :', CONFIG.SCRIPT_URL);
+        console.log('Tableau de bord ENFLAMMER 2026 charge !');
+        console.log('Mot de passe :', CONFIG.ADMIN_PASSWORD);
+        console.log('URL du script :', CONFIG.SCRIPT_URL);
     </script>
 
 </body>
