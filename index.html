@@ -742,6 +742,23 @@
             opacity: 0.5;
         }
 
+        /* Message d'erreur anti-doublon */
+        .duplicate-error {
+            display: none;
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            padding: 12px 16px;
+            background: rgba(231, 76, 60, 0.08);
+            border-left: 3px solid #e74c3c;
+            border-radius: 4px;
+            text-align: left;
+        }
+
+        .duplicate-error.visible {
+            display: block;
+        }
+
         /* ============================================================
            MODALE
            ============================================================ */
@@ -1645,6 +1662,12 @@
                     </div>
 
                     <div class="form-footer">
+                        <!-- Message d'erreur anti-doublon -->
+                        <div class="duplicate-error" id="duplicateError">
+                            ⚠️ <strong>Inscription déjà existante</strong><br />
+                            Une inscription avec ce nom, prénom ou cette adresse email a déjà été enregistrée.
+                            Veuillez vérifier vos informations ou contacter l'administrateur.
+                        </div>
                         <button type="submit" class="btn btn-primary btn-block" id="btnSubmit">
                             S'inscrire
                         </button>
@@ -1760,7 +1783,7 @@
            CONFIGURATION
            ============================================================ */
         const CONFIG = {
-            SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwoiA-zn4htzMJsHbkmVmnxuJONQRJRJaGgXBZjCzq5sNPtKn47NNbNjuttrcj9MQEI/exec',
+            SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwG0IGUgB-GgkrcVHk27JqsdiDxF9Uo_EQtJa1byCRVKcvKDrV2pW02k-BdmCPq5GeU/exec',
             EVENT_CODE: 'COT',
             YEAR: '2026',
             EVENT_START: '2026-09-22T08:30:00',
@@ -1997,12 +2020,41 @@
         })();
 
         // ============================================================
-        // FORMULAIRE
+        // ANTI-DOUBLON : Vérification côté serveur
+        // ============================================================
+        async function checkDuplicate(data) {
+            try {
+                const response = await fetch(CONFIG.SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        action: 'checkDuplicate',
+                        nom: data.nom,
+                        prenoms: data.prenoms,
+                        email: data.email,
+                    }),
+                });
+
+                const result = await response.json();
+                return result;
+            } catch (err) {
+                console.error('Erreur lors de la vérification des doublons:', err);
+                // En cas d'erreur de connexion, on autorise l'inscription (comportement fallback)
+                return { success: true, duplicate: false };
+            }
+        }
+
+        // ============================================================
+        // FORMULAIRE (avec anti-doublon)
         // ============================================================
         (function form() {
             const form = document.getElementById('inscriptionForm');
             const btn = document.getElementById('btnSubmit');
             const loading = document.getElementById('loadingOverlay');
+            const duplicateError = document.getElementById('duplicateError');
 
             const fields = {
                 nom: document.getElementById('nom'),
@@ -2031,11 +2083,14 @@
                     this.classList.remove('error');
                     const err = this.closest('.form-group').querySelector('.error-msg');
                     if (err) err.classList.remove('visible');
+                    // Masquer le message d'erreur doublon quand l'utilisateur modifie un champ
+                    duplicateError.classList.remove('visible');
                 });
                 input.addEventListener('change', function() {
                     this.classList.remove('error');
                     const err = this.closest('.form-group').querySelector('.error-msg');
                     if (err) err.classList.remove('visible');
+                    duplicateError.classList.remove('visible');
                 });
             });
 
@@ -2095,6 +2150,10 @@
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
 
+                // Réinitialiser le message d'erreur
+                duplicateError.classList.remove('visible');
+
+                // Validation du formulaire
                 if (!validate()) {
                     const first = document.querySelector('.form-control.error');
                     if (first) {
@@ -2104,19 +2163,37 @@
                     return;
                 }
 
+                const statutValue = fields.statut.value;
+                const hotelValue = fields.hotel.value || 'non';
+
+                // Préparer les données pour la vérification des doublons
+                const checkData = {
+                    nom: fields.nom.value.trim(),
+                    prenoms: fields.prenoms.value.trim(),
+                    email: fields.email.value.trim(),
+                };
+
+                // Vérifier les doublons
+                const checkResult = await checkDuplicate(checkData);
+
+                if (checkResult.duplicate === true) {
+                    duplicateError.classList.add('visible');
+                    // Scroll jusqu'au message d'erreur
+                    duplicateError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    return;
+                }
+
+                // Si pas de doublon, on continue l'inscription
                 btn.disabled = true;
                 btn.innerHTML = 'Envoi en cours...';
                 loading.classList.add('active');
 
-                const statutValue = fields.statut.value;
-                const hotelValue = fields.hotel.value || 'non';
-
                 const data = {
-                    nom: fields.nom.value.trim(),
-                    prenoms: fields.prenoms.value.trim(),
+                    nom: checkData.nom,
+                    prenoms: checkData.prenoms,
                     genre: fields.genre.value,
                     whatsapp: fields.whatsapp.value.trim(),
-                    email: fields.email.value.trim(),
+                    email: checkData.email,
                     fonction: fields.fonction.value.trim(),
                     eglise: fields.eglise.value.trim(),
                     pays: fields.pays.value.trim(),
