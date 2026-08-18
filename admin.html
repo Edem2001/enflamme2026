@@ -564,6 +564,22 @@
             color: var(--danger);
         }
 
+        .btn-action-confirm {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .btn-action-confirm:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
         .table-wrapper {
             overflow-x: auto;
             padding: 0 4px 4px 4px;
@@ -1339,7 +1355,7 @@
                 <input type="password" id="loginPass" placeholder="Mot de passe" />
             </div>
 
-            <button class="btn" id="loginBtn">Acceder au tableau de bord</button>
+            <button class="btn" id="loginBtn">Accéder au tableau de bord</button>
             <div class="error-msg" id="loginError">Mot de passe incorrect</div>
         </div>
     </div>
@@ -1357,7 +1373,7 @@
             <div class="right">
                 <span class="badge"><span class="dot"></span> En direct</span>
                 <span class="badge" id="notifBadge">0 nouveau</span>
-                <button class="logout-btn" id="logoutBtn">Deconnexion</button>
+                <button class="logout-btn" id="logoutBtn">Déconnexion</button>
             </div>
         </div>
 
@@ -1381,17 +1397,17 @@
                     <div class="stat-number" id="statTotal">0</div>
                 </div>
                 <div class="stat-card green">
-                    <div class="stat-label">Points du jour</div>
+                    <div class="stat-label">Pointés du jour</div>
                     <div class="stat-number" id="statPresent">0</div>
-                    <div class="stat-sub" id="statPresentDay">Aucun jour selectionne</div>
+                    <div class="stat-sub" id="statPresentDay">Aucun jour sélectionné</div>
                 </div>
                 <div class="stat-card red">
                     <div class="stat-label">Absents du jour</div>
                     <div class="stat-number" id="statAbsent">0</div>
-                    <div class="stat-sub" id="statAbsentDay">Aucun jour selectionne</div>
+                    <div class="stat-sub" id="statAbsentDay">Aucun jour sélectionné</div>
                 </div>
                 <div class="stat-card blue">
-                    <div class="stat-label">Pays representes</div>
+                    <div class="stat-label">Pays représentés</div>
                     <div class="stat-number" id="statPays">0</div>
                 </div>
             </div>
@@ -1399,11 +1415,11 @@
             <!-- Graphiques -->
             <div class="charts-grid">
                 <div class="chart-card">
-                    <h4>Repartition par pays</h4>
+                    <h4>Répartition par pays</h4>
                     <canvas id="chartPays"></canvas>
                 </div>
                 <div class="chart-card">
-                    <h4>Evolution des inscriptions</h4>
+                    <h4>Évolution des inscriptions</h4>
                     <canvas id="chartEvolution"></canvas>
                 </div>
                 <div class="chart-card">
@@ -1411,7 +1427,7 @@
                     <canvas id="chartSource"></canvas>
                 </div>
                 <div class="chart-card">
-                    <h4>Repartition par eglise</h4>
+                    <h4>Répartition par église</h4>
                     <canvas id="chartEglise"></canvas>
                 </div>
             </div>
@@ -1425,7 +1441,7 @@
 
             <div class="filters-section">
                 <div class="filters-row">
-                    <input type="text" class="search-input" id="searchInput" placeholder="Rechercher par ID, Nom, Email, Eglise..." />
+                    <input type="text" class="search-input" id="searchInput" placeholder="Rechercher par ID, Nom, Email, Église..." />
                     <select id="filterPays">
                         <option value="">Tous les pays</option>
                     </select>
@@ -1435,7 +1451,7 @@
                         <option value="international">International</option>
                     </select>
                     <button class="btn-filter" id="applyFilters">Appliquer</button>
-                    <button class="btn-filter secondary" id="resetFilters">Reinitialiser</button>
+                    <button class="btn-filter secondary" id="resetFilters">Réinitialiser</button>
                 </div>
             </div>
 
@@ -1444,33 +1460,35 @@
                     <h3>Liste des inscrits <span id="totalDisplay">(0)</span></h3>
                     <div class="table-actions">
                         <button class="btn-action" id="exportExcel">Exporter Excel</button>
-                        <button class="btn-action" id="refreshData">Rafraichir</button>
-                        <button class="btn-action" id="sendMassMessageBtn">Message a tous</button>
+                        <button class="btn-action" id="refreshData">Rafraîchir</button>
+                        <button class="btn-action" id="sendMassMessageBtn">Message à tous</button>
+                        <!-- 👇 NOUVEAU BOUTON : Renvoyer la confirmation à tous -->
+                        <button class="btn-action" id="resendAllConfirmBtn" style="color:var(--gold);">Renvoyer confirmation à tous</button>
                     </div>
                 </div>
 
                 <div class="table-wrapper">
                     <div id="loadingIndicator" class="loading-spinner">
                         <div class="spinner"></div>
-                        Chargement des donnees...
+                        Chargement des données...
                     </div>
                     <table id="dataTable" style="display:none;">
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Nom</th>
-                                <th>Prenoms</th>
+                                <th>Prénoms</th>
                                 <th>Email</th>
                                 <th>WhatsApp</th>
-                                <th>Eglise</th>
+                                <th>Église</th>
                                 <th>Pays</th>
                                 <th>Statut</th>
-                                <th>Hotel</th>
+                                <th>Hôtel</th>
                                 <th>Budget</th>
-                                <th>Arrivee</th>
-                                <th>Depart</th>
+                                <th>Arrivée</th>
+                                <th>Départ</th>
                                 <th>Compagnie</th>
-                                <th>Present</th>
+                                <th>Présent</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -1478,12 +1496,12 @@
                         </tbody>
                     </table>
                     <div id="emptyState" class="empty-state" style="display:none;">
-                        Aucun inscrit trouve
+                        Aucun inscrit trouvé
                     </div>
                 </div>
 
                 <div class="pagination" id="paginationContainer">
-                    <button id="prevPage" disabled>Precedent</button>
+                    <button id="prevPage" disabled>Précédent</button>
                     <span class="info" id="pageInfo">Page 1 sur 1</span>
                     <button id="nextPage" disabled>Suivant</button>
                 </div>
@@ -1497,7 +1515,7 @@
         <div id="tab-checkin" class="tab-content">
             <div class="checkin-container">
                 <h2>Pointage des participants</h2>
-                <p>Selectionnez le jour puis saisissez l'ID du participant pour valider sa presence</p>
+                <p>Sélectionnez le jour puis saisissez l'ID du participant pour valider sa présence</p>
 
                 <div class="checkin-day-selector">
                     <button class="day-btn" data-day="J-1">Jour 1 - 22 Septembre</button>
@@ -1506,10 +1524,10 @@
                 </div>
 
                 <div class="checkin-day-status" id="dayStatus">
-                    Jour selectionne : <strong id="selectedDayText">Aucun</strong> | 
-                    Pointes : <strong id="dayPresentCount">0</strong> | 
+                    Jour sélectionné : <strong id="selectedDayText">Aucun</strong> |
+                    Pointés : <strong id="dayPresentCount">0</strong> |
                     Absents : <strong id="dayAbsentCount">0</strong>
-                    <span id="dayClosedBadge" style="display:none; background:var(--gold); color:var(--text-inverse); padding:2px 10px; border-radius:50px; font-size:0.7rem; margin-left:8px;">Cloture</span>
+                    <span id="dayClosedBadge" style="display:none; background:var(--gold); color:var(--text-inverse); padding:2px 10px; border-radius:50px; font-size:0.7rem; margin-left:8px;">Clôturé</span>
                 </div>
 
                 <div class="checkin-input-group">
@@ -1523,9 +1541,9 @@
                 </div>
 
                 <div class="checkin-close-day">
-                    <button class="btn-close-day" id="closeDayBtn">Cloturer la journee</button>
+                    <button class="btn-close-day" id="closeDayBtn">Clôturer la journée</button>
                     <p style="color:var(--text-muted);font-size:0.75rem;margin-top:6px;">
-                        Une fois cloture, les absents seront calcules automatiquement.
+                        Une fois clôturé, les absents seront calculés automatiquement.
                     </p>
                 </div>
 
@@ -1560,10 +1578,10 @@
             </div>
 
             <div class="reminder-list" id="reminderList">
-                <h3 style="margin-bottom:16px;">Rappels programmes</h3>
+                <h3 style="margin-bottom:16px;">Rappels programmés</h3>
                 <div id="reminderItems">
                     <div class="empty-state">
-                        Aucun rappel programme
+                        Aucun rappel programmé
                     </div>
                 </div>
             </div>
@@ -1573,7 +1591,7 @@
         <!-- ONGLET : RAPPORTS -->
         <!-- ============================================================ -->
         <div id="tab-rapports" class="tab-content">
-            <h3 style="margin-bottom:16px;text-align:center;">Exporter des donnees filtrees</h3>
+            <h3 style="margin-bottom:16px;text-align:center;">Exporter des données filtrées</h3>
 
             <div class="export-grid">
 
@@ -1583,23 +1601,23 @@
                     <select id="exportPaysSelect">
                         <option value="">Tous les pays</option>
                     </select>
-                    <button class="btn-export-sm" id="exportByPays">Telecharger</button>
+                    <button class="btn-export-sm" id="exportByPays">Télécharger</button>
                 </div>
 
-                <!-- Export par eglise -->
+                <!-- Export par église -->
                 <div class="export-card">
-                    <h4>Par eglise</h4>
+                    <h4>Par église</h4>
                     <select id="exportEgliseSelect">
-                        <option value="">Toutes les eglises</option>
+                        <option value="">Toutes les églises</option>
                     </select>
-                    <button class="btn-export-sm" id="exportByEglise">Telecharger</button>
+                    <button class="btn-export-sm" id="exportByEglise">Télécharger</button>
                 </div>
 
-                <!-- Export par statut (presents/absents) -->
+                <!-- Export par statut (présents/absents) -->
                 <div class="export-card">
-                    <h4>Presents / Absents</h4>
+                    <h4>Présents / Absents</h4>
                     <select id="exportStatutSelect">
-                        <option value="present">Presents</option>
+                        <option value="present">Présents</option>
                         <option value="absent">Absents</option>
                     </select>
                     <select id="exportJourSelect">
@@ -1607,20 +1625,20 @@
                         <option value="J-2">Jour 2 (23 Sept)</option>
                         <option value="J-3">Jour 3 (24 Sept)</option>
                     </select>
-                    <button class="btn-export-sm" id="exportByStatut">Telecharger</button>
+                    <button class="btn-export-sm" id="exportByStatut">Télécharger</button>
                 </div>
 
-                <!-- Export combine (pays + statut) -->
+                <!-- Export combiné (pays + statut) -->
                 <div class="export-card">
                     <h4>Pays + Statut</h4>
                     <select id="exportComboPays">
                         <option value="">Tous les pays</option>
                     </select>
                     <select id="exportComboStatut">
-                        <option value="present">Presents</option>
+                        <option value="present">Présents</option>
                         <option value="absent">Absents</option>
                     </select>
-                    <button class="btn-export-sm" id="exportCombo">Telecharger</button>
+                    <button class="btn-export-sm" id="exportCombo">Télécharger</button>
                 </div>
 
                 <!-- Export internationaux -->
@@ -1629,7 +1647,7 @@
                     <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:10px;">
                         Exporte tous les participants ayant le statut "International"
                     </p>
-                    <button class="btn-export-sm" id="exportInternational">Telecharger</button>
+                    <button class="btn-export-sm" id="exportInternational">Télécharger</button>
                 </div>
 
             </div>
@@ -1639,7 +1657,7 @@
                 <h4 style="color:var(--text-muted);margin-bottom:12px;">Rapports complets</h4>
                 <div class="export-options">
                     <button class="btn-export" id="exportPDFReport">Rapport complet PDF</button>
-                    <button class="btn-export" id="exportPresenceList">Liste de presence PDF</button>
+                    <button class="btn-export" id="exportPresenceList">Liste de présence PDF</button>
                     <button class="btn-export" id="exportStatsReport">Rapport statistiques</button>
                 </div>
             </div>
@@ -1649,7 +1667,7 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- NOTIFICATION TOAST (sans emoji) -->
+    <!-- NOTIFICATION TOAST -->
     <!-- ============================================================ -->
     <div class="notification-toast" id="notificationToast">
         <span class="notif-icon">Nouvelle</span>
@@ -1664,12 +1682,13 @@
            CONFIGURATION
            ============================================================ */
         const CONFIG = {
-            SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwrfnhGpcslXM8loMlampQSFabQaSaphKkqaxrjfnmMRt0Zk2D4Mtygg8s8Kx4syAyS/exec',
+            // 👇 À METTRE À JOUR AVEC VOTRE URL DE DÉPLOIEMENT
+            SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbxHKl-flwS4wwwAj5TrIxAwn9EPzkQ8L2WjICbnftJHc3E5IxOw1cw0YOvPpkqjF2kZ/exec',
             ADMIN_PASSWORD: 'enflammer2026',
         };
 
         // ============================================================
-        // PROTECTION : Desactiver le clic droit
+        // PROTECTION : Désactiver le clic droit
         // ============================================================
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
@@ -1726,7 +1745,7 @@
         })();
 
         /* ============================================================
-           DECONNEXION
+           DÉCONNEXION
            ============================================================ */
         document.getElementById('logoutBtn').addEventListener('click', function() {
             sessionStorage.removeItem('adminLoggedIn');
@@ -1759,7 +1778,7 @@
         }
 
         /* ============================================================
-           CHARGEMENT DES DONNEES
+           CHARGEMENT DES DONNÉES
            ============================================================ */
         async function loadData() {
             const loading = document.getElementById('loadingIndicator');
@@ -1772,7 +1791,7 @@
 
             try {
                 const url = CONFIG.SCRIPT_URL + '?action=getData&t=' + Date.now();
-                console.log('Chargement des donnees depuis:', url);
+                console.log('Chargement des données depuis:', url);
 
                 const response = await fetch(url, {
                     method: 'GET',
@@ -1780,11 +1799,11 @@
                 });
 
                 const result = await response.json();
-                console.log('Reponse du script:', result);
+                console.log('Réponse du script:', result);
 
                 if (result.success && result.data !== undefined) {
                     allData = result.data;
-                    console.log('Nombre d\'inscrits charges:', allData.length);
+                    console.log('Nombre d\'inscrits chargés:', allData.length);
                     updateStats(allData);
                     populateFilters(allData);
                     populateExportFilters();
@@ -1793,11 +1812,11 @@
                     applyFilters();
                 } else {
                     console.error('Erreur script:', result.message);
-                    alert('Erreur de chargement: ' + (result.message || 'Veuillez verifier l\'URL du script'));
+                    alert('Erreur de chargement: ' + (result.message || 'Veuillez vérifier l\'URL du script'));
                 }
             } catch (err) {
                 console.error('Erreur fetch:', err);
-                alert('Impossible de charger les donnees. Verifiez :\n1. L\'URL du script\n2. La connexion internet\n3. Le deploiement du script');
+                alert('Impossible de charger les données. Vérifiez :\n1. L\'URL du script\n2. La connexion internet\n3. Le déploiement du script');
             } finally {
                 loading.style.display = 'none';
             }
@@ -1820,8 +1839,8 @@
             if (!currentDay) {
                 document.getElementById('statPresent').textContent = '0';
                 document.getElementById('statAbsent').textContent = '0';
-                document.getElementById('statPresentDay').textContent = 'Aucun jour selectionne';
-                document.getElementById('statAbsentDay').textContent = 'Aucun jour selectionne';
+                document.getElementById('statPresentDay').textContent = 'Aucun jour sélectionné';
+                document.getElementById('statAbsentDay').textContent = 'Aucun jour sélectionné';
                 return;
             }
 
@@ -1884,7 +1903,7 @@
 
             const egliseSelect = document.getElementById('exportEgliseSelect');
             if (egliseSelect) {
-                egliseSelect.innerHTML = '<option value="">Toutes les eglises</option>';
+                egliseSelect.innerHTML = '<option value="">Toutes les églises</option>';
                 eglises.forEach(e => {
                     const opt = document.createElement('option');
                     opt.value = e;
@@ -1978,8 +1997,8 @@
                 const isPresent = row['Présent'] && row['Présent'].trim() !== '';
                 const statusClass = isPresent ? 'present' : 'absent';
 
-                const statutValue = row['Statut'] || 'Non renseigne';
-                const hotelValue = row['Hôtel'] || 'Non renseigne';
+                const statutValue = row['Statut'] || 'Non renseigné';
+                const hotelValue = row['Hôtel'] || 'Non renseigné';
                 const budgetValue = row['Budget'] || '—';
                 const arriveeValue = row['Arrivée'] || '—';
                 const departValue = row['Départ'] || '—';
@@ -2006,8 +2025,11 @@
                     <td>${arriveeValue}</td>
                     <td>${departValue}</td>
                     <td>${compagnieValue}</td>
-                    <td><span class="status-badge ${statusClass}">${isPresent ? 'Present' : 'Absent'}</span></td>
+                    <td><span class="status-badge ${statusClass}">${isPresent ? 'Présent' : 'Absent'}</span></td>
                     <td>
+                        <button class="btn-action-confirm resend-confirm" data-id="${row['ID']}" data-email="${row['Email'] || ''}" data-nom="${row['Nom'] || ''}" data-prenoms="${row['Prénoms'] || ''}" data-fonction="${row['Fonction'] || ''}" data-eglise="${row['Ministère/Église'] || ''}" data-pays="${row['Pays'] || ''}" data-ville="${row['Ville'] || ''}" data-nationalite="${row['Nationalité'] || ''}" data-source="${row['Source'] || ''}" data-attentes="${row['Attentes'] || ''}" data-statut="${row['Statut'] || ''}" data-hotel="${row['Hôtel'] || ''}" data-budget="${row['Budget'] || ''}" data-arrivee="${row['Arrivée'] || ''}" data-depart="${row['Départ'] || ''}" data-compagnie="${row['Compagnie'] || ''}" data-whatsapp="${row['WhatsApp'] || ''}">
+                            ✉️ Confirmation
+                        </button>
                         <button class="btn-action btn-send-email" data-email="${row['Email'] || ''}" style="font-size:0.7rem;padding:4px 10px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);cursor:pointer;">Message</button>
                     </td>
                 `;
@@ -2019,6 +2041,34 @@
             document.getElementById('prevPage').disabled = currentPage <= 1;
             document.getElementById('nextPage').disabled = currentPage >= totalPagesDisplay;
 
+            // Événements pour les boutons "Confirmation"
+            document.querySelectorAll('.resend-confirm').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const data = {
+                        id: this.dataset.id,
+                        email: this.dataset.email,
+                        nom: this.dataset.nom,
+                        prenoms: this.dataset.prenoms,
+                        fonction: this.dataset.fonction,
+                        eglise: this.dataset.eglise,
+                        pays: this.dataset.pays,
+                        ville: this.dataset.ville,
+                        nationalite: this.dataset.nationalite,
+                        source: this.dataset.source,
+                        attentes: this.dataset.attentes,
+                        statut: this.dataset.statut,
+                        hotel: this.dataset.hotel,
+                        budget: this.dataset.budget,
+                        arrivee: this.dataset.arrivee,
+                        depart: this.dataset.depart,
+                        compagnie: this.dataset.compagnie,
+                        whatsapp: this.dataset.whatsapp,
+                    };
+                    resendConfirmation(data);
+                });
+            });
+
+            // Événements pour les boutons "Message" (existant)
             document.querySelectorAll('.btn-send-email').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const email = this.dataset.email;
@@ -2056,10 +2106,10 @@
                 }
             });
 
-            // 1. Repartition par pays
+            // 1. Répartition par pays
             const paysCount = {};
             data.forEach(d => {
-                const p = d['Pays'] || 'Non renseigne';
+                const p = d['Pays'] || 'Non renseigné';
                 paysCount[p] = (paysCount[p] || 0) + 1;
             });
             const paysLabels = Object.keys(paysCount).slice(0, 10);
@@ -2093,7 +2143,7 @@
                 }
             }
 
-            // 2. Evolution des inscriptions
+            // 2. Évolution des inscriptions
             const evolution = {};
             data.forEach(d => {
                 const date = d['Date'] ? d['Date'].split(' ')[0] : 'Inconnue';
@@ -2138,7 +2188,7 @@
             // 3. Source de provenance
             const sourceCount = {};
             data.forEach(d => {
-                const s = d['Source'] || 'Non renseigne';
+                const s = d['Source'] || 'Non renseigné';
                 sourceCount[s] = (sourceCount[s] || 0) + 1;
             });
             const srcLabels = Object.keys(sourceCount);
@@ -2172,10 +2222,10 @@
                 }
             }
 
-            // 4. Repartition par eglise
+            // 4. Répartition par église
             const egliseCount = {};
             data.forEach(d => {
-                const e = d['Ministère/Église'] || 'Non renseigne';
+                const e = d['Ministère/Église'] || 'Non renseigné';
                 egliseCount[e] = (egliseCount[e] || 0) + 1;
             });
             const eglLabels = Object.keys(egliseCount).slice(0, 8);
@@ -2216,7 +2266,7 @@
                     c.style.display = 'none';
                     const parent = c.parentElement;
                     const msg = document.createElement('p');
-                    msg.textContent = 'Aucune donnee a afficher';
+                    msg.textContent = 'Aucune donnée à afficher';
                     msg.style.color = '#9a8a7a';
                     msg.style.textAlign = 'center';
                     msg.style.padding = '20px';
@@ -2229,39 +2279,35 @@
            EXPORT EXCEL
            ============================================================ */
         document.getElementById('exportExcel').addEventListener('click', function() {
-            if (filteredData.length === 0) { alert('Aucune donnee a exporter.'); return; }
+            if (filteredData.length === 0) { alert('Aucune donnée à exporter.'); return; }
             exportToCSV(filteredData, 'inscriptions_ENFLAMMER');
         });
 
         /* ============================================================
-           FONCTIONS D'EXPORT FILTRE
+           FONCTIONS D'EXPORT FILTRÉ
            ============================================================ */
-
-        // Export par pays
         document.getElementById('exportByPays').addEventListener('click', function() {
             const pays = document.getElementById('exportPaysSelect').value;
             let data = allData;
             if (pays) {
                 data = data.filter(row => row['Pays'] === pays);
             }
-            if (data.length === 0) { alert('Aucune donnee pour ce pays.'); return; }
+            if (data.length === 0) { alert('Aucune donnée pour ce pays.'); return; }
             const filename = pays ? `inscrits_${pays}` : 'inscrits_tous_pays';
             exportToCSV(data, filename);
         });
 
-        // Export par eglise
         document.getElementById('exportByEglise').addEventListener('click', function() {
             const eglise = document.getElementById('exportEgliseSelect').value;
             let data = allData;
             if (eglise) {
                 data = data.filter(row => row['Ministère/Église'] === eglise);
             }
-            if (data.length === 0) { alert('Aucune donnee pour cette eglise.'); return; }
+            if (data.length === 0) { alert('Aucune donnée pour cette église.'); return; }
             const filename = eglise ? `inscrits_${eglise.replace(/\s+/g, '_')}` : 'inscrits_toutes_eglises';
             exportToCSV(data, filename);
         });
 
-        // Export par statut (presents/absents)
         document.getElementById('exportByStatut').addEventListener('click', function() {
             const statut = document.getElementById('exportStatutSelect').value;
             const jour = document.getElementById('exportJourSelect').value;
@@ -2276,12 +2322,11 @@
                 data = data.filter(row => !presentIds.includes(row['ID']));
             }
 
-            if (data.length === 0) { alert(`Aucun ${statut === 'present' ? 'present' : 'absent'} pour ce jour.`); return; }
+            if (data.length === 0) { alert(`Aucun ${statut === 'present' ? 'présent' : 'absent'} pour ce jour.`); return; }
             const filename = `${statut}_${jour}`;
             exportToCSV(data, filename);
         });
 
-        // Export combine (pays + statut)
         document.getElementById('exportCombo').addEventListener('click', function() {
             const pays = document.getElementById('exportComboPays').value;
             const statut = document.getElementById('exportComboStatut').value;
@@ -2308,16 +2353,15 @@
                 data = data.filter(row => !presentIds.includes(row['ID']));
             }
 
-            if (data.length === 0) { alert('Aucune donnee pour ces criteres.'); return; }
+            if (data.length === 0) { alert('Aucune donnée pour ces critères.'); return; }
             const filename = `inscrits_${pays || 'tous'}_${statut}`;
             exportToCSV(data, filename);
         });
 
-        // Export internationaux
         document.getElementById('exportInternational').addEventListener('click', function() {
             const data = allData.filter(row => row['Statut'] === 'international');
             if (data.length === 0) {
-                alert('Aucun participant international trouve.');
+                alert('Aucun participant international trouvé.');
                 return;
             }
             const headers = ['ID', 'Nom', 'Prénoms', 'Genre', 'WhatsApp', 'Email', 'Fonction', 'Ministère/Église', 'Pays',
@@ -2349,7 +2393,7 @@
         });
 
         /* ============================================================
-           EXPORT CSV (fonction generique)
+           EXPORT CSV (fonction générique)
            ============================================================ */
         function exportToCSV(data, filename) {
             const headers = ['ID', 'Nom', 'Prénoms', 'Genre', 'WhatsApp', 'Email', 'Fonction', 'Ministère/Église', 'Pays',
@@ -2381,17 +2425,17 @@
         }
 
         /* ============================================================
-           ENVOI DE MESSAGES
+           ENVOI DE MESSAGES PERSONNALISÉS (existant)
            ============================================================ */
         function sendMessageModal(emails, target) {
-            const subject = prompt(`Sujet du message (a ${target}):`, 'ENFLAMMER 2026 - Informations importantes');
+            const subject = prompt(`Sujet du message (à ${target}):`, 'ENFLAMMER 2026 - Informations importantes');
             if (subject === null) return;
 
             const message = prompt(`Message (utilisez [NOM] pour personnaliser):`,
-                'Bonjour [NOM],\n\nNous vous rappelons la conference ENFLAMMER 2026 du 22 au 24 septembre a Cotonou.\n\nL\'equipe AGYINASARE WORLD EVANGELISM');
+                'Bonjour [NOM],\n\nNous vous rappelons la conférence ENFLAMMER 2026 du 22 au 24 septembre à Cotonou.\n\nL\'équipe AGYINASARE WORLD EVANGELISM');
             if (message === null) return;
 
-            if (!confirm(`Envoyer ce message a ${emails.length} personne(s) ?`)) return;
+            if (!confirm(`Envoyer ce message à ${emails.length} personne(s) ?`)) return;
 
             (async function() {
                 try {
@@ -2408,7 +2452,7 @@
                     });
                     const result = await response.json();
                     if (result.success) {
-                        alert(`✅ ${result.data.sent || emails.length} message(s) envoye(s) !`);
+                        alert(`✅ ${result.data.sent || emails.length} message(s) envoyé(s) !`);
                     } else {
                         alert('Erreur: ' + (result.message || 'Inconnue'));
                     }
@@ -2420,19 +2464,135 @@
 
         document.getElementById('sendMassMessageBtn').addEventListener('click', function() {
             if (filteredData.length === 0) {
-                alert('Aucun inscrit a qui envoyer un message.');
+                alert('Aucun inscrit à qui envoyer un message.');
                 return;
             }
             const emails = filteredData.map(row => row['Email']).filter(e => e && e.trim() !== '');
             if (emails.length === 0) {
-                alert('Aucune adresse email valide trouvee.');
+                alert('Aucune adresse email valide trouvée.');
                 return;
             }
             sendMessageModal(emails, 'tous les inscrits');
         });
 
         /* ============================================================
-           RAFRAICHIR
+           RENVOYER LA CONFIRMATION INDIVIDUELLE
+           ============================================================ */
+        async function resendConfirmation(data) {
+            if (!data.email || data.email === '-') {
+                alert('Aucune adresse email valide pour cet inscrit.');
+                return;
+            }
+
+            const fullName = `${data.prenoms || ''} ${data.nom || ''}`.trim() || 'Participant';
+            if (!confirm(`Renvoyer l'email de confirmation à ${fullName} (${data.email}) ?`)) return;
+
+            try {
+                const response = await fetch(CONFIG.SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({
+                        action: 'resendConfirmation',
+                        email: data.email,
+                        nom: data.nom || '',
+                        prenoms: data.prenoms || '',
+                        fonction: data.fonction || '',
+                        eglise: data.eglise || '',
+                        pays: data.pays || '',
+                        ville: data.ville || '',
+                        nationalite: data.nationalite || '',
+                        source: data.source || '',
+                        attentes: data.attentes || '',
+                        statut: data.statut || '',
+                        hotel: data.hotel || '',
+                        budget: data.budget || '',
+                        arrivee: data.arrivee || '',
+                        depart: data.depart || '',
+                        compagnie: data.compagnie || '',
+                        whatsapp: data.whatsapp || '',
+                        id: data.id || '',
+                    }),
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert(`✅ Email de confirmation renvoyé avec succès à ${fullName}`);
+                } else {
+                    alert('Erreur : ' + (result.message || 'Inconnue'));
+                }
+            } catch (err) {
+                alert('Erreur de connexion. Vérifiez l\'URL du script.');
+            }
+        }
+
+        /* ============================================================
+           RENVOYER LA CONFIRMATION À TOUS
+           ============================================================ */
+        document.getElementById('resendAllConfirmBtn').addEventListener('click', function() {
+            if (filteredData.length === 0) {
+                alert('Aucun inscrit dans la liste actuelle.');
+                return;
+            }
+
+            const total = filteredData.length;
+            if (!confirm(`Renvoyer l'email de confirmation à tous les ${total} inscrits de la liste actuelle ?`)) return;
+
+            // On envoie les données de tous les inscrits filtrés
+            const participants = filteredData.map(row => ({
+                email: row['Email'] || '',
+                nom: row['Nom'] || '',
+                prenoms: row['Prénoms'] || '',
+                fonction: row['Fonction'] || '',
+                eglise: row['Ministère/Église'] || '',
+                pays: row['Pays'] || '',
+                ville: row['Ville'] || '',
+                nationalite: row['Nationalité'] || '',
+                source: row['Source'] || '',
+                attentes: row['Attentes'] || '',
+                statut: row['Statut'] || '',
+                hotel: row['Hôtel'] || '',
+                budget: row['Budget'] || '',
+                arrivee: row['Arrivée'] || '',
+                depart: row['Départ'] || '',
+                compagnie: row['Compagnie'] || '',
+                whatsapp: row['WhatsApp'] || '',
+                id: row['ID'] || '',
+            })).filter(p => p.email && p.email.trim() !== '');
+
+            if (participants.length === 0) {
+                alert('Aucune adresse email valide trouvée.');
+                return;
+            }
+
+            if (!confirm(`Confirmer l'envoi à ${participants.length} participant(s) ?`)) return;
+
+            (async function() {
+                try {
+                    const response = await fetch(CONFIG.SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            action: 'resendAllConfirmations',
+                            participants: participants,
+                        }),
+                    });
+
+                    const result = await response.json();
+                    if (result.success) {
+                        alert(`✅ ${result.data.sent || participants.length} email(s) de confirmation renvoyé(s) !`);
+                    } else {
+                        alert('Erreur : ' + (result.message || 'Inconnue'));
+                    }
+                } catch (err) {
+                    alert('Erreur de connexion. Vérifiez l\'URL du script.');
+                }
+            })();
+        });
+
+        /* ============================================================
+           RAFRAÎCHIR
            ============================================================ */
         document.getElementById('refreshData').addEventListener('click', function() {
             loadData();
@@ -2468,9 +2628,9 @@
             const input = document.getElementById('checkinInput');
             const id = input.value.trim().toUpperCase();
             if (!id) { alert('Veuillez saisir un ID.'); return; }
-            if (!currentDay) { alert('Veuillez selectionner un jour.'); return; }
+            if (!currentDay) { alert('Veuillez sélectionner un jour.'); return; }
             if (dayStatus['closed_' + currentDay] === true) {
-                alert('Ce jour est deja cloture.');
+                alert('Ce jour est déjà clôturé.');
                 return;
             }
 
@@ -2480,8 +2640,8 @@
             const participant = allData.find(d => d['ID'] === id);
             if (!participant) {
                 resultDiv.className = 'checkin-result error';
-                document.getElementById('resultName').textContent = 'ID non trouve';
-                document.getElementById('resultDetail').textContent = 'Verifiez l\'ID saisi';
+                document.getElementById('resultName').textContent = 'ID non trouvé';
+                document.getElementById('resultDetail').textContent = 'Vérifiez l\'ID saisi';
                 input.value = '';
                 input.focus();
                 return;
@@ -2492,7 +2652,7 @@
             if (dayStatus[dayKey].includes(id)) {
                 resultDiv.className = 'checkin-result error';
                 document.getElementById('resultName').textContent = participant['Prénoms'] + ' ' + participant['Nom'];
-                document.getElementById('resultDetail').textContent = 'Deja pointe pour ce jour';
+                document.getElementById('resultDetail').textContent = 'Déjà pointé pour ce jour';
                 input.value = '';
                 input.focus();
                 return;
@@ -2501,7 +2661,6 @@
             dayStatus[dayKey].push(id);
             saveDayStatus();
 
-            // Sauvegarde sur le serveur
             try {
                 await fetch(CONFIG.SCRIPT_URL, {
                     method: 'POST',
@@ -2514,7 +2673,7 @@
                     }),
                 });
             } catch (e) {
-                console.warn('Erreur synchro presence:', e);
+                console.warn('Erreur synchro présence:', e);
             }
 
             resultDiv.className = 'checkin-result success';
@@ -2523,7 +2682,6 @@
 
             addRecentCheckin(id, participant['Nom'], participant['Prénoms']);
             updateDayStats();
-            // Recharger les données pour mettre à jour le tableau
             await loadData();
 
             input.value = '';
@@ -2535,9 +2693,9 @@
         });
 
         document.getElementById('closeDayBtn').addEventListener('click', function() {
-            if (!currentDay) { alert('Veuillez selectionner un jour.'); return; }
+            if (!currentDay) { alert('Veuillez sélectionner un jour.'); return; }
             if (dayStatus['closed_' + currentDay] === true) {
-                alert('Ce jour est deja cloture.');
+                alert('Ce jour est déjà clôturé.');
                 return;
             }
 
@@ -2547,7 +2705,7 @@
             const present = presentIds.length;
             const absent = total - present;
 
-            if (!confirm(`Cloturer le jour ${currentDay} ?\n\nPresents : ${present}\nAbsents : ${absent}\n\nConfirmer ?`))
+            if (!confirm(`Clôturer le jour ${currentDay} ?\n\nPrésents : ${present}\nAbsents : ${absent}\n\nConfirmer ?`))
                 return;
 
             dayStatus['closed_' + currentDay] = true;
@@ -2565,11 +2723,11 @@
                     }),
                 });
             } catch (e) {
-                console.warn('Erreur synchro cloture:', e);
+                console.warn('Erreur synchro clôture:', e);
             }
 
             updateDayStats();
-            alert('Journee cloturee !\nPresents : ' + present + '\nAbsents : ' + absent);
+            alert('Journée clôturée !\nPrésents : ' + present + '\nAbsents : ' + absent);
         });
 
         /* ============================================================
@@ -2604,7 +2762,7 @@
         }
 
         /* ============================================================
-           NOTIFICATIONS EN TEMPS REEL
+           NOTIFICATIONS EN TEMPS RÉEL
            ============================================================ */
         function startPolling() {
             let lastCount = allData.length;
@@ -2660,15 +2818,15 @@
         function renderReminders(reminders) {
             const container = document.getElementById('reminderItems');
             if (!reminders || reminders.length === 0) {
-                container.innerHTML = `<div class="empty-state">Aucun rappel programme</div>`;
+                container.innerHTML = `<div class="empty-state">Aucun rappel programmé</div>`;
                 return;
             }
             container.innerHTML = reminders.map(r => `
                 <div class="reminder-item">
                     <div class="info">
                         <div class="title">${r.title || 'Rappel'}</div>
-                        <div class="date">${r.date || 'Date non definie'}</div>
-                        <span class="status ${r.status === 'envoye' ? '' : 'pending'}">${r.status === 'envoye' ? 'Envoye' : 'En attente'}</span>
+                        <div class="date">${r.date || 'Date non définie'}</div>
+                        <span class="status ${r.status === 'envoyé' ? '' : 'pending'}">${r.status === 'envoyé' ? 'Envoyé' : 'En attente'}</span>
                     </div>
                     <div class="actions">
                         <button onclick="deleteReminder('${r.id}')">Supprimer</button>
@@ -2701,7 +2859,7 @@
                 });
                 const result = await response.json();
                 if (result.success) {
-                    alert('Rappel ajoute avec succes !');
+                    alert('Rappel ajouté avec succès !');
                     document.getElementById('reminderTitle').value = '';
                     document.getElementById('reminderDate').value = '';
                     document.getElementById('reminderMessage').value = '';
@@ -2742,7 +2900,7 @@
            ============================================================ */
 
         document.getElementById('exportPDFReport').addEventListener('click', function() {
-            if (allData.length === 0) { alert('Aucune donnee a exporter.'); return; }
+            if (allData.length === 0) { alert('Aucune donnée à exporter.'); return; }
 
             const content = document.createElement('div');
             content.style.cssText = 'padding:30px;font-family:Inter,Arial,sans-serif;background:#fff;color:#1a1410;max-width:900px;margin:0 auto;';
@@ -2754,7 +2912,7 @@
                 <div style="text-align:center;border-bottom:3px solid #D4A843;padding-bottom:20px;margin-bottom:25px;">
                     <h1 style="color:#C62828;font-size:28px;letter-spacing:3px;">ENFLAMMER 2026</h1>
                     <p style="color:#D4A843;font-weight:600;">Rapport des inscriptions - Cotonou</p>
-                    <p style="color:#666;font-size:13px;">Genere le ${new Date().toLocaleDateString('fr-FR')}</p>
+                    <p style="color:#666;font-size:13px;">Généré le ${new Date().toLocaleDateString('fr-FR')}</p>
                 </div>
                 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px;">
                     <div style="background:#f5f0e8;border-radius:10px;padding:16px;text-align:center;">
@@ -2763,7 +2921,7 @@
                     </div>
                     <div style="background:#f5f0e8;border-radius:10px;padding:16px;text-align:center;">
                         <div style="font-size:28px;font-weight:700;color:#3498db;">${pays.size}</div>
-                        <div style="font-size:12px;color:#666;">Pays representes</div>
+                        <div style="font-size:12px;color:#666;">Pays représentés</div>
                     </div>
                 </div>
                 <h3 style="color:#333;border-bottom:2px solid #eee;padding-bottom:8px;margin-bottom:12px;">Liste des inscrits</h3>
@@ -2771,7 +2929,7 @@
                     <thead><tr style="background:#f5f0e8;">
                         <th style="padding:6px 8px;text-align:left;">ID</th>
                         <th style="padding:6px 8px;text-align:left;">Nom</th>
-                        <th style="padding:6px 8px;text-align:left;">Prenoms</th>
+                        <th style="padding:6px 8px;text-align:left;">Prénoms</th>
                         <th style="padding:6px 8px;text-align:left;">Email</th>
                         <th style="padding:6px 8px;text-align:left;">Pays</th>
                     </tr></thead>
@@ -2780,7 +2938,7 @@
                             <tr style="border-bottom:1px solid #eee;">
                                 <td style="padding:5px 8px;">${row['ID'] || '-'}</td>
                                 <td style="padding:5px 8px;">${row['Nom'] || '-'}</td>
-                                <td style="padding:5px 8px;">${row['Prenoms'] || '-'}</td>
+                                <td style="padding:5px 8px;">${row['Prénoms'] || '-'}</td>
                                 <td style="padding:5px 8px;">${row['Email'] || '-'}</td>
                                 <td style="padding:5px 8px;">${row['Pays'] || '-'}</td>
                             </tr>
@@ -2810,21 +2968,21 @@
             content.innerHTML = `
                 <div style="text-align:center;border-bottom:3px solid #D4A843;padding-bottom:20px;margin-bottom:25px;">
                     <h1 style="color:#C62828;font-size:24px;letter-spacing:3px;">ENFLAMMER 2026</h1>
-                    <p style="color:#D4A843;font-weight:600;">Liste de presence - Cotonou</p>
-                    <p style="color:#666;font-size:13px;">Genere le ${new Date().toLocaleDateString('fr-FR')}</p>
+                    <p style="color:#D4A843;font-weight:600;">Liste de présence - Cotonou</p>
+                    <p style="color:#666;font-size:13px;">Généré le ${new Date().toLocaleDateString('fr-FR')}</p>
                 </div>
                 <table style="width:100%;border-collapse:collapse;font-size:11px;">
                     <thead><tr style="background:#f5f0e8;">
                         <th style="padding:6px 10px;text-align:left;">ID</th>
                         <th style="padding:6px 10px;text-align:left;">Nom complet</th>
-                        <th style="padding:6px 10px;text-align:left;">Eglise</th>
-                        <th style="padding:6px 10px;text-align:center;">Present</th>
+                        <th style="padding:6px 10px;text-align:left;">Église</th>
+                        <th style="padding:6px 10px;text-align:center;">Présent</th>
                     </tr></thead>
                     <tbody>
                         ${allData.map(row => `
                             <tr style="border-bottom:1px solid #eee;">
                                 <td style="padding:5px 10px;">${row['ID'] || '-'}</td>
-                                <td style="padding:5px 10px;">${row['Prenoms'] || ''} ${row['Nom'] || ''}</td>
+                                <td style="padding:5px 10px;">${row['Prénoms'] || ''} ${row['Nom'] || ''}</td>
                                 <td style="padding:5px 10px;">${row['Ministère/Église'] || '-'}</td>
                                 <td style="text-align:center;">☐</td>
                             </tr>
@@ -2845,7 +3003,7 @@
         });
 
         document.getElementById('exportStatsReport').addEventListener('click', function() {
-            if (allData.length === 0) { alert('Aucune donnee.'); return; }
+            if (allData.length === 0) { alert('Aucune donnée.'); return; }
 
             const total = allData.length;
             const pays = new Set(allData.map(d => d['Pays']).filter(p => p && p.trim() !== ''));
@@ -2855,7 +3013,7 @@
             content.style.cssText = 'padding:30px;font-family:Inter,Arial,sans-serif;background:#fff;color:#1a1410;max-width:700px;margin:0 auto;';
 
             const paysStats = {};
-            allData.forEach(d => { const p = d['Pays'] || 'Non renseigne';
+            allData.forEach(d => { const p = d['Pays'] || 'Non renseigné';
                 paysStats[p] = (paysStats[p] || 0) + 1; });
             const paysSorted = Object.entries(paysStats).sort((a, b) => b[1] - a[1]);
 
@@ -2863,7 +3021,7 @@
                 <div style="text-align:center;border-bottom:3px solid #D4A843;padding-bottom:20px;margin-bottom:25px;">
                     <h1 style="color:#C62828;font-size:24px;letter-spacing:3px;">ENFLAMMER 2026</h1>
                     <p style="color:#D4A843;font-weight:600;">Rapport statistique - Cotonou</p>
-                    <p style="color:#666;font-size:13px;">Genere le ${new Date().toLocaleDateString('fr-FR')}</p>
+                    <p style="color:#666;font-size:13px;">Généré le ${new Date().toLocaleDateString('fr-FR')}</p>
                 </div>
                 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px;">
                     <div style="background:#f5f0e8;border-radius:10px;padding:16px;text-align:center;">
@@ -2876,10 +3034,10 @@
                     </div>
                     <div style="background:#f5f0e8;border-radius:10px;padding:16px;text-align:center;">
                         <div style="font-size:28px;font-weight:700;color:#D4A843;">${eglises.size}</div>
-                        <div style="font-size:12px;color:#666;">Eglises</div>
+                        <div style="font-size:12px;color:#666;">Églises</div>
                     </div>
                 </div>
-                <h3 style="color:#333;border-bottom:2px solid #eee;padding-bottom:8px;margin-bottom:12px;">Repartition par pays</h3>
+                <h3 style="color:#333;border-bottom:2px solid #eee;padding-bottom:8px;margin-bottom:12px;">Répartition par pays</h3>
                 <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:20px;">
                     ${paysSorted.map(([p, count]) => `
                         <tr><td style="padding:4px 0;">${p}</td><td style="text-align:right;">${count}</td></tr>
@@ -2898,7 +3056,7 @@
             }).from(content).save();
         });
 
-        console.log('Tableau de bord ENFLAMMER 2026 charge !');
+        console.log('Tableau de bord ENFLAMMER 2026 chargé !');
         console.log('Mot de passe :', CONFIG.ADMIN_PASSWORD);
         console.log('URL du script :', CONFIG.SCRIPT_URL);
     </script>
