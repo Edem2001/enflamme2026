@@ -1853,7 +1853,8 @@
            CONFIGURATION
            ============================================================ */
         const CONFIG = {
-            SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwrfnhGpcslXM8loMlampQSFabQaSaphKkqaxrjfnmMRt0Zk2D4Mtygg8s8Kx4syAyS/exec',
+            // 👇 NOUVELLE URL DE VOTRE SCRIPT (mise à jour)
+            SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbxHKl-flwS4wwwAj5TrIxAwn9EPzkQ8L2WjICbnftJHc3E5IxOw1cw0YOvPpkqjF2kZ/exec',
             EVENT_CODE: 'COT',
             YEAR: '2026',
             EVENT_START: '2026-09-22T08:30:00',
@@ -2033,12 +2034,6 @@
             const statut = document.getElementById('statut');
             const hotel = document.getElementById('hotel');
 
-            const hotelGroup = document.getElementById('hotel-group');
-            const budgetGroup = document.getElementById('budget-group');
-            const arriveeGroup = document.getElementById('arrivee-group');
-            const departGroup = document.getElementById('depart-group');
-            const compagnieGroup = document.getElementById('compagnie-group');
-
             function updateFields() {
                 const statutValue = statut.value;
 
@@ -2153,7 +2148,6 @@
                     this.classList.remove('error');
                     const err = this.closest('.form-group').querySelector('.error-msg');
                     if (err) err.classList.remove('visible');
-                    // Masquer le message d'erreur doublon quand l'utilisateur modifie un champ
                     duplicateError.classList.remove('visible');
                 });
                 input.addEventListener('change', function() {
@@ -2220,10 +2214,8 @@
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
 
-                // Réinitialiser le message d'erreur
                 duplicateError.classList.remove('visible');
 
-                // Validation du formulaire
                 if (!validate()) {
                     const first = document.querySelector('.form-control.error');
                     if (first) {
@@ -2236,24 +2228,20 @@
                 const statutValue = fields.statut.value;
                 const hotelValue = fields.hotel.value || 'non';
 
-                // Préparer les données pour la vérification des doublons
                 const checkData = {
                     nom: fields.nom.value.trim(),
                     prenoms: fields.prenoms.value.trim(),
                     email: fields.email.value.trim(),
                 };
 
-                // Vérifier les doublons
                 const checkResult = await checkDuplicate(checkData);
 
                 if (checkResult.duplicate === true) {
                     duplicateError.classList.add('visible');
-                    // Scroll jusqu'au message d'erreur
                     duplicateError.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     return;
                 }
 
-                // Si pas de doublon, on continue l'inscription
                 btn.disabled = true;
                 btn.innerHTML = 'Envoi en cours...';
                 loading.classList.add('active');
