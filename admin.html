@@ -9,12 +9,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
     <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
     <!-- html2pdf -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js">
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
         /* ============================================================
@@ -44,13 +42,7 @@
             --info: #3498db;
         }
 
-        *,
-        *::before,
-        *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -73,7 +65,6 @@
             background: var(--bg);
             padding: 20px;
         }
-
         .login-box {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -85,42 +76,13 @@
             backdrop-filter: blur(20px);
             box-shadow: var(--shadow);
         }
-
-        .login-box .logo {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 16px;
-            object-fit: contain;
-        }
-
-        .login-box h1 {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .login-box p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 24px;
-        }
-
-        .login-box .form-group {
-            margin-bottom: 16px;
-            text-align: left;
-        }
-
-        .login-box label {
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            display: block;
-            margin-bottom: 4px;
-        }
-
+        .login-box .logo { width: 80px; height: 80px; margin: 0 auto 16px; object-fit: contain; }
+        .login-box h1 { font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; }
+        .login-box p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px; }
+        .login-box .form-group { margin-bottom: 16px; text-align: left; }
+        .login-box label { font-size: 0.8rem; font-weight: 500; color: var(--text-muted); display: block; margin-bottom: 4px; }
         .login-box input {
-            width: 100%;
-            padding: 12px 16px;
+            width: 100%; padding: 12px 16px;
             background: var(--bg-input);
             border: 1.5px solid var(--border);
             border-radius: var(--radius-sm);
@@ -128,1214 +90,456 @@
             font-size: 0.95rem;
             transition: all var(--transition);
         }
-
-        .login-box input:focus {
-            outline: none;
-            border-color: var(--gold);
-            box-shadow: 0 0 0 4px rgba(212, 168, 67, 0.06);
-        }
-
+        .login-box input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 4px rgba(212, 168, 67, 0.06); }
         .login-box .btn {
-            width: 100%;
-            padding: 14px;
+            width: 100%; padding: 14px;
             font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            font-size: 0.95rem;
-            border: none;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            transition: all var(--transition);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-weight: 600; font-size: 0.95rem;
+            border: none; border-radius: var(--radius-sm);
+            cursor: pointer; transition: all var(--transition);
+            text-transform: uppercase; letter-spacing: 0.5px;
             background: linear-gradient(135deg, var(--gold), var(--gold-dark));
             color: var(--text-inverse);
         }
-
-        .login-box .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(212, 168, 67, 0.25);
-        }
-
-        .login-box .error-msg {
-            color: var(--danger);
-            font-size: 0.8rem;
-            margin-top: 10px;
-            display: none;
-        }
-
-        .login-box .error-msg.visible {
-            display: block;
-        }
+        .login-box .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(212, 168, 67, 0.25); }
+        .login-box .error-msg { color: var(--danger); font-size: 0.8rem; margin-top: 10px; display: none; }
+        .login-box .error-msg.visible { display: block; }
 
         /* ============================================================
            DASHBOARD
            ============================================================ */
-        #dashboard {
-            display: none;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        #dashboard.visible {
-            display: block;
-        }
+        #dashboard { display: none; max-width: 1400px; margin: 0 auto; }
+        #dashboard.visible { display: block; }
 
         .dashboard-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 16px;
-            padding: 20px 0 20px;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 24px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 16px;
+            padding: 20px 0; border-bottom: 1px solid var(--border); margin-bottom: 24px;
         }
-
-        .dashboard-header .left {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .dashboard-header .left img {
-            height: 40px;
-            object-fit: contain;
-        }
-
-        .dashboard-header h1 {
-            font-size: 1.3rem;
-            font-weight: 600;
-        }
-
-        .dashboard-header h1 span {
-            color: var(--gold);
-        }
-
-        .dashboard-header .right {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-
+        .dashboard-header .left { display: flex; align-items: center; gap: 16px; }
+        .dashboard-header .left img { height: 40px; object-fit: contain; }
+        .dashboard-header h1 { font-size: 1.3rem; font-weight: 600; }
+        .dashboard-header h1 span { color: var(--gold); }
+        .dashboard-header .right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
         .dashboard-header .badge {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            padding: 6px 16px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            padding: 6px 16px; border-radius: 50px;
+            font-size: 0.8rem; color: var(--text-muted);
+            display: flex; align-items: center; gap: 8px;
         }
-
         .dashboard-header .badge .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--success);
-            animation: pulse-dot 2s ease-in-out infinite;
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--success); animation: pulse-dot 2s ease-in-out infinite;
         }
-
-        @keyframes pulse-dot {
-            0%,
-            100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.3;
-            }
-        }
-
+        @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
         .dashboard-header .logout-btn {
-            background: none;
-            border: 1px solid var(--border);
-            color: var(--text-muted);
-            padding: 8px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all var(--transition);
+            background: none; border: 1px solid var(--border);
+            color: var(--text-muted); padding: 8px 20px;
+            border-radius: 50px; cursor: pointer;
+            font-size: 0.8rem; transition: all var(--transition);
         }
-
-        .dashboard-header .logout-btn:hover {
-            border-color: var(--danger);
-            color: var(--danger);
-        }
+        .dashboard-header .logout-btn:hover { border-color: var(--danger); color: var(--danger); }
 
         /* ============================================================
            ONGLETS
            ============================================================ */
         .tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            margin-bottom: 24px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 4px;
+            display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 24px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 4px;
         }
-
         .tab-btn {
-            padding: 12px 24px;
-            background: transparent;
-            border: none;
-            border-radius: var(--radius-sm);
-            color: var(--text-muted);
-            font-family: 'Inter', sans-serif;
-            font-weight: 500;
-            font-size: 0.85rem;
-            cursor: pointer;
+            padding: 12px 24px; background: transparent; border: none;
+            border-radius: var(--radius-sm); color: var(--text-muted);
+            font-family: 'Inter', sans-serif; font-weight: 500;
+            font-size: 0.85rem; cursor: pointer;
             transition: all var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            display: flex; align-items: center; gap: 8px;
         }
-
-        .tab-btn:hover {
-            color: var(--text);
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        .tab-btn.active {
-            background: var(--gold);
-            color: var(--text-inverse);
-        }
-
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
+        .tab-btn:hover { color: var(--text); background: rgba(255, 255, 255, 0.03); }
+        .tab-btn.active { background: var(--gold); color: var(--text-inverse); }
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
+        .tab-content.active { display: block; }
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* ============================================================
            STATISTIQUES
            ============================================================ */
         .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px;
-            margin-bottom: 30px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px; margin-bottom: 30px;
         }
-
         .stat-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 20px 24px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 20px 24px;
             transition: all var(--transition);
         }
-
-        .stat-card:hover {
-            border-color: rgba(212, 168, 67, 0.1);
-            transform: translateY(-2px);
-        }
-
+        .stat-card:hover { border-color: rgba(212, 168, 67, 0.1); transform: translateY(-2px); }
         .stat-card .stat-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-muted);
-            font-weight: 500;
+            font-size: 0.7rem; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--text-muted); font-weight: 500;
         }
-
-        .stat-card .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--text);
-            line-height: 1.2;
-        }
-
-        .stat-card .stat-sub {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
-
-        .stat-card.gold .stat-number {
-            color: var(--gold);
-        }
-        .stat-card.green .stat-number {
-            color: var(--success);
-        }
-        .stat-card.red .stat-number {
-            color: var(--danger);
-        }
-        .stat-card.blue .stat-number {
-            color: var(--info);
-        }
+        .stat-card .stat-number { font-size: 2rem; font-weight: 700; color: var(--text); line-height: 1.2; }
+        .stat-card .stat-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+        .stat-card.gold .stat-number { color: var(--gold); }
+        .stat-card.green .stat-number { color: var(--success); }
+        .stat-card.red .stat-number { color: var(--danger); }
+        .stat-card.blue .stat-number { color: var(--info); }
 
         /* ============================================================
            GRAPHIQUES
            ============================================================ */
-        .charts-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 30px;
-        }
-
+        .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 30px; }
         .chart-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 20px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 20px;
         }
-
-        .chart-card h4 {
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: var(--text-muted);
-        }
-
-        .chart-card canvas {
-            max-height: 250px;
-            max-width: 100%;
-        }
-
-        @media (max-width: 768px) {
-            .charts-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+        .chart-card h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; color: var(--text-muted); }
+        .chart-card canvas { max-height: 250px; max-width: 100%; }
+        @media (max-width: 768px) { .charts-grid { grid-template-columns: 1fr; } }
 
         /* ============================================================
            FILTRES & RECHERCHE
            ============================================================ */
         .filters-section {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 20px 24px;
-            margin-bottom: 24px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 20px 24px; margin-bottom: 24px;
         }
-
-        .filters-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            align-items: center;
-        }
-
+        .filters-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
         .filters-row .search-input {
-            flex: 1;
-            min-width: 200px;
-            padding: 10px 16px;
-            background: var(--bg-input);
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-sm);
-            color: var(--text);
-            font-size: 0.9rem;
-            transition: all var(--transition);
+            flex: 1; min-width: 200px;
+            padding: 10px 16px; background: var(--bg-input);
+            border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+            color: var(--text); font-size: 0.9rem; transition: all var(--transition);
         }
-
         .filters-row .search-input:focus {
-            outline: none;
-            border-color: var(--gold);
+            outline: none; border-color: var(--gold);
             box-shadow: 0 0 0 4px rgba(212, 168, 67, 0.06);
         }
-
         .filters-row select {
-            padding: 10px 16px;
-            background: var(--bg-input);
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-sm);
-            color: var(--text);
-            font-size: 0.9rem;
-            cursor: pointer;
-            min-width: 140px;
+            padding: 10px 16px; background: var(--bg-input);
+            border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+            color: var(--text); font-size: 0.9rem; cursor: pointer; min-width: 140px;
         }
-
-        .filters-row select:focus {
-            outline: none;
-            border-color: var(--gold);
-        }
-
-        .filters-row select option {
-            background: var(--bg);
-            color: var(--text);
-        }
-
+        .filters-row select:focus { outline: none; border-color: var(--gold); }
+        .filters-row select option { background: var(--bg); color: var(--text); }
         .btn-filter {
-            padding: 10px 20px;
-            background: var(--gold);
-            border: none;
-            border-radius: var(--radius-sm);
-            color: var(--text-inverse);
-            font-weight: 600;
-            font-size: 0.8rem;
-            cursor: pointer;
+            padding: 10px 20px; background: var(--gold); border: none;
+            border-radius: var(--radius-sm); color: var(--text-inverse);
+            font-weight: 600; font-size: 0.8rem; cursor: pointer;
             transition: all var(--transition);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            text-transform: uppercase; letter-spacing: 0.5px;
         }
-
-        .btn-filter:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(212, 168, 67, 0.2);
-        }
-
-        .btn-filter.secondary {
-            background: var(--bg-input);
-            color: var(--text-muted);
-        }
-
-        .btn-filter.secondary:hover {
-            background: var(--border);
-            color: var(--text);
-        }
+        .btn-filter:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(212, 168, 67, 0.2); }
+        .btn-filter.secondary { background: var(--bg-input); color: var(--text-muted); }
+        .btn-filter.secondary:hover { background: var(--border); color: var(--text); }
 
         /* ============================================================
            TABLEAU
            ============================================================ */
         .table-container {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            overflow: hidden;
-            margin-bottom: 20px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); overflow: hidden; margin-bottom: 20px;
         }
-
         .table-container .table-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 24px;
-            border-bottom: 1px solid var(--border);
-            flex-wrap: wrap;
-            gap: 12px;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 16px 24px; border-bottom: 1px solid var(--border);
+            flex-wrap: wrap; gap: 12px;
         }
-
-        .table-container .table-header h3 {
-            font-size: 1rem;
-            font-weight: 600;
-        }
-
-        .table-container .table-header h3 span {
-            color: var(--text-muted);
-            font-weight: 400;
-        }
-
-        .table-container .table-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
+        .table-container .table-header h3 { font-size: 1rem; font-weight: 600; }
+        .table-container .table-header h3 span { color: var(--text-muted); font-weight: 400; }
+        .table-container .table-actions { display: flex; gap: 10px; flex-wrap: wrap; }
         .table-container .table-actions .btn-action {
-            padding: 8px 16px;
-            background: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            color: var(--text);
-            font-size: 0.8rem;
-            cursor: pointer;
+            padding: 8px 16px; background: var(--bg-input);
+            border: 1px solid var(--border); border-radius: var(--radius-sm);
+            color: var(--text); font-size: 0.8rem; cursor: pointer;
             transition: all var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            border: none;
+            display: flex; align-items: center; gap: 6px; border: none;
         }
-
-        .table-container .table-actions .btn-action:hover {
-            border-color: var(--gold);
-            color: var(--gold);
-        }
-
-        .table-container .table-actions .btn-action.danger:hover {
-            border-color: var(--danger);
-            color: var(--danger);
-        }
-
+        .table-container .table-actions .btn-action:hover { border-color: var(--gold); color: var(--gold); }
+        .table-container .table-actions .btn-action.danger:hover { border-color: var(--danger); color: var(--danger); }
         .btn-action-confirm {
-            background: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            color: var(--text);
-            font-size: 0.7rem;
-            padding: 4px 10px;
-            cursor: pointer;
+            background: var(--bg-input); border: 1px solid var(--border);
+            border-radius: var(--radius-sm); color: var(--text);
+            font-size: 0.7rem; padding: 4px 10px; cursor: pointer;
             transition: all var(--transition);
         }
-
-        .btn-action-confirm:hover {
-            border-color: var(--gold);
-            color: var(--gold);
-        }
-
-        .table-wrapper {
-            overflow-x: auto;
-            padding: 0 4px 4px 4px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.82rem;
-        }
-
-        table thead {
-            background: var(--bg-input);
-        }
-
+        .btn-action-confirm:hover { border-color: var(--gold); color: var(--gold); }
+        .table-wrapper { overflow-x: auto; padding: 0 4px 4px 4px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+        table thead { background: var(--bg-input); }
         table thead th {
-            padding: 10px 12px;
-            text-align: left;
-            font-weight: 600;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-muted);
-            border-bottom: 1px solid var(--border);
-            white-space: nowrap;
-            position: sticky;
-            top: 0;
-            background: var(--bg);
-            z-index: 1;
+            padding: 10px 12px; text-align: left; font-weight: 600;
+            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px;
+            color: var(--text-muted); border-bottom: 1px solid var(--border);
+            white-space: nowrap; position: sticky; top: 0; background: var(--bg); z-index: 1;
         }
-
         table tbody td {
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--border);
-            vertical-align: middle;
-            font-size: 0.82rem;
+            padding: 10px 12px; border-bottom: 1px solid var(--border);
+            vertical-align: middle; font-size: 0.82rem;
         }
-
-        table tbody tr:hover {
-            background: rgba(255, 255, 255, 0.02);
-        }
-
+        table tbody tr:hover { background: rgba(255, 255, 255, 0.02); }
         .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 3px 10px;
-            border-radius: 50px;
-            font-size: 0.7rem;
-            font-weight: 500;
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 3px 10px; border-radius: 50px; font-size: 0.7rem; font-weight: 500;
         }
-
-        .status-badge.present {
-            background: rgba(46, 204, 113, 0.15);
-            color: var(--success);
-        }
-
-        .status-badge.absent {
-            background: rgba(231, 76, 60, 0.15);
-            color: var(--danger);
-        }
-
-        .status-badge.pending {
-            background: rgba(243, 156, 18, 0.15);
-            color: var(--warning);
-        }
-
+        .status-badge.present { background: rgba(46, 204, 113, 0.15); color: var(--success); }
+        .status-badge.absent { background: rgba(231, 76, 60, 0.15); color: var(--danger); }
+        .status-badge.pending { background: rgba(243, 156, 18, 0.15); color: var(--warning); }
         .btn-whatsapp {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: #25D366;
-            color: #fff;
-            border: none;
-            border-radius: 50px;
-            padding: 4px 12px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all var(--transition);
-            text-decoration: none;
+            display: inline-flex; align-items: center; gap: 6px;
+            background: #25D366; color: #fff; border: none;
+            border-radius: 50px; padding: 4px 12px;
+            font-size: 0.7rem; font-weight: 600; cursor: pointer;
+            transition: all var(--transition); text-decoration: none;
         }
-
-        .btn-whatsapp:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
-        }
-
+        .btn-whatsapp:hover { transform: scale(1.05); box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3); }
         .pagination {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 16px 0;
-            flex-wrap: wrap;
+            display: flex; align-items: center; justify-content: center;
+            gap: 8px; padding: 16px 0; flex-wrap: wrap;
         }
-
         .pagination button {
-            padding: 8px 16px;
-            background: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            color: var(--text);
-            cursor: pointer;
-            transition: all var(--transition);
+            padding: 8px 16px; background: var(--bg-input);
+            border: 1px solid var(--border); border-radius: var(--radius-sm);
+            color: var(--text); cursor: pointer; transition: all var(--transition);
             font-size: 0.85rem;
         }
-
-        .pagination button:hover:not(:disabled) {
-            border-color: var(--gold);
-            color: var(--gold);
-        }
-
-        .pagination button.active {
-            background: var(--gold);
-            color: var(--text-inverse);
-            border-color: var(--gold);
-        }
-
-        .pagination button:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        .pagination .info {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            margin: 0 12px;
-        }
+        .pagination button:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
+        .pagination button.active { background: var(--gold); color: var(--text-inverse); border-color: var(--gold); }
+        .pagination button:disabled { opacity: 0.3; cursor: not-allowed; }
+        .pagination .info { color: var(--text-muted); font-size: 0.8rem; margin: 0 12px; }
 
         /* ============================================================
            CHECK-IN
            ============================================================ */
-        .checkin-container {
-            max-width: 700px;
-            margin: 0 auto;
-            text-align: center;
-            padding: 40px 20px;
-        }
-
-        .checkin-container h2 {
-            font-size: 1.8rem;
-            margin-bottom: 8px;
-        }
-
-        .checkin-container p {
-            color: var(--text-muted);
-            margin-bottom: 24px;
-        }
-
-        .checkin-day-selector {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-        }
-
+        .checkin-container { max-width: 700px; margin: 0 auto; text-align: center; padding: 40px 20px; }
+        .checkin-container h2 { font-size: 1.8rem; margin-bottom: 8px; }
+        .checkin-container p { color: var(--text-muted); margin-bottom: 24px; }
+        .checkin-day-selector { display: flex; gap: 12px; justify-content: center; margin-bottom: 24px; flex-wrap: wrap; }
         .checkin-day-selector .day-btn {
-            padding: 10px 24px;
-            background: var(--bg-input);
-            border: 2px solid var(--border);
-            border-radius: var(--radius-sm);
-            color: var(--text-muted);
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all var(--transition);
-            font-family: 'Inter', sans-serif;
+            padding: 10px 24px; background: var(--bg-input);
+            border: 2px solid var(--border); border-radius: var(--radius-sm);
+            color: var(--text-muted); font-weight: 600; font-size: 0.9rem;
+            cursor: pointer; transition: all var(--transition); font-family: 'Inter', sans-serif;
         }
-
-        .checkin-day-selector .day-btn:hover {
-            border-color: var(--gold);
-            color: var(--text);
-        }
-
-        .checkin-day-selector .day-btn.active {
-            background: var(--gold);
-            border-color: var(--gold);
-            color: var(--text-inverse);
-        }
-
-        .checkin-day-selector .day-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        .checkin-input-group {
-            display: flex;
-            gap: 12px;
-            max-width: 450px;
-            margin: 0 auto;
-        }
-
+        .checkin-day-selector .day-btn:hover { border-color: var(--gold); color: var(--text); }
+        .checkin-day-selector .day-btn.active { background: var(--gold); border-color: var(--gold); color: var(--text-inverse); }
+        .checkin-day-selector .day-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .checkin-input-group { display: flex; gap: 12px; max-width: 450px; margin: 0 auto; }
         .checkin-input-group input {
-            flex: 1;
-            padding: 16px 20px;
-            background: var(--bg-input);
-            border: 2px solid var(--border);
-            border-radius: var(--radius-sm);
-            color: var(--text);
-            font-size: 1.1rem;
-            text-align: center;
-            letter-spacing: 1px;
-            font-weight: 600;
-            text-transform: uppercase;
+            flex: 1; padding: 16px 20px;
+            background: var(--bg-input); border: 2px solid var(--border);
+            border-radius: var(--radius-sm); color: var(--text);
+            font-size: 1.1rem; text-align: center; letter-spacing: 1px;
+            font-weight: 600; text-transform: uppercase;
         }
-
         .checkin-input-group input:focus {
-            outline: none;
-            border-color: var(--gold);
+            outline: none; border-color: var(--gold);
             box-shadow: 0 0 0 4px rgba(212, 168, 67, 0.06);
         }
-
         .checkin-input-group .btn-checkin {
             padding: 16px 32px;
             background: linear-gradient(135deg, var(--success), #27ae60);
-            border: none;
-            border-radius: var(--radius-sm);
-            color: #fff;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all var(--transition);
-            font-family: 'Inter', sans-serif;
+            border: none; border-radius: var(--radius-sm); color: #fff;
+            font-weight: 700; font-size: 1rem; cursor: pointer;
+            transition: all var(--transition); font-family: 'Inter', sans-serif;
         }
-
-        .checkin-input-group .btn-checkin:hover {
-            transform: scale(1.03);
-            box-shadow: 0 8px 30px rgba(46, 204, 113, 0.3);
-        }
-
-        .checkin-input-group .btn-checkin:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .checkin-result {
-            margin-top: 24px;
-            padding: 20px;
-            border-radius: var(--radius);
-            display: none;
-        }
-
-        .checkin-result.success {
-            display: block;
-            background: rgba(46, 204, 113, 0.08);
-            border: 1px solid var(--success);
-        }
-
-        .checkin-result.error {
-            display: block;
-            background: rgba(231, 76, 60, 0.08);
-            border: 1px solid var(--danger);
-        }
-
-        .checkin-result .result-name {
-            font-size: 1.4rem;
-            font-weight: 700;
-        }
-
-        .checkin-result .result-detail {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
+        .checkin-input-group .btn-checkin:hover:not(:disabled) { transform: scale(1.03); box-shadow: 0 8px 30px rgba(46, 204, 113, 0.3); }
+        .checkin-input-group .btn-checkin:disabled { opacity: 0.5; cursor: not-allowed; }
+        .checkin-result { margin-top: 24px; padding: 20px; border-radius: var(--radius); display: none; }
+        .checkin-result.success { display: block; background: rgba(46, 204, 113, 0.08); border: 1px solid var(--success); }
+        .checkin-result.error { display: block; background: rgba(231, 76, 60, 0.08); border: 1px solid var(--danger); }
+        .checkin-result .result-name { font-size: 1.4rem; font-weight: 700; }
+        .checkin-result .result-detail { color: var(--text-muted); font-size: 0.9rem; }
         .checkin-recent {
-            margin-top: 30px;
-            max-width: 450px;
-            margin-left: auto;
-            margin-right: auto;
-            text-align: left;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
+            margin-top: 30px; max-width: 450px;
+            margin-left: auto; margin-right: auto;
+            text-align: left; background: var(--bg-card);
+            border: 1px solid var(--border); border-radius: var(--radius);
             padding: 16px 20px;
         }
-
         .checkin-recent h4 {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-muted);
-            margin-bottom: 12px;
+            font-size: 0.8rem; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--text-muted); margin-bottom: 12px;
         }
-
-        .checkin-recent ul {
-            list-style: none;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
+        .checkin-recent ul { list-style: none; max-height: 200px; overflow-y: auto; }
         .checkin-recent ul li {
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.9rem;
-            display: flex;
-            justify-content: space-between;
+            padding: 8px 0; border-bottom: 1px solid var(--border);
+            font-size: 0.9rem; display: flex; justify-content: space-between;
         }
-
-        .checkin-recent ul li:last-child {
-            border-bottom: none;
-        }
-
-        .checkin-close-day {
-            margin-top: 24px;
-        }
-
+        .checkin-recent ul li:last-child { border-bottom: none; }
+        .checkin-close-day { margin-top: 24px; }
         .checkin-close-day .btn-close-day {
             padding: 14px 40px;
             background: linear-gradient(135deg, var(--danger), #c0392b);
-            border: none;
-            border-radius: var(--radius-sm);
-            color: #fff;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all var(--transition);
-            font-family: 'Inter', sans-serif;
+            border: none; border-radius: var(--radius-sm); color: #fff;
+            font-weight: 700; font-size: 1rem; cursor: pointer;
+            transition: all var(--transition); font-family: 'Inter', sans-serif;
         }
-
-        .checkin-close-day .btn-close-day:hover:not(:disabled) {
-            transform: scale(1.03);
-            box-shadow: 0 8px 30px rgba(231, 76, 60, 0.3);
-        }
-
-        .checkin-close-day .btn-close-day:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
+        .checkin-close-day .btn-close-day:hover:not(:disabled) { transform: scale(1.03); box-shadow: 0 8px 30px rgba(231, 76, 60, 0.3); }
+        .checkin-close-day .btn-close-day:disabled { opacity: 0.4; cursor: not-allowed; }
         .checkin-day-status {
-            margin-top: 12px;
-            padding: 12px;
-            border-radius: var(--radius-sm);
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            font-size: 0.85rem;
-            color: var(--text-muted);
+            margin-top: 12px; padding: 12px; border-radius: var(--radius-sm);
+            background: var(--bg-card); border: 1px solid var(--border);
+            font-size: 0.85rem; color: var(--text-muted);
         }
-
-        .checkin-day-status strong {
-            color: var(--text);
-        }
+        .checkin-day-status strong { color: var(--text); }
 
         /* ============================================================
            RAPPELS
            ============================================================ */
         .reminder-form {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 24px;
-            max-width: 600px;
-            margin: 0 auto 30px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 24px;
+            max-width: 600px; margin: 0 auto 30px;
         }
-
-        .reminder-form .form-group {
-            margin-bottom: 16px;
-            text-align: left;
-        }
-
-        .reminder-form label {
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .reminder-form input,
-        .reminder-form textarea,
-        .reminder-form select {
-            width: 100%;
-            padding: 10px 14px;
-            background: var(--bg-input);
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-sm);
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
+        .reminder-form .form-group { margin-bottom: 16px; text-align: left; }
+        .reminder-form label { font-size: 0.8rem; font-weight: 500; color: var(--text-muted); display: block; margin-bottom: 4px; }
+        .reminder-form input, .reminder-form textarea, .reminder-form select {
+            width: 100%; padding: 10px 14px;
+            background: var(--bg-input); border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm); color: var(--text);
+            font-family: 'Inter', sans-serif; font-size: 0.9rem;
             transition: all var(--transition);
         }
-
-        .reminder-form input:focus,
-        .reminder-form textarea:focus,
-        .reminder-form select:focus {
-            outline: none;
-            border-color: var(--gold);
+        .reminder-form input:focus, .reminder-form textarea:focus, .reminder-form select:focus {
+            outline: none; border-color: var(--gold);
         }
-
-        .reminder-form textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
+        .reminder-form textarea { resize: vertical; min-height: 80px; }
         .reminder-form .btn-reminder {
-            padding: 12px 32px;
-            background: var(--gold);
-            border: none;
-            border-radius: var(--radius-sm);
-            color: var(--text-inverse);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all var(--transition);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
+            padding: 12px 32px; background: var(--gold); border: none;
+            border-radius: var(--radius-sm); color: var(--text-inverse);
+            font-weight: 600; cursor: pointer; transition: all var(--transition);
+            font-family: 'Inter', sans-serif; font-size: 0.9rem;
         }
-
-        .reminder-form .btn-reminder:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(212, 168, 67, 0.2);
-        }
-
-        .reminder-list {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
+        .reminder-form .btn-reminder:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(212, 168, 67, 0.2); }
+        .reminder-list { max-width: 700px; margin: 0 auto; }
         .reminder-item {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 16px 20px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius-sm); padding: 16px 20px;
+            margin-bottom: 12px; display: flex;
+            justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 12px;
         }
-
-        .reminder-item .info {
-            flex: 1;
-        }
-
-        .reminder-item .info .title {
-            font-weight: 600;
-        }
-
-        .reminder-item .info .date {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
+        .reminder-item .info { flex: 1; }
+        .reminder-item .info .title { font-weight: 600; }
+        .reminder-item .info .date { font-size: 0.8rem; color: var(--text-muted); }
         .reminder-item .info .status {
-            font-size: 0.75rem;
-            padding: 2px 10px;
-            border-radius: 50px;
-            background: rgba(46, 204, 113, 0.15);
-            color: var(--success);
+            font-size: 0.75rem; padding: 2px 10px; border-radius: 50px;
+            background: rgba(46, 204, 113, 0.15); color: var(--success);
         }
-
-        .reminder-item .info .status.pending {
-            background: rgba(243, 156, 18, 0.15);
-            color: var(--warning);
-        }
-
+        .reminder-item .info .status.pending { background: rgba(243, 156, 18, 0.15); color: var(--warning); }
         .reminder-item .actions button {
-            background: none;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 6px 14px;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: all var(--transition);
-            font-size: 0.8rem;
+            background: none; border: 1px solid var(--border);
+            border-radius: var(--radius-sm); padding: 6px 14px;
+            color: var(--text-muted); cursor: pointer;
+            transition: all var(--transition); font-size: 0.8rem;
         }
-
-        .reminder-item .actions button:hover {
-            border-color: var(--danger);
-            color: var(--danger);
-        }
+        .reminder-item .actions button:hover { border-color: var(--danger); color: var(--danger); }
 
         /* ============================================================
            EXPORT AVANCE
            ============================================================ */
-        .export-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            justify-content: center;
-            margin: 20px 0 30px;
-        }
-
+        .export-options { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin: 20px 0 30px; }
         .export-options .btn-export {
-            padding: 14px 32px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            color: var(--text);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
+            padding: 14px 32px; background: var(--bg-card);
+            border: 1px solid var(--border); border-radius: var(--radius-sm);
+            color: var(--text); font-weight: 600; cursor: pointer;
+            transition: all var(--transition); display: flex;
+            align-items: center; gap: 10px;
+            font-family: 'Inter', sans-serif; font-size: 0.9rem;
         }
-
-        .export-options .btn-export:hover {
-            border-color: var(--gold);
-            color: var(--gold);
-            transform: translateY(-2px);
-        }
-
-        .export-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            max-width: 850px;
-            margin: 0 auto 20px;
-        }
-
+        .export-options .btn-export:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+        .export-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 850px; margin: 0 auto 20px; }
         .export-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 20px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 20px;
         }
-
-        .export-card h4 {
-            color: var(--gold);
-            margin-bottom: 12px;
-            font-size: 0.95rem;
-        }
-
+        .export-card h4 { color: var(--gold); margin-bottom: 12px; font-size: 0.95rem; }
         .export-card select {
-            width: 100%;
-            padding: 10px;
-            background: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            color: var(--text);
-            font-size: 0.85rem;
-            margin-bottom: 10px;
-            font-family: 'Inter', sans-serif;
+            width: 100%; padding: 10px;
+            background: var(--bg-input); border: 1px solid var(--border);
+            border-radius: var(--radius-sm); color: var(--text);
+            font-size: 0.85rem; margin-bottom: 10px; font-family: 'Inter', sans-serif;
         }
-
-        .export-card select:focus {
-            outline: none;
-            border-color: var(--gold);
-        }
-
+        .export-card select:focus { outline: none; border-color: var(--gold); }
         .export-card .btn-export-sm {
-            width: 100%;
-            padding: 10px;
-            background: var(--gold);
-            border: none;
-            border-radius: var(--radius-sm);
-            color: var(--text-inverse);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all var(--transition);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.85rem;
+            width: 100%; padding: 10px; background: var(--gold);
+            border: none; border-radius: var(--radius-sm); color: var(--text-inverse);
+            font-weight: 600; cursor: pointer; transition: all var(--transition);
+            font-family: 'Inter', sans-serif; font-size: 0.85rem;
         }
-
-        .export-card .btn-export-sm:hover {
-            transform: scale(1.01);
-            box-shadow: 0 4px 20px rgba(212, 168, 67, 0.2);
-        }
-
-        @media (max-width: 768px) {
-            .export-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+        .export-card .btn-export-sm:hover { transform: scale(1.01); box-shadow: 0 4px 20px rgba(212, 168, 67, 0.2); }
+        @media (max-width: 768px) { .export-grid { grid-template-columns: 1fr; } }
 
         /* ============================================================
-           NOTIFICATION TOAST (sans emoji)
+           NOTIFICATION TOAST
            ============================================================ */
         .notification-toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: var(--bg-glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 16px 24px;
-            box-shadow: var(--shadow);
-            display: none;
-            align-items: center;
-            gap: 12px;
-            z-index: 999;
-            animation: slideUp 0.4s ease;
-            max-width: 400px;
+            position: fixed; bottom: 30px; right: 30px;
+            background: var(--bg-glass); backdrop-filter: blur(20px);
+            border: 1px solid var(--border); border-radius: var(--radius);
+            padding: 16px 24px; box-shadow: var(--shadow);
+            display: none; align-items: center; gap: 12px;
+            z-index: 999; animation: slideUp 0.4s ease; max-width: 400px;
         }
-
-        .notification-toast.visible {
-            display: flex;
-        }
-
-        .notification-toast .notif-icon {
-            font-size: 1.8rem;
-            line-height: 1;
-        }
-
-        .notification-toast .notif-text {
-            font-size: 0.9rem;
-        }
-
-        .notification-toast .notif-text strong {
-            color: var(--gold);
-        }
-
+        .notification-toast.visible { display: flex; }
+        .notification-toast .notif-icon { font-size: 1.8rem; line-height: 1; }
+        .notification-toast .notif-text { font-size: 0.9rem; }
+        .notification-toast .notif-text strong { color: var(--gold); }
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* ============================================================
            LOADING / EMPTY
            ============================================================ */
         .loading-spinner {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px;
-            color: var(--text-muted);
-            gap: 12px;
+            display: flex; align-items: center; justify-content: center;
+            padding: 40px; color: var(--text-muted); gap: 12px;
         }
-
         .loading-spinner .spinner {
-            width: 28px;
-            height: 28px;
-            border: 3px solid var(--border);
-            border-top-color: var(--gold);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+            width: 28px; height: 28px;
+            border: 3px solid var(--border); border-top-color: var(--gold);
+            border-radius: 50%; animation: spin 0.8s linear infinite;
         }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--text-muted);
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); }
 
         /* ============================================================
            RESPONSIVE
            ============================================================ */
         @media (max-width: 992px) {
-            table {
-                font-size: 0.75rem;
-            }
-            table thead th,
-            table tbody td {
-                padding: 6px 8px;
-            }
-            .table-wrapper {
-                overflow-x: auto;
-            }
+            table { font-size: 0.75rem; }
+            table thead th, table tbody td { padding: 6px 8px; }
+            .table-wrapper { overflow-x: auto; }
         }
-
         @media (max-width: 768px) {
-            .dashboard-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .dashboard-header .right {
-                width: 100%;
-                justify-content: space-between;
-            }
-
-            .filters-row {
-                flex-direction: column;
-            }
-
-            .filters-row .search-input,
-            .filters-row select {
-                width: 100%;
-                min-width: unset;
-            }
-
-            .table-container .table-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .login-box {
-                padding: 28px 20px;
-            }
-
-            .checkin-input-group {
-                flex-direction: column;
-            }
-
-            .tab-btn {
-                padding: 10px 16px;
-                font-size: 0.75rem;
-            }
-
-            .charts-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .reminder-item {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .checkin-day-selector {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            table {
-                font-size: 0.7rem;
-            }
-            table thead th,
-            table tbody td {
-                padding: 4px 6px;
-            }
+            .dashboard-header { flex-direction: column; align-items: flex-start; }
+            .dashboard-header .right { width: 100%; justify-content: space-between; }
+            .filters-row { flex-direction: column; }
+            .filters-row .search-input, .filters-row select { width: 100%; min-width: unset; }
+            .table-container .table-header { flex-direction: column; align-items: flex-start; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .login-box { padding: 28px 20px; }
+            .checkin-input-group { flex-direction: column; }
+            .tab-btn { padding: 10px 16px; font-size: 0.75rem; }
+            .charts-grid { grid-template-columns: 1fr; }
+            .reminder-item { flex-direction: column; align-items: flex-start; }
+            .checkin-day-selector { flex-direction: column; align-items: center; }
+            table { font-size: 0.7rem; }
+            table thead th, table tbody td { padding: 4px 6px; }
         }
-
         @media (max-width: 480px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .table-container .table-actions .btn-action {
-                font-size: 0.7rem;
-                padding: 6px 12px;
-            }
-
-            body {
-                padding: 12px;
-            }
-
-            .tabs {
-                overflow-x: auto;
-                flex-wrap: nowrap;
-            }
-
-            .tab-btn {
-                white-space: nowrap;
-            }
+            .stats-grid { grid-template-columns: 1fr; }
+            .table-container .table-actions .btn-action { font-size: 0.7rem; padding: 6px 12px; }
+            body { padding: 12px; }
+            .tabs { overflow-x: auto; flex-wrap: nowrap; }
+            .tab-btn { white-space: nowrap; }
         }
     </style>
 </head>
@@ -1390,7 +594,6 @@
         <!-- ONGLET : TABLEAU DE BORD -->
         <!-- ============================================================ -->
         <div id="tab-dashboard" class="tab-content active">
-
             <div class="stats-grid" id="statsContainer">
                 <div class="stat-card gold">
                     <div class="stat-label">Total inscrits</div>
@@ -1412,7 +615,6 @@
                 </div>
             </div>
 
-            <!-- Graphiques -->
             <div class="charts-grid">
                 <div class="chart-card">
                     <h4>Répartition par pays</h4>
@@ -1431,14 +633,12 @@
                     <canvas id="chartEglise"></canvas>
                 </div>
             </div>
-
         </div>
 
         <!-- ============================================================ -->
         <!-- ONGLET : INSCRITS -->
         <!-- ============================================================ -->
         <div id="tab-inscrits" class="tab-content">
-
             <div class="filters-section">
                 <div class="filters-row">
                     <input type="text" class="search-input" id="searchInput" placeholder="Rechercher par ID, Nom, Email, Église..." />
@@ -1462,7 +662,6 @@
                         <button class="btn-action" id="exportExcel">Exporter Excel</button>
                         <button class="btn-action" id="refreshData">Rafraîchir</button>
                         <button class="btn-action" id="sendMassMessageBtn">Message à tous</button>
-                        <!-- 👇 NOUVEAU BOUTON : Renvoyer la confirmation à tous -->
                         <button class="btn-action" id="resendAllConfirmBtn" style="color:var(--gold);">Renvoyer confirmation à tous</button>
                     </div>
                 </div>
@@ -1492,8 +691,7 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody id="tableBody">
-                        </tbody>
+                        <tbody id="tableBody"></tbody>
                     </table>
                     <div id="emptyState" class="empty-state" style="display:none;">
                         Aucun inscrit trouvé
@@ -1506,7 +704,6 @@
                     <button id="nextPage" disabled>Suivant</button>
                 </div>
             </div>
-
         </div>
 
         <!-- ============================================================ -->
@@ -1580,9 +777,7 @@
             <div class="reminder-list" id="reminderList">
                 <h3 style="margin-bottom:16px;">Rappels programmés</h3>
                 <div id="reminderItems">
-                    <div class="empty-state">
-                        Aucun rappel programmé
-                    </div>
+                    <div class="empty-state">Aucun rappel programmé</div>
                 </div>
             </div>
         </div>
@@ -1594,8 +789,6 @@
             <h3 style="margin-bottom:16px;text-align:center;">Exporter des données filtrées</h3>
 
             <div class="export-grid">
-
-                <!-- Export par pays -->
                 <div class="export-card">
                     <h4>Par pays</h4>
                     <select id="exportPaysSelect">
@@ -1604,7 +797,6 @@
                     <button class="btn-export-sm" id="exportByPays">Télécharger</button>
                 </div>
 
-                <!-- Export par église -->
                 <div class="export-card">
                     <h4>Par église</h4>
                     <select id="exportEgliseSelect">
@@ -1613,7 +805,6 @@
                     <button class="btn-export-sm" id="exportByEglise">Télécharger</button>
                 </div>
 
-                <!-- Export par statut (présents/absents) -->
                 <div class="export-card">
                     <h4>Présents / Absents</h4>
                     <select id="exportStatutSelect">
@@ -1628,7 +819,6 @@
                     <button class="btn-export-sm" id="exportByStatut">Télécharger</button>
                 </div>
 
-                <!-- Export combiné (pays + statut) -->
                 <div class="export-card">
                     <h4>Pays + Statut</h4>
                     <select id="exportComboPays">
@@ -1641,7 +831,6 @@
                     <button class="btn-export-sm" id="exportCombo">Télécharger</button>
                 </div>
 
-                <!-- Export internationaux -->
                 <div class="export-card">
                     <h4>Internationaux</h4>
                     <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:10px;">
@@ -1649,10 +838,8 @@
                     </p>
                     <button class="btn-export-sm" id="exportInternational">Télécharger</button>
                 </div>
-
             </div>
 
-            <!-- Exports PDF -->
             <div style="text-align:center;margin-top:20px;">
                 <h4 style="color:var(--text-muted);margin-bottom:12px;">Rapports complets</h4>
                 <div class="export-options">
@@ -1661,9 +848,7 @@
                     <button class="btn-export" id="exportStatsReport">Rapport statistiques</button>
                 </div>
             </div>
-
         </div>
-
     </div>
 
     <!-- ============================================================ -->
@@ -1682,18 +867,13 @@
            CONFIGURATION
            ============================================================ */
         const CONFIG = {
-            // 👇 À METTRE À JOUR AVEC VOTRE URL DE DÉPLOIEMENT
-            SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbyVhTJ_6Zq7ZLlIWS4gpsPiXknTkPl_px1eKrfqJ54A6iS8lGWi367WCBqANVnzLzQ7/exec',
+            SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbyYi8gv9-Jb5fSoj06QxuCL0Oe4xBnVSu3RDqHHfEHGNZSWRPQ0zRz2yp1wMcd63tc0/exec',
             ADMIN_PASSWORD: 'enflammer2026',
+            POLL_INTERVAL: 15000,
         };
 
-        // ============================================================
-        // PROTECTION : Désactiver le clic droit
-        // ============================================================
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            return false;
-        });
+        /* Protection : désactiver le clic droit */
+        document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
 
         /* ============================================================
            VARIABLES GLOBALES
@@ -1705,6 +885,11 @@
         let charts = {};
         let currentDay = null;
         let dayStatus = {};
+        let recentCheckins = [];
+
+        // Verrou anti-race-condition pour le pointage
+        let syncLock = false;
+        let pollIntervalId = null;
 
         /* ============================================================
            LOGIN
@@ -1748,6 +933,7 @@
            DÉCONNEXION
            ============================================================ */
         document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (pollIntervalId) { clearInterval(pollIntervalId); pollIntervalId = null; }
             sessionStorage.removeItem('adminLoggedIn');
             location.reload();
         });
@@ -1770,15 +956,14 @@
         async function initDashboard() {
             await loadData();
             applyFilters();
-            startPolling();
+            await loadCheckins();
             loadReminders();
-            loadRecentCheckins();
-            loadDayStatus();
             populateExportFilters();
+            startPolling();
         }
 
         /* ============================================================
-           CHARGEMENT DES DONNÉES
+           CHARGEMENT DES DONNÉES INSCRITS
            ============================================================ */
         async function loadData() {
             const loading = document.getElementById('loadingIndicator');
@@ -1791,27 +976,19 @@
 
             try {
                 const url = CONFIG.SCRIPT_URL + '?action=getData&t=' + Date.now();
-                console.log('Chargement des données depuis:', url);
-
-                const response = await fetch(url, {
-                    method: 'GET',
-                    mode: 'cors',
-                });
-
+                const response = await fetch(url, { method: 'GET', mode: 'cors' });
                 const result = await response.json();
-                console.log('Réponse du script:', result);
 
                 if (result.success && result.data !== undefined) {
                     allData = result.data;
-                    console.log('Nombre d\'inscrits chargés:', allData.length);
                     updateStats(allData);
                     populateFilters(allData);
                     populateExportFilters();
                     updateCharts(allData);
                     updateNotifBadge(0);
                     applyFilters();
+                    updateDayStats();
                 } else {
-                    console.error('Erreur script:', result.message);
                     alert('Erreur de chargement: ' + (result.message || 'Veuillez vérifier l\'URL du script'));
                 }
             } catch (err) {
@@ -1828,10 +1005,8 @@
         function updateStats(data) {
             const total = data.length;
             const pays = new Set(data.map(d => d['Pays']).filter(p => p && p.trim() !== ''));
-
             document.getElementById('statTotal').textContent = total;
             document.getElementById('statPays').textContent = pays.size;
-
             updateDayStats();
         }
 
@@ -1841,6 +1016,13 @@
                 document.getElementById('statAbsent').textContent = '0';
                 document.getElementById('statPresentDay').textContent = 'Aucun jour sélectionné';
                 document.getElementById('statAbsentDay').textContent = 'Aucun jour sélectionné';
+                document.getElementById('selectedDayText').textContent = 'Aucun';
+                document.getElementById('dayPresentCount').textContent = '0';
+                document.getElementById('dayAbsentCount').textContent = '0';
+                document.getElementById('dayClosedBadge').style.display = 'none';
+                document.getElementById('checkinBtn').disabled = true;
+                document.getElementById('checkinInput').disabled = true;
+                document.getElementById('closeDayBtn').disabled = true;
                 return;
             }
 
@@ -1855,20 +1037,15 @@
             document.getElementById('statPresentDay').textContent = 'Jour : ' + currentDay;
             document.getElementById('statAbsentDay').textContent = 'Jour : ' + currentDay;
 
-            document.getElementById('selectedDayText').textContent = currentDay || 'Aucun';
+            document.getElementById('selectedDayText').textContent = currentDay;
             document.getElementById('dayPresentCount').textContent = present;
             document.getElementById('dayAbsentCount').textContent = absent;
 
             const isClosed = dayStatus['closed_' + currentDay] === true;
-            const badge = document.getElementById('dayClosedBadge');
-            if (isClosed) {
-                badge.style.display = 'inline';
-            } else {
-                badge.style.display = 'none';
-            }
-
-            document.getElementById('checkinBtn').disabled = isClosed || !currentDay;
-            document.getElementById('checkinInput').disabled = isClosed || !currentDay;
+            document.getElementById('dayClosedBadge').style.display = isClosed ? 'inline' : 'none';
+            document.getElementById('checkinBtn').disabled = isClosed;
+            document.getElementById('checkinInput').disabled = isClosed;
+            document.getElementById('closeDayBtn').disabled = isClosed;
         }
 
         /* ============================================================
@@ -1877,13 +1054,14 @@
         function populateFilters(data) {
             const paysSelect = document.getElementById('filterPays');
             const pays = new Set(data.map(d => d['Pays']).filter(p => p && p.trim() !== ''));
+            const current = paysSelect.value;
             paysSelect.innerHTML = '<option value="">Tous les pays</option>';
             pays.forEach(p => {
                 const opt = document.createElement('option');
-                opt.value = p;
-                opt.textContent = p;
+                opt.value = p; opt.textContent = p;
                 paysSelect.appendChild(opt);
             });
+            if (current) paysSelect.value = current;
         }
 
         function populateExportFilters() {
@@ -1892,35 +1070,26 @@
 
             const paysSelect1 = document.getElementById('exportPaysSelect');
             if (paysSelect1) {
+                const cur = paysSelect1.value;
                 paysSelect1.innerHTML = '<option value="">Tous les pays</option>';
-                pays.forEach(p => {
-                    const opt = document.createElement('option');
-                    opt.value = p;
-                    opt.textContent = p;
-                    paysSelect1.appendChild(opt);
-                });
+                pays.forEach(p => { const o = document.createElement('option'); o.value = p; o.textContent = p; paysSelect1.appendChild(o); });
+                if (cur) paysSelect1.value = cur;
             }
 
             const egliseSelect = document.getElementById('exportEgliseSelect');
             if (egliseSelect) {
+                const cur = egliseSelect.value;
                 egliseSelect.innerHTML = '<option value="">Toutes les églises</option>';
-                eglises.forEach(e => {
-                    const opt = document.createElement('option');
-                    opt.value = e;
-                    opt.textContent = e;
-                    egliseSelect.appendChild(opt);
-                });
+                eglises.forEach(e => { const o = document.createElement('option'); o.value = e; o.textContent = e; egliseSelect.appendChild(o); });
+                if (cur) egliseSelect.value = cur;
             }
 
             const comboPays = document.getElementById('exportComboPays');
             if (comboPays) {
+                const cur = comboPays.value;
                 comboPays.innerHTML = '<option value="">Tous les pays</option>';
-                pays.forEach(p => {
-                    const opt = document.createElement('option');
-                    opt.value = p;
-                    opt.textContent = p;
-                    comboPays.appendChild(opt);
-                });
+                pays.forEach(p => { const o = document.createElement('option'); o.value = p; o.textContent = p; comboPays.appendChild(o); });
+                if (cur) comboPays.value = cur;
             }
         }
 
@@ -1932,13 +1101,9 @@
             filteredData = allData.filter(row => {
                 if (search) {
                     const searchable = [
-                        row['ID'] || '',
-                        row['Nom'] || '',
-                        row['Prénoms'] || '',
-                        row['Email'] || '',
-                        row['WhatsApp'] || '',
-                        row['Ministère/Église'] || '',
-                        row['Pays'] || '',
+                        row['ID'] || '', row['Nom'] || '', row['Prénoms'] || '',
+                        row['Email'] || '', row['WhatsApp'] || '',
+                        row['Ministère/Église'] || '', row['Pays'] || '',
                     ].join(' ').toLowerCase();
                     if (!searchable.includes(search)) return false;
                 }
@@ -1946,7 +1111,6 @@
                 if (statut && row['Statut'] !== statut) return false;
                 return true;
             });
-
             currentPage = 1;
             renderTable();
             document.getElementById('totalDisplay').textContent = `(${filteredData.length})`;
@@ -1993,10 +1157,8 @@
             tbody.innerHTML = '';
             pageData.forEach(row => {
                 const tr = document.createElement('tr');
-
                 const isPresent = row['Présent'] && row['Présent'].trim() !== '';
                 const statusClass = isPresent ? 'present' : 'absent';
-
                 const statutValue = row['Statut'] || 'Non renseigné';
                 const hotelValue = row['Hôtel'] || 'Non renseigné';
                 const budgetValue = row['Budget'] || '—';
@@ -2041,34 +1203,23 @@
             document.getElementById('prevPage').disabled = currentPage <= 1;
             document.getElementById('nextPage').disabled = currentPage >= totalPagesDisplay;
 
-            // Événements pour les boutons "Confirmation"
             document.querySelectorAll('.resend-confirm').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const data = {
-                        id: this.dataset.id,
-                        email: this.dataset.email,
-                        nom: this.dataset.nom,
-                        prenoms: this.dataset.prenoms,
-                        fonction: this.dataset.fonction,
-                        eglise: this.dataset.eglise,
-                        pays: this.dataset.pays,
-                        ville: this.dataset.ville,
-                        nationalite: this.dataset.nationalite,
-                        source: this.dataset.source,
-                        attentes: this.dataset.attentes,
-                        statut: this.dataset.statut,
-                        hotel: this.dataset.hotel,
-                        budget: this.dataset.budget,
-                        arrivee: this.dataset.arrivee,
-                        depart: this.dataset.depart,
-                        compagnie: this.dataset.compagnie,
+                        id: this.dataset.id, email: this.dataset.email, nom: this.dataset.nom,
+                        prenoms: this.dataset.prenoms, fonction: this.dataset.fonction,
+                        eglise: this.dataset.eglise, pays: this.dataset.pays,
+                        ville: this.dataset.ville, nationalite: this.dataset.nationalite,
+                        source: this.dataset.source, attentes: this.dataset.attentes,
+                        statut: this.dataset.statut, hotel: this.dataset.hotel,
+                        budget: this.dataset.budget, arrivee: this.dataset.arrivee,
+                        depart: this.dataset.depart, compagnie: this.dataset.compagnie,
                         whatsapp: this.dataset.whatsapp,
                     };
                     resendConfirmation(data);
                 });
             });
 
-            // Événements pour les boutons "Message" (existant)
             document.querySelectorAll('.btn-send-email').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const email = this.dataset.email;
@@ -2085,13 +1236,11 @@
            PAGINATION
            ============================================================ */
         document.getElementById('prevPage').addEventListener('click', function() {
-            if (currentPage > 1) { currentPage--;
-                renderTable(); }
+            if (currentPage > 1) { currentPage--; renderTable(); }
         });
         document.getElementById('nextPage').addEventListener('click', function() {
             const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-            if (currentPage < totalPages) { currentPage++;
-                renderTable(); }
+            if (currentPage < totalPages) { currentPage++; renderTable(); }
         });
 
         /* ============================================================
@@ -2100,10 +1249,7 @@
         function updateCharts(data) {
             const chartIds = ['chartPays', 'chartEvolution', 'chartSource', 'chartEglise'];
             chartIds.forEach(id => {
-                if (charts[id]) {
-                    charts[id].destroy();
-                    delete charts[id];
-                }
+                if (charts[id]) { charts[id].destroy(); delete charts[id]; }
             });
 
             // 1. Répartition par pays
@@ -2131,13 +1277,8 @@
                             }]
                         },
                         options: {
-                            responsive: true,
-                            maintainAspectRatio: true,
-                            plugins: {
-                                legend: {
-                                    labels: { color: '#9a8a7a', font: { size: 10 }, boxWidth: 12 }
-                                }
-                            }
+                            responsive: true, maintainAspectRatio: true,
+                            plugins: { legend: { labels: { color: '#9a8a7a', font: { size: 10 }, boxWidth: 12 } } }
                         }
                     });
                 }
@@ -2160,22 +1301,15 @@
                         data: {
                             labels: evolLabels,
                             datasets: [{
-                                label: 'Inscriptions',
-                                data: evolValues,
-                                borderColor: '#D4A843',
-                                backgroundColor: 'rgba(212,168,67,0.1)',
-                                fill: true,
-                                tension: 0.3,
-                                pointBackgroundColor: '#D4A843',
-                                pointRadius: 4,
+                                label: 'Inscriptions', data: evolValues,
+                                borderColor: '#D4A843', backgroundColor: 'rgba(212,168,67,0.1)',
+                                fill: true, tension: 0.3,
+                                pointBackgroundColor: '#D4A843', pointRadius: 4,
                             }]
                         },
                         options: {
-                            responsive: true,
-                            maintainAspectRatio: true,
-                            plugins: {
-                                legend: { labels: { color: '#9a8a7a', font: { size: 10 } } }
-                            },
+                            responsive: true, maintainAspectRatio: true,
+                            plugins: { legend: { labels: { color: '#9a8a7a', font: { size: 10 } } } },
                             scales: {
                                 x: { ticks: { color: '#9a8a7a', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.03)' } },
                                 y: { ticks: { color: '#9a8a7a', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.03)' } }
@@ -2205,18 +1339,12 @@
                             datasets: [{
                                 data: srcValues,
                                 backgroundColor: srcColors.slice(0, srcLabels.length),
-                                borderColor: '#0a0806',
-                                borderWidth: 2,
+                                borderColor: '#0a0806', borderWidth: 2,
                             }]
                         },
                         options: {
-                            responsive: true,
-                            maintainAspectRatio: true,
-                            plugins: {
-                                legend: {
-                                    labels: { color: '#9a8a7a', font: { size: 10 }, boxWidth: 12 }
-                                }
-                            }
+                            responsive: true, maintainAspectRatio: true,
+                            plugins: { legend: { labels: { color: '#9a8a7a', font: { size: 10 }, boxWidth: 12 } } }
                         }
                     });
                 }
@@ -2239,19 +1367,13 @@
                         data: {
                             labels: eglLabels,
                             datasets: [{
-                                label: 'Participants',
-                                data: eglValues,
-                                backgroundColor: '#C62828',
-                                borderColor: '#8E0000',
-                                borderWidth: 1,
+                                label: 'Participants', data: eglValues,
+                                backgroundColor: '#C62828', borderColor: '#8E0000', borderWidth: 1,
                             }]
                         },
                         options: {
-                            responsive: true,
-                            maintainAspectRatio: true,
-                            plugins: {
-                                legend: { labels: { color: '#9a8a7a', font: { size: 10 } } }
-                            },
+                            responsive: true, maintainAspectRatio: true,
+                            plugins: { legend: { labels: { color: '#9a8a7a', font: { size: 10 } } } },
                             scales: {
                                 x: { ticks: { color: '#9a8a7a', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.03)' } },
                                 y: { ticks: { color: '#9a8a7a', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.03)' } }
@@ -2289,29 +1411,22 @@
         document.getElementById('exportByPays').addEventListener('click', function() {
             const pays = document.getElementById('exportPaysSelect').value;
             let data = allData;
-            if (pays) {
-                data = data.filter(row => row['Pays'] === pays);
-            }
+            if (pays) data = data.filter(row => row['Pays'] === pays);
             if (data.length === 0) { alert('Aucune donnée pour ce pays.'); return; }
-            const filename = pays ? `inscrits_${pays}` : 'inscrits_tous_pays';
-            exportToCSV(data, filename);
+            exportToCSV(data, pays ? `inscrits_${pays}` : 'inscrits_tous_pays');
         });
 
         document.getElementById('exportByEglise').addEventListener('click', function() {
             const eglise = document.getElementById('exportEgliseSelect').value;
             let data = allData;
-            if (eglise) {
-                data = data.filter(row => row['Ministère/Église'] === eglise);
-            }
+            if (eglise) data = data.filter(row => row['Ministère/Église'] === eglise);
             if (data.length === 0) { alert('Aucune donnée pour cette église.'); return; }
-            const filename = eglise ? `inscrits_${eglise.replace(/\s+/g, '_')}` : 'inscrits_toutes_eglises';
-            exportToCSV(data, filename);
+            exportToCSV(data, eglise ? `inscrits_${eglise.replace(/\s+/g, '_')}` : 'inscrits_toutes_eglises');
         });
 
         document.getElementById('exportByStatut').addEventListener('click', function() {
             const statut = document.getElementById('exportStatutSelect').value;
             const jour = document.getElementById('exportJourSelect').value;
-
             const dayKey = 'present_' + jour;
             const presentIds = dayStatus[dayKey] || [];
 
@@ -2323,8 +1438,7 @@
             }
 
             if (data.length === 0) { alert(`Aucun ${statut === 'present' ? 'présent' : 'absent'} pour ce jour.`); return; }
-            const filename = `${statut}_${jour}`;
-            exportToCSV(data, filename);
+            exportToCSV(data, `${statut}_${jour}`);
         });
 
         document.getElementById('exportCombo').addEventListener('click', function() {
@@ -2332,10 +1446,7 @@
             const statut = document.getElementById('exportComboStatut').value;
 
             let data = allData;
-
-            if (pays) {
-                data = data.filter(row => row['Pays'] === pays);
-            }
+            if (pays) data = data.filter(row => row['Pays'] === pays);
 
             const presentIds = [];
             ['J-1', 'J-2', 'J-3'].forEach(j => {
@@ -2354,42 +1465,13 @@
             }
 
             if (data.length === 0) { alert('Aucune donnée pour ces critères.'); return; }
-            const filename = `inscrits_${pays || 'tous'}_${statut}`;
-            exportToCSV(data, filename);
+            exportToCSV(data, `inscrits_${pays || 'tous'}_${statut}`);
         });
 
         document.getElementById('exportInternational').addEventListener('click', function() {
             const data = allData.filter(row => row['Statut'] === 'international');
-            if (data.length === 0) {
-                alert('Aucun participant international trouvé.');
-                return;
-            }
-            const headers = ['ID', 'Nom', 'Prénoms', 'Genre', 'WhatsApp', 'Email', 'Fonction', 'Ministère/Église', 'Pays',
-                'Ville', 'Nationalité', 'Source', 'Attentes', 'Statut', 'Hôtel', 'Budget', 'Arrivée', 'Départ', 'Compagnie',
-                'Présent'
-            ];
-            const csvRows = [headers.join(',')];
-
-            data.forEach(row => {
-                const values = headers.map(h => {
-                    let val = row[h] || '';
-                    if (typeof val === 'string' && (val.includes(',') || val.includes('"') || val.includes(
-                            '\n'))) {
-                        val = `"${val.replace(/"/g, '""')}"`;
-                    }
-                    return val;
-                });
-                csvRows.push(values.join(','));
-            });
-
-            const csvContent = csvRows.join('\n');
-            const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `internationaux_ENFLAMMER_${new Date().toISOString().slice(0,10)}.csv`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            if (data.length === 0) { alert('Aucun participant international trouvé.'); return; }
+            exportToCSV(data, `internationaux_ENFLAMMER`);
         });
 
         /* ============================================================
@@ -2405,8 +1487,7 @@
             data.forEach(row => {
                 const values = headers.map(h => {
                     let val = row[h] || '';
-                    if (typeof val === 'string' && (val.includes(',') || val.includes('"') || val.includes(
-                            '\n'))) {
+                    if (typeof val === 'string' && (val.includes(',') || val.includes('"') || val.includes('\n'))) {
                         val = `"${val.replace(/"/g, '""')}"`;
                     }
                     return val;
@@ -2425,7 +1506,7 @@
         }
 
         /* ============================================================
-           ENVOI DE MESSAGES PERSONNALISÉS (existant)
+           ENVOI DE MESSAGES PERSONNALISÉS
            ============================================================ */
         function sendMessageModal(emails, target) {
             const subject = prompt(`Sujet du message (à ${target}):`, 'ENFLAMMER 2026 - Informations importantes');
@@ -2440,8 +1521,7 @@
             (async function() {
                 try {
                     const response = await fetch(CONFIG.SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'cors',
+                        method: 'POST', mode: 'cors',
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                         body: new URLSearchParams({
                             action: 'sendMassEmail',
@@ -2463,15 +1543,9 @@
         }
 
         document.getElementById('sendMassMessageBtn').addEventListener('click', function() {
-            if (filteredData.length === 0) {
-                alert('Aucun inscrit à qui envoyer un message.');
-                return;
-            }
+            if (filteredData.length === 0) { alert('Aucun inscrit à qui envoyer un message.'); return; }
             const emails = filteredData.map(row => row['Email']).filter(e => e && e.trim() !== '');
-            if (emails.length === 0) {
-                alert('Aucune adresse email valide trouvée.');
-                return;
-            }
+            if (emails.length === 0) { alert('Aucune adresse email valide trouvée.'); return; }
             sendMessageModal(emails, 'tous les inscrits');
         });
 
@@ -2489,8 +1563,7 @@
 
             try {
                 const response = await fetch(CONFIG.SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'cors',
+                    method: 'POST', mode: 'cors',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: new URLSearchParams({
                         action: 'resendConfirmation',
@@ -2514,7 +1587,6 @@
                         id: data.id || '',
                     }),
                 });
-
                 const result = await response.json();
                 if (result.success) {
                     alert(`✅ Email de confirmation renvoyé avec succès à ${fullName}`);
@@ -2530,15 +1602,10 @@
            RENVOYER LA CONFIRMATION À TOUS
            ============================================================ */
         document.getElementById('resendAllConfirmBtn').addEventListener('click', function() {
-            if (filteredData.length === 0) {
-                alert('Aucun inscrit dans la liste actuelle.');
-                return;
-            }
-
+            if (filteredData.length === 0) { alert('Aucun inscrit dans la liste actuelle.'); return; }
             const total = filteredData.length;
             if (!confirm(`Renvoyer l'email de confirmation à tous les ${total} inscrits de la liste actuelle ?`)) return;
 
-            // On envoie les données de tous les inscrits filtrés
             const participants = filteredData.map(row => ({
                 email: row['Email'] || '',
                 nom: row['Nom'] || '',
@@ -2560,25 +1627,19 @@
                 id: row['ID'] || '',
             })).filter(p => p.email && p.email.trim() !== '');
 
-            if (participants.length === 0) {
-                alert('Aucune adresse email valide trouvée.');
-                return;
-            }
-
+            if (participants.length === 0) { alert('Aucune adresse email valide trouvée.'); return; }
             if (!confirm(`Confirmer l'envoi à ${participants.length} participant(s) ?`)) return;
 
             (async function() {
                 try {
                     const response = await fetch(CONFIG.SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'cors',
+                        method: 'POST', mode: 'cors',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             action: 'resendAllConfirmations',
                             participants: participants,
                         }),
                     });
-
                     const result = await response.json();
                     if (result.success) {
                         alert(`✅ ${result.data.sent || participants.length} email(s) de confirmation renvoyé(s) !`);
@@ -2599,22 +1660,64 @@
         });
 
         /* ============================================================
-           POINTAGE AVEC PERSISTANCE SERVEUR
+           ✅ POINTAGE : SYNCHRONISATION SERVEUR
            ============================================================ */
-        function loadDayStatus() {
+
+        /**
+         * Charge l'état complet du pointage depuis le serveur.
+         * Serveur renvoie : { success, data: { dayStatus: {...}, recentCheckins: [...] } }
+         * En cas d'échec réseau, on retombe sur localStorage (mode dégradé).
+         */
+        async function loadCheckins() {
             try {
-                const saved = localStorage.getItem('enflammer_dayStatus');
-                if (saved) {
-                    dayStatus = JSON.parse(saved);
+                const response = await fetch(CONFIG.SCRIPT_URL + '?action=getCheckins&t=' + Date.now(), {
+                    method: 'GET', mode: 'cors'
+                });
+                const result = await response.json();
+
+                if (result.success && result.data) {
+                    dayStatus = result.data.dayStatus || {};
+                    recentCheckins = Array.isArray(result.data.recentCheckins)
+                        ? result.data.recentCheckins
+                        : [];
+                    // cache local (fallback si serveur indisponible plus tard)
+                    saveDayStatus();
+                    saveRecentCheckins();
+                    updateDayStats();
+                    renderRecentCheckins();
+                    return true;
                 }
-            } catch (e) { dayStatus = {}; }
+                return false;
+            } catch (e) {
+                console.warn('Serveur injoignable, utilisation du cache local pour le pointage.');
+                loadFromLocalCache();
+                return false;
+            }
+        }
+
+        function loadFromLocalCache() {
+            try {
+                const savedStatus = localStorage.getItem('enflammer_dayStatus');
+                if (savedStatus) dayStatus = JSON.parse(savedStatus);
+                const savedRecent = localStorage.getItem('recentCheckins');
+                if (savedRecent) recentCheckins = JSON.parse(savedRecent);
+            } catch (e) {
+                dayStatus = {};
+                recentCheckins = [];
+            }
             updateDayStats();
+            renderRecentCheckins();
         }
 
         function saveDayStatus() {
-            localStorage.setItem('enflammer_dayStatus', JSON.stringify(dayStatus));
+            try { localStorage.setItem('enflammer_dayStatus', JSON.stringify(dayStatus)); } catch (e) {}
         }
 
+        function saveRecentCheckins() {
+            try { localStorage.setItem('recentCheckins', JSON.stringify(recentCheckins)); } catch (e) {}
+        }
+
+        /* --- Sélection du jour --- */
         document.querySelectorAll('.day-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
@@ -2624,17 +1727,19 @@
             });
         });
 
+        /* --- Bouton POINTER (async vers serveur) --- */
         document.getElementById('checkinBtn').addEventListener('click', async function() {
             const input = document.getElementById('checkinInput');
             const id = input.value.trim().toUpperCase();
+            const resultDiv = document.getElementById('checkinResult');
+            const btn = this;
+
             if (!id) { alert('Veuillez saisir un ID.'); return; }
             if (!currentDay) { alert('Veuillez sélectionner un jour.'); return; }
             if (dayStatus['closed_' + currentDay] === true) {
-                alert('Ce jour est déjà clôturé.');
-                return;
+                alert('Ce jour est déjà clôturé.'); return;
             }
 
-            const resultDiv = document.getElementById('checkinResult');
             resultDiv.className = 'checkin-result';
 
             const participant = allData.find(d => d['ID'] === id);
@@ -2642,8 +1747,7 @@
                 resultDiv.className = 'checkin-result error';
                 document.getElementById('resultName').textContent = 'ID non trouvé';
                 document.getElementById('resultDetail').textContent = 'Vérifiez l\'ID saisi';
-                input.value = '';
-                input.focus();
+                input.value = ''; input.focus();
                 return;
             }
 
@@ -2653,50 +1757,98 @@
                 resultDiv.className = 'checkin-result error';
                 document.getElementById('resultName').textContent = participant['Prénoms'] + ' ' + participant['Nom'];
                 document.getElementById('resultDetail').textContent = 'Déjà pointé pour ce jour';
-                input.value = '';
-                input.focus();
+                input.value = ''; input.focus();
                 return;
             }
 
-            dayStatus[dayKey].push(id);
-            saveDayStatus();
+            // Verrou : empêche le polling d'écraser pendant la requête
+            syncLock = true;
+            btn.disabled = true;
+            btn.textContent = 'Enregistrement...';
+
+            let success = false;
+            let lastError = '';
 
             try {
-                await fetch(CONFIG.SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'cors',
+                const response = await fetch(CONFIG.SCRIPT_URL, {
+                    method: 'POST', mode: 'cors',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: new URLSearchParams({
-                        action: 'updatePresence',
+                        action: 'checkin',
                         id: id,
-                        present: '1',
+                        day: currentDay,
+                        nom: participant['Nom'] || '',
+                        prenoms: participant['Prénoms'] || '',
                     }),
                 });
+                const result = await response.json();
+
+                if (!result.success) {
+                    lastError = result.message || 'Enregistrement échoué côté serveur';
+                } else {
+                    // Mise à jour depuis la réponse serveur
+                    if (result.data && result.data.dayStatus) {
+                        dayStatus = result.data.dayStatus;
+                    } else {
+                        if (!dayStatus[dayKey].includes(id)) dayStatus[dayKey].push(id);
+                    }
+                    if (result.data && Array.isArray(result.data.recentCheckins)) {
+                        recentCheckins = result.data.recentCheckins;
+                    } else {
+                        // Fallback local : ajout manuel
+                        recentCheckins.unshift({
+                            id: id,
+                            nom: participant['Nom'] || '',
+                            prenom: participant['Prénoms'] || '',
+                            day: currentDay,
+                            time: new Date().toISOString(),
+                        });
+                        if (recentCheckins.length > 20) recentCheckins = recentCheckins.slice(0, 20);
+                    }
+                    success = true;
+                }
             } catch (e) {
-                console.warn('Erreur synchro présence:', e);
+                lastError = 'Erreur réseau : impossible de contacter le serveur.';
             }
+
+            btn.disabled = false;
+            btn.textContent = 'Pointer';
+
+            if (!success) {
+                resultDiv.className = 'checkin-result error';
+                document.getElementById('resultName').textContent = 'Échec de l\'enregistrement';
+                document.getElementById('resultDetail').textContent = lastError || 'Veuillez réessayer.';
+                setTimeout(function() { syncLock = false; }, 500);
+                return;
+            }
+
+            // Succès
+            saveDayStatus();
+            saveRecentCheckins();
+            updateDayStats();
+            renderRecentCheckins();
 
             resultDiv.className = 'checkin-result success';
             document.getElementById('resultName').textContent = participant['Prénoms'] + ' ' + participant['Nom'];
-            document.getElementById('resultDetail').textContent = participant['Ministère/Église'] + ' - ' + participant['Pays'];
-
-            addRecentCheckin(id, participant['Nom'], participant['Prénoms']);
-            updateDayStats();
-            await loadData();
+            document.getElementById('resultDetail').textContent =
+                (participant['Ministère/Église'] || '') + ' - ' + (participant['Pays'] || '');
 
             input.value = '';
             input.focus();
+
+            // Libération différée du verrou (le polling doit laisser le serveur se stabiliser)
+            setTimeout(function() { syncLock = false; }, 1500);
         });
 
         document.getElementById('checkinInput').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') document.getElementById('checkinBtn').click();
         });
 
-        document.getElementById('closeDayBtn').addEventListener('click', function() {
+        /* --- Bouton CLÔTURER (async vers serveur) --- */
+        document.getElementById('closeDayBtn').addEventListener('click', async function() {
             if (!currentDay) { alert('Veuillez sélectionner un jour.'); return; }
             if (dayStatus['closed_' + currentDay] === true) {
-                alert('Ce jour est déjà clôturé.');
-                return;
+                alert('Ce jour est déjà clôturé.'); return;
             }
 
             const total = allData.length;
@@ -2705,16 +1857,16 @@
             const present = presentIds.length;
             const absent = total - present;
 
-            if (!confirm(`Clôturer le jour ${currentDay} ?\n\nPrésents : ${present}\nAbsents : ${absent}\n\nConfirmer ?`))
-                return;
+            if (!confirm(`Clôturer le jour ${currentDay} ?\n\nPrésents : ${present}\nAbsents : ${absent}\n\nConfirmer ?`)) return;
 
-            dayStatus['closed_' + currentDay] = true;
-            saveDayStatus();
+            const btn = this;
+            syncLock = true;
+            btn.disabled = true;
+            btn.textContent = 'Clôture en cours...';
 
             try {
-                fetch(CONFIG.SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'cors',
+                const response = await fetch(CONFIG.SCRIPT_URL, {
+                    method: 'POST', mode: 'cors',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: new URLSearchParams({
                         action: 'closeDay',
@@ -2722,51 +1874,67 @@
                         presents: presentIds.join(','),
                     }),
                 });
-            } catch (e) {
-                console.warn('Erreur synchro clôture:', e);
-            }
+                const result = await response.json();
 
-            updateDayStats();
-            alert('Journée clôturée !\nPrésents : ' + present + '\nAbsents : ' + absent);
+                if (!result.success) {
+                    alert('Erreur de clôture : ' + (result.message || 'Inconnue'));
+                } else {
+                    if (result.data && result.data.dayStatus) {
+                        dayStatus = result.data.dayStatus;
+                    } else {
+                        dayStatus['closed_' + currentDay] = true;
+                    }
+                    if (result.data && Array.isArray(result.data.recentCheckins)) {
+                        recentCheckins = result.data.recentCheckins;
+                    }
+                    saveDayStatus();
+                    saveRecentCheckins();
+                    updateDayStats();
+                    renderRecentCheckins();
+                    alert('Journée clôturée !\nPrésents : ' + present + '\nAbsents : ' + absent);
+                }
+            } catch (e) {
+                alert('Erreur réseau lors de la clôture. Réessayez.');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Clôturer la journée';
+                setTimeout(function() { syncLock = false; }, 1500);
+            }
         });
 
         /* ============================================================
-           RECENT CHECK-INS
+           DERNIERS POINTAGES
            ============================================================ */
-        let recentCheckins = [];
-
-        function addRecentCheckin(id, nom, prenom) {
-            recentCheckins.unshift({ id, nom, prenom, time: new Date(), day: currentDay });
-            if (recentCheckins.length > 20) recentCheckins.pop();
-            renderRecentCheckins();
-        }
-
-        function loadRecentCheckins() {
-            try {
-                const saved = localStorage.getItem('recentCheckins');
-                if (saved) recentCheckins = JSON.parse(saved);
-            } catch (e) { recentCheckins = []; }
-            renderRecentCheckins();
-        }
-
         function renderRecentCheckins() {
             const ul = document.getElementById('recentCheckins');
-            if (recentCheckins.length === 0) {
+            if (!recentCheckins || recentCheckins.length === 0) {
                 ul.innerHTML = '<li style="color:var(--text-muted);font-size:0.85rem;">Aucun pointage pour le moment</li>';
                 return;
             }
-            ul.innerHTML = recentCheckins.slice(0, 10).map(item =>
-                `<li><span>${item.prenom} ${item.nom} (${item.id}) - ${item.day || 'Jour inconnu'}</span><span style="color:var(--text-muted);font-size:0.75rem;">${new Date(item.time).toLocaleTimeString()}</span></li>`
-            ).join('');
-            localStorage.setItem('recentCheckins', JSON.stringify(recentCheckins));
+            ul.innerHTML = recentCheckins.slice(0, 10).map(item => {
+                let timeStr = '';
+                if (item.time) {
+                    try {
+                        timeStr = new Date(item.time).toLocaleTimeString();
+                    } catch (e) { timeStr = ''; }
+                }
+                return `<li><span>${item.prenom || ''} ${item.nom || ''} (${item.id}) - ${item.day || 'Jour inconnu'}</span><span style="color:var(--text-muted);font-size:0.75rem;">${timeStr}</span></li>`;
+            }).join('');
         }
 
         /* ============================================================
-           NOTIFICATIONS EN TEMPS RÉEL
+           POLLING : inscriptions + pointages
            ============================================================ */
         function startPolling() {
+            if (pollIntervalId) clearInterval(pollIntervalId);
+
             let lastCount = allData.length;
-            setInterval(async function() {
+
+            pollIntervalId = setInterval(async function() {
+                // Ne pas toucher aux données pendant un pointage/clôture en cours
+                if (syncLock) return;
+
+                // 1) Nouveaux inscrits
                 try {
                     const response = await fetch(CONFIG.SCRIPT_URL + '?action=getData&t=' + Date.now());
                     const result = await response.json();
@@ -2782,11 +1950,34 @@
                             updateCharts(allData);
                             applyFilters();
                             updateNotifBadge(diff);
-                            lastCount = newCount;
+                        }
+                        lastCount = newCount;
+                    }
+                } catch (e) { /* silencieux */ }
+
+                // Re-vérifier le verrou après le 1er await
+                if (syncLock) return;
+
+                // 2) Rafraîchir les pointages (multi-appareils)
+                try {
+                    const resp2 = await fetch(CONFIG.SCRIPT_URL + '?action=getCheckins&t=' + Date.now());
+                    const res2 = await resp2.json();
+                    if (res2.success && res2.data) {
+                        const newStatus = res2.data.dayStatus || {};
+                        const changed = JSON.stringify(newStatus) !== JSON.stringify(dayStatus);
+                        dayStatus = newStatus;
+                        if (Array.isArray(res2.data.recentCheckins)) {
+                            recentCheckins = res2.data.recentCheckins;
+                        }
+                        saveDayStatus();
+                        saveRecentCheckins();
+                        if (changed) {
+                            updateDayStats();
+                            renderRecentCheckins();
                         }
                     }
                 } catch (e) { /* silencieux */ }
-            }, 15000);
+            }, CONFIG.POLL_INTERVAL);
         }
 
         function showNotification(title, message) {
@@ -2847,8 +2038,7 @@
 
             try {
                 const response = await fetch(CONFIG.SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'cors',
+                    method: 'POST', mode: 'cors',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: new URLSearchParams({
                         action: 'addReminder',
@@ -2876,13 +2066,9 @@
             if (!confirm('Supprimer ce rappel ?')) return;
             try {
                 const response = await fetch(CONFIG.SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'cors',
+                    method: 'POST', mode: 'cors',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: new URLSearchParams({
-                        action: 'deleteReminder',
-                        id: id,
-                    }),
+                    body: new URLSearchParams({ action: 'deleteReminder', id: id }),
                 });
                 const result = await response.json();
                 if (result.success) {
@@ -2898,13 +2084,11 @@
         /* ============================================================
            EXPORT PDF
            ============================================================ */
-
         document.getElementById('exportPDFReport').addEventListener('click', function() {
             if (allData.length === 0) { alert('Aucune donnée à exporter.'); return; }
 
             const content = document.createElement('div');
             content.style.cssText = 'padding:30px;font-family:Inter,Arial,sans-serif;background:#fff;color:#1a1410;max-width:900px;margin:0 auto;';
-
             const total = allData.length;
             const pays = new Set(allData.map(d => d['Pays']).filter(p => p && p.trim() !== ''));
 
@@ -3013,8 +2197,10 @@
             content.style.cssText = 'padding:30px;font-family:Inter,Arial,sans-serif;background:#fff;color:#1a1410;max-width:700px;margin:0 auto;';
 
             const paysStats = {};
-            allData.forEach(d => { const p = d['Pays'] || 'Non renseigné';
-                paysStats[p] = (paysStats[p] || 0) + 1; });
+            allData.forEach(d => {
+                const p = d['Pays'] || 'Non renseigné';
+                paysStats[p] = (paysStats[p] || 0) + 1;
+            });
             const paysSorted = Object.entries(paysStats).sort((a, b) => b[1] - a[1]);
 
             content.innerHTML = `
@@ -3057,7 +2243,6 @@
         });
 
         console.log('Tableau de bord ENFLAMMER 2026 chargé !');
-        console.log('Mot de passe :', CONFIG.ADMIN_PASSWORD);
         console.log('URL du script :', CONFIG.SCRIPT_URL);
     </script>
 
