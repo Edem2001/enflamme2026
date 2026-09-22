@@ -867,9 +867,9 @@
            CONFIGURATION
            ============================================================ */
         const CONFIG = {
-            SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbyYi8gv9-Jb5fSoj06QxuCL0Oe4xBnVSu3RDqHHfEHGNZSWRPQ0zRz2yp1wMcd63tc0/exec',
+            SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbyiJg19d7irgl8bqpbtJiHbNxOUvnztDNuYNEoENfZAayjAmE3jdIBlUvyFJhUdA22w/exec',
             ADMIN_PASSWORD: 'enflammer2026',
-            POLL_INTERVAL: 15000,
+            POLL_INTERVAL: 10000,
         };
 
         /* Protection : désactiver le clic droit */
@@ -889,6 +889,7 @@
 
         // Verrou anti-race-condition pour le pointage
         let syncLock = false;
+        let pollInFlight = false;
         let pollIntervalId = null;
 
         /* ============================================================
@@ -951,13 +952,16 @@
         });
 
         /* ============================================================
-           INIT DASHBOARD
+           INIT DASHBOARD — PARALLÉLISÉ pour un démarrage rapide
            ============================================================ */
         async function initDashboard() {
-            await loadData();
+            // Les 3 appels partent EN MÊME TEMPS
+            await Promise.all([
+                loadData(),
+                loadCheckins(),
+                loadReminders()
+            ]);
             applyFilters();
-            await loadCheckins();
-            loadReminders();
             populateExportFilters();
             startPolling();
         }
@@ -1660,13 +1664,11 @@
         });
 
         /* ============================================================
-           ✅ POINTAGE : SYNCHRONISATION SERVEUR
+           ✅ POINTAGE : SYNCHRONISATION SERVEUR (OPTIMISÉE)
            ============================================================ */
 
         /**
          * Charge l'état complet du pointage depuis le serveur.
-         * Serveur renvoie : { success, data: { dayStatus: {...}, recentCheckins: [...] } }
-         * En cas d'échec réseau, on retombe sur localStorage (mode dégradé).
          */
         async function loadCheckins() {
             try {
@@ -1680,7 +1682,6 @@
                     recentCheckins = Array.isArray(result.data.recentCheckins)
                         ? result.data.recentCheckins
                         : [];
-                    // cache local (fallback si serveur indisponible plus tard)
                     saveDayStatus();
                     saveRecentCheckins();
                     updateDayStats();
@@ -1727,7 +1728,7 @@
             });
         });
 
-        /* --- Bouton POINTER (async vers serveur) --- */
+        /* --- Bouton POINTER (async + 2 tentatives + vérif post-échec) --- */
         document.getElementById('checkinBtn').addEventListener('click', async function() {
             const input = document.getElementById('checkinInput');
             const id = input.value.trim().toUpperCase();
@@ -1761,7 +1762,6 @@
                 return;
             }
 
-            // Verrou : empêche le polling d'écraser pendant la requête
             syncLock = true;
             btn.disabled = true;
             btn.textContent = 'Enregistrement...';
@@ -1769,46 +1769,66 @@
             let success = false;
             let lastError = '';
 
-            try {
-                const response = await fetch(CONFIG.SCRIPT_URL, {
-                    method: 'POST', mode: 'cors',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: new URLSearchParams({
-                        action: 'checkin',
-                        id: id,
-                        day: currentDay,
-                        nom: participant['Nom'] || '',
-                        prenoms: participant['Prénoms'] || '',
-                    }),
-                });
-                const result = await response.json();
-
-                if (!result.success) {
-                    lastError = result.message || 'Enregistrement échoué côté serveur';
-                } else {
-                    // Mise à jour depuis la réponse serveur
-                    if (result.data && result.data.dayStatus) {
-                        dayStatus = result.data.dayStatus;
-                    } else {
-                        if (!dayStatus[dayKey].includes(id)) dayStatus[dayKey].push(id);
-                    }
-                    if (result.data && Array.isArray(result.data.recentCheckins)) {
-                        recentCheckins = result.data.recentCheckins;
-                    } else {
-                        // Fallback local : ajout manuel
-                        recentCheckins.unshift({
+            // 2 tentatives automatiques
+            for (let attempt = 1; attempt <= 2 && !success; attempt++) {
+                try {
+                    const response = await fetch(CONFIG.SCRIPT_URL, {
+                        method: 'POST', mode: 'cors',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams({
+                            action: 'checkin',
                             id: id,
-                            nom: participant['Nom'] || '',
-                            prenom: participant['Prénoms'] || '',
                             day: currentDay,
-                            time: new Date().toISOString(),
-                        });
-                        if (recentCheckins.length > 20) recentCheckins = recentCheckins.slice(0, 20);
+                            nom: participant['Nom'] || '',
+                            prenoms: participant['Prénoms'] || '',
+                        }),
+                    });
+                    const result = await response.json();
+
+                    if (result.success) {
+                        if (result.data && result.data.dayStatus) {
+                            dayStatus = result.data.dayStatus;
+                        } else if (!dayStatus[dayKey].includes(id)) {
+                            dayStatus[dayKey].push(id);
+                        }
+                        if (result.data && Array.isArray(result.data.recentCheckins)) {
+                            recentCheckins = result.data.recentCheckins;
+                        } else {
+                            recentCheckins.unshift({
+                                id: id,
+                                nom: participant['Nom'] || '',
+                                prenom: participant['Prénoms'] || '',
+                                day: currentDay,
+                                time: new Date().toISOString(),
+                            });
+                            if (recentCheckins.length > 20) recentCheckins = recentCheckins.slice(0, 20);
+                        }
+                        success = true;
+                    } else {
+                        lastError = result.message || 'Erreur serveur';
+                        if (lastError.toLowerCase().indexOf('déjà') !== -1
+                            || lastError.toLowerCase().indexOf('clôturé') !== -1) {
+                            break;
+                        }
                     }
-                    success = true;
+                } catch (e) {
+                    lastError = 'Erreur réseau';
                 }
-            } catch (e) {
-                lastError = 'Erreur réseau : impossible de contacter le serveur.';
+
+                if (!success && attempt < 2) {
+                    await new Promise(r => setTimeout(r, 800));
+                }
+            }
+
+            // Si échec : on revérifie côté serveur (le pointage a peut-être été enregistré)
+            if (!success) {
+                try {
+                    await loadCheckins();
+                    if (dayStatus[dayKey] && dayStatus[dayKey].includes(id)) {
+                        success = true;
+                        lastError = '';
+                    }
+                } catch (e) {}
             }
 
             btn.disabled = false;
@@ -1818,7 +1838,7 @@
                 resultDiv.className = 'checkin-result error';
                 document.getElementById('resultName').textContent = 'Échec de l\'enregistrement';
                 document.getElementById('resultDetail').textContent = lastError || 'Veuillez réessayer.';
-                setTimeout(function() { syncLock = false; }, 500);
+                syncLock = false;
                 return;
             }
 
@@ -1836,15 +1856,15 @@
             input.value = '';
             input.focus();
 
-            // Libération différée du verrou (le polling doit laisser le serveur se stabiliser)
-            setTimeout(function() { syncLock = false; }, 1500);
+            // Libération différée du verrou
+            setTimeout(function() { syncLock = false; }, 1200);
         });
 
         document.getElementById('checkinInput').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') document.getElementById('checkinBtn').click();
         });
 
-        /* --- Bouton CLÔTURER (async vers serveur) --- */
+        /* --- Bouton CLÔTURER --- */
         document.getElementById('closeDayBtn').addEventListener('click', async function() {
             if (!currentDay) { alert('Veuillez sélectionner un jour.'); return; }
             if (dayStatus['closed_' + currentDay] === true) {
@@ -1914,9 +1934,7 @@
             ul.innerHTML = recentCheckins.slice(0, 10).map(item => {
                 let timeStr = '';
                 if (item.time) {
-                    try {
-                        timeStr = new Date(item.time).toLocaleTimeString();
-                    } catch (e) { timeStr = ''; }
+                    try { timeStr = new Date(item.time).toLocaleTimeString(); } catch (e) { timeStr = ''; }
                 }
                 return `<li><span>${item.prenom || ''} ${item.nom || ''} (${item.id}) - ${item.day || 'Jour inconnu'}</span><span style="color:var(--text-muted);font-size:0.75rem;">${timeStr}</span></li>`;
             }).join('');
@@ -1932,51 +1950,55 @@
 
             pollIntervalId = setInterval(async function() {
                 // Ne pas toucher aux données pendant un pointage/clôture en cours
-                if (syncLock) return;
+                if (syncLock || pollInFlight) return;
+                pollInFlight = true;
 
-                // 1) Nouveaux inscrits
                 try {
-                    const response = await fetch(CONFIG.SCRIPT_URL + '?action=getData&t=' + Date.now());
-                    const result = await response.json();
-                    if (result.success && result.data) {
-                        const newCount = result.data.length;
-                        if (newCount > lastCount) {
-                            const diff = newCount - lastCount;
-                            showNotification(diff + ' nouvelle(s) inscription(s) !', 'Total : ' + newCount + ' inscrits');
-                            allData = result.data;
-                            updateStats(allData);
-                            populateFilters(allData);
-                            populateExportFilters();
-                            updateCharts(allData);
-                            applyFilters();
-                            updateNotifBadge(diff);
+                    // 1) Nouveaux inscrits
+                    try {
+                        const response = await fetch(CONFIG.SCRIPT_URL + '?action=getData&t=' + Date.now());
+                        const result = await response.json();
+                        if (result.success && result.data) {
+                            const newCount = result.data.length;
+                            if (newCount > lastCount) {
+                                const diff = newCount - lastCount;
+                                showNotification(diff + ' nouvelle(s) inscription(s) !', 'Total : ' + newCount + ' inscrits');
+                                allData = result.data;
+                                updateStats(allData);
+                                populateFilters(allData);
+                                populateExportFilters();
+                                updateCharts(allData);
+                                applyFilters();
+                                updateNotifBadge(diff);
+                            }
+                            lastCount = newCount;
                         }
-                        lastCount = newCount;
-                    }
-                } catch (e) { /* silencieux */ }
+                    } catch (e) { /* silencieux */ }
 
-                // Re-vérifier le verrou après le 1er await
-                if (syncLock) return;
+                    if (syncLock) { pollInFlight = false; return; }
 
-                // 2) Rafraîchir les pointages (multi-appareils)
-                try {
-                    const resp2 = await fetch(CONFIG.SCRIPT_URL + '?action=getCheckins&t=' + Date.now());
-                    const res2 = await resp2.json();
-                    if (res2.success && res2.data) {
-                        const newStatus = res2.data.dayStatus || {};
-                        const changed = JSON.stringify(newStatus) !== JSON.stringify(dayStatus);
-                        dayStatus = newStatus;
-                        if (Array.isArray(res2.data.recentCheckins)) {
-                            recentCheckins = res2.data.recentCheckins;
+                    // 2) Rafraîchir les pointages (multi-appareils)
+                    try {
+                        const resp2 = await fetch(CONFIG.SCRIPT_URL + '?action=getCheckins&t=' + Date.now());
+                        const res2 = await resp2.json();
+                        if (res2.success && res2.data) {
+                            const newStatus = res2.data.dayStatus || {};
+                            const changed = JSON.stringify(newStatus) !== JSON.stringify(dayStatus);
+                            dayStatus = newStatus;
+                            if (Array.isArray(res2.data.recentCheckins)) {
+                                recentCheckins = res2.data.recentCheckins;
+                            }
+                            saveDayStatus();
+                            saveRecentCheckins();
+                            if (changed) {
+                                updateDayStats();
+                                renderRecentCheckins();
+                            }
                         }
-                        saveDayStatus();
-                        saveRecentCheckins();
-                        if (changed) {
-                            updateDayStats();
-                            renderRecentCheckins();
-                        }
-                    }
-                } catch (e) { /* silencieux */ }
+                    } catch (e) { /* silencieux */ }
+                } finally {
+                    pollInFlight = false;
+                }
             }, CONFIG.POLL_INTERVAL);
         }
 
